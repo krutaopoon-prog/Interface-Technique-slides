@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สัปดาห์ที่ 1 GUI ตัวแรกกับผู้ช่วย AI</title>
+<meta name="description" content="สไลด์ประกอบการสอน วิชาเทคนิคการอินเตอร์เฟซ (30105-2004) สัปดาห์ที่ 1 หน่วยที่ 1 GUI คืออะไร ติดตั้ง Python PySide6 VS Code วงจรทำงานกับ AI หน้าต่างแรก วิดเจ็ตพื้นฐาน และภารกิจเครื่องคิดเลขกฎของโอห์ม ระดับ ปวส.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@400;700&family=Prompt:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/theme.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+<link rel="stylesheet" href="../assets/css/code.css">
+<link rel="stylesheet" href="../assets/css/sims.css">
+<style>
+    .slide.sec-5 { --sec: #7a4fc4; --sec-soft: #ece4fa; }
+    .slide.sec-6 { --sec: #c2561a; --sec-soft: #fde6d4; }
+    .slide.sec-7 { --sec: #b8364d; --sec-soft: #fbe0e4; }
+    .slide.sec-8 { --sec: #2e7d32; --sec-soft: #dcf3e3; }
+    .tile { text-align: center; padding: 22px 18px; }
+    .tile .icon { margin-bottom: 6px; }
+    .tile h3 { margin: 0 0 6px; }
+    .tile p { font-size: 28px; line-height: 1.4; margin: 0; color: var(--ink-soft); }
+    table.t.plan td, table.t.plan th { font-size: 26px; padding: 6px 16px; }
+    table.t.plan td.mono { white-space: nowrap; }
+    .mini-q { font-size: 34px; }
+    .shot { text-align: center; }
+    .shot .qtwin { width: 520px; }
+    .shot.sm .qtwin { width: 420px; }
+    .vs { font: 700 64px var(--font-display); color: var(--ink-soft); align-self: center; }
+    .say { font-size: 30px; line-height: 1.45; }
+    .lab-badge { display: inline-block; font: 500 28px var(--font-display); color: #fff; background: var(--sec); border-radius: 999px; padding: 4px 22px; }
+    .ck { display: inline-block; font: 500 26px var(--font-display); color: var(--green); background: var(--green-soft); border-radius: 14px; padding: 4px 16px; }
+    pre.code.term.sm { font-size: 22px; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+    .lbl-tag { display: inline-block; font: 500 22px var(--font-display); background: var(--sun-soft); border-radius: 8px; padding: 0 10px; margin-left: 8px; }
+</style>
+</head>
+<body>
+<!--
+  วิธีใช้: ← → / Space เลื่อนสไลด์และแสดงทีละขั้น · T สารบัญ · F เต็มจอ · ลิงก์ #หมายเลข ไปสไลด์นั้น
+  ป้าย "เสริม" = เนื้อหาเพิ่มจากแหล่งภายนอก มีเลขอ้างอิง [n] ลิงก์ไปสไลด์เอกสารอ้างอิง
+  ป้าย "🙋 กิจกรรม" = ช่วงที่นักเรียนลงมือทำ มีตัวจับเวลา (กด ▶ เริ่ม)
+-->
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage" data-course="itf" data-head="สัปดาห์ที่ 1 · หน่วยที่ 1" data-foot="">
+
+<!-- ================= ก. เปิดคาบ ================= -->
+<section class="slide cover" data-title="ปก: สัปดาห์ที่ 1">
+  <div class="body center" style="top:0;bottom:0">
+    <div class="chapter reveal d1">สัปดาห์ที่ 1 · หน่วยที่ 1 งานสร้างและจัดวางวิดเจ็ตพื้นฐาน</div>
+    <h1 class="reveal d2">GUI ตัวแรก<br>กับผู้ช่วย AI 🤖</h1>
+    <div class="sub reveal d3">วิชาเทคนิคการอินเตอร์เฟซ (30105-2004) · ปวส. เทคโนโลยีอิเล็กทรอนิกส์</div>
+    <div class="tiny reveal d4" style="margin-top:40px">Python + PySide6 + VS Code · เรียนแบบ “เราคุมงาน AI ช่วยเขียน”</div>
+  </div>
+  <div class="reveal d3" style="position:absolute;right:90px;top:120px;width:500px">
+    <div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม"><img src="img/ohm-ok.png" alt="หน้าต่างโปรแกรมเครื่องคิดเลขกฎของโอห์ม แสดง I = 12.00 mA"></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-tag="เปิดคาบ" data-title="วันนี้จะทำอะไรเป็น">
+  <div class="body">
+    <div class="kicker reveal">จบคาบนี้ เราจะ…</div>
+    <h2 class="title reveal d1">ทำโปรแกรมหน้าจอได้เอง 3 ตัว</h2>
+    <div class="grid g3">
+      <div class="box tint tile reveal d2"><div class="icon">🪟</div><h3>หน้าต่างแรก</h3><p>เปิดโปรแกรมที่มี<br>หน้าต่างของเราเอง</p></div>
+      <div class="box sun tile reveal d3"><div class="icon">👋</div><h3>โปรแกรมทักทาย</h3><p>พิมพ์ชื่อ กดปุ่ม<br>แล้วโปรแกรมตอบกลับ</p></div>
+      <div class="box orange tile reveal d4"><div class="icon">⚡</div><h3>เครื่องคิดเลขโอห์ม</h3><p>ใส่ V กับ R<br>ได้กระแส I ทันที</p></div>
+    </div>
+    <p class="small reveal d5" style="margin-top:34px;text-align:center">และที่สำคัญกว่าโค้ด: <span class="hl">สั่งงาน AI เป็น · อ่านโค้ดออก · ทดสอบเป็น</span></p>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="แผนการเรียนวันนี้ 5 ชั่วโมง">
+  <div class="body" style="top:112px">
+    <div class="kicker reveal">5 ชั่วโมง · ลงมือทำ 3 ชั่วโมงครึ่ง</div>
+    <h2 class="title reveal d1" style="font-size:54px;margin-bottom:8px">วันนี้เราทำอะไรบ้าง</h2>
+    <table class="t left plan reveal d2" style="width:100%">
+      <tr><th>เวลา</th><th>ช่วง</th><th>เราทำอะไร</th></tr>
+      <tr><td class="mono">0:00–0:15</td><td>เปิดคาบ</td><td>📱 แบบทดสอบก่อนเรียน</td></tr>
+      <tr><td class="mono">0:15–0:35</td><td>GUI คืออะไร</td><td>🙋 โหวต · ☁️ word cloud · 🎬 คลิป</td></tr>
+      <tr><td class="mono">0:35–1:15</td><td>Lab 0 ติดตั้งเครื่องมือ</td><td>💻 Python · VS Code · PySide6 · AI → 📷 จุดตรวจ 1</td></tr>
+      <tr><td class="mono">1:15–1:35</td><td>ทำงานกับ AI 7 ขั้น</td><td>🎮 เกม AI จริงหรือมั่ว</td></tr>
+      <tr><td class="mono">1:35–2:10</td><td>Lab 1 หน้าต่างแรก</td><td>💬 เขียน prompt · 🏷️ ติดป้ายโค้ด → 📷 จุดตรวจ 2</td></tr>
+      <tr><td class="mono">2:10–2:20</td><td>พัก</td><td>☕</td></tr>
+      <tr><td class="mono">2:20–3:20</td><td>ศัพท์ widget + Lab 2</td><td>✏️ วาดหน้าจอ · 👋 โปรแกรมทักทาย → 📷 จุดตรวจ 3</td></tr>
+      <tr><td class="mono">3:20–3:40</td><td>คลินิกบั๊ก</td><td>🔍 อ่าน error 4 แบบ</td></tr>
+      <tr><td class="mono">3:40–4:25</td><td>ภารกิจโอห์ม</td><td>⚡ ทำเอง ทดสอบเอง → 📷 จุดตรวจ 4</td></tr>
+      <tr><td class="mono">4:25–5:00</td><td>ฝึก + สรุป</td><td>✏️ แบบฝึกหัด · 📱 แบบทดสอบหลังเรียน</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="แนะนำรายวิชา">
+  <div class="body">
+    <div class="kicker reveal">แนะนำรายวิชา</div>
+    <h2 class="title reveal d1">เทคนิคการอินเตอร์เฟซ <span class="en">(Interface Techniques)</span></h2>
+    <div class="grid g3 reveal d2">
+      <div class="box tint tile"><div class="icon">📘</div><h3>30105-2004</h3><p>ปวส. สาขา<br>เทคโนโลยีอิเล็กทรอนิกส์</p></div>
+      <div class="box sun tile"><div class="icon">⏱️</div><h3>ท 2 · ป 3</h3><p>5 ชม./สัปดาห์<br>3 หน่วยกิต · 15 สัปดาห์</p></div>
+      <div class="box orange tile"><div class="icon">🎯</div><h3>ปลายทาง</h3><p>โปรแกรม GUI<br>แสดงข้อมูลแบบแดชบอร์ด</p></div>
+    </div>
+    <p class="small reveal d3" style="margin-top:28px">ผลลัพธ์รายวิชา: <b>เขียนโปรแกรมสร้างส่วนติดต่อผู้ใช้งานแบบกราฟิก เพื่อแสดงผลข้อมูลในรูปแบบแดชบอร์ด</b></p>
+    <div class="src">ที่มา: หลักสูตรรายวิชา 30105-2004 <sup class="ref"><a href="#refs">[1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="สาระสำคัญ">
+  <div class="body">
+    <div class="kicker reveal">สาระสำคัญ</div>
+    <h2 class="title reveal d1">ทุกโปรแกรม GUI มีโครงเหมือนกัน</h2>
+    <ul class="pts reveal d2 small">
+      <li>โปรแกรม GUI = <b>แอป</b> (QApplication) + <b>หน้าต่าง</b> + <b>widget</b> ที่จัดวางด้วย <b>layout</b></li>
+      <li>โปรแกรมไม่ได้ทำงานจากบนลงล่างแล้วจบ แต่ <b>รอผู้ใช้</b> กด/พิมพ์ (event loop)</li>
+      <li>ใช้ AI ช่วยเขียนได้ แต่ <b>เราต้องเป็นคนกำหนดสเปก อ่าน ทดสอบ และรับผิดชอบโค้ด</b></li>
+    </ul>
+    <div class="src">ที่มา: ตารางวิเคราะห์หน่วยการเรียนรู้ งานย่อย 1.1 <sup class="ref"><a href="#refs">[1]</a></sup> · Qt for Python <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="สมรรถนะและจุดประสงค์">
+  <div class="body">
+    <div class="kicker reveal">สมรรถนะประจำหน่วย · จุดประสงค์</div>
+    <h2 class="title reveal d1" style="font-size:58px">สร้างและจัดวางวิดเจ็ตพื้นฐานสำหรับส่วนติดต่อผู้ใช้งาน</h2>
+    <ol class="small reveal d2" style="padding-left:50px;margin:0">
+      <li>อธิบายสถาปัตยกรรมโปรแกรม GUI และโครงสร้างหน้าต่างหลักได้</li>
+      <li>ติดตั้งไลบรารีพัฒนา GUI (Python + PySide6) และเครื่องมือได้ถูกต้อง</li>
+      <li>เขียนโปรแกรมสร้างหน้าต่างและ widget พื้นฐาน (Label, LineEdit, Button) โดยใช้ AI ช่วยได้</li>
+      <li>ทดสอบการทำงานของ widget และแก้ข้อผิดพลาดจาก Traceback ได้</li>
+      <li>ปฏิบัติงานด้วยความละเอียด รอบคอบ ซื่อสัตย์ และใช้ AI อย่างรับผิดชอบ</li>
+    </ol>
+    <div class="src">ที่มา: จุดประสงค์รายวิชา สมรรถนะรายวิชา และงานย่อย 1.1 <sup class="ref"><a href="#refs">[1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="กติกาห้องแล็บ">
+  <div class="body">
+    <div class="kicker reveal">ก่อนเริ่ม</div>
+    <h2 class="title reveal d1">กติกาห้องแล็บของเรา</h2>
+    <div class="grid g2" style="gap:26px">
+      <div class="box tint reveal d2"><h3>💻 เครื่องคอม</h3><ul class="pts small"><li>เก็บงานในโฟลเดอร์ <code>C:\gui-lab</code></li><li>ตั้งชื่อไฟล์ภาษาอังกฤษ ไม่เว้นวรรค</li><li>เสร็จแล้วส่งงานใน Google Classroom</li></ul></div>
+      <div class="box sun reveal d3"><h3>🤖 ใช้ AI</h3><ul class="pts small"><li>ใช้ได้เต็มที่ <b>แต่ต้องอธิบายโค้ดได้</b></li><li>ห้ามใส่ข้อมูลส่วนตัวใน prompt</li><li>ครูจะสุ่มถาม “บรรทัดนี้ทำอะไร”</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="🙋 แบบทดสอบก่อนเรียน">
+  <div class="body center" style="text-align:center">
+    <div><span class="act-badge reveal">📱 แบบทดสอบก่อนเรียน</span><span class="act-meta reveal">รายบุคคล · 15 นาที</span></div>
+    <h2 class="title reveal d1">ยังไม่รู้ก็ไม่เป็นไร ตอบตามที่คิด!</h2>
+    <p class="reveal d2">เปิด <b>แบบทดสอบ</b> → เลือก “<b>ก่อนเรียน</b>” → ทำ 20 ข้อ → กดส่ง</p>
+    <p class="small reveal d2"><a href="quiz.html">quiz.html</a> (ลิงก์อยู่ในหน้าแรกของวิชา)</p>
+    <div class="reveal d3" style="margin-top:20px"><div data-timer="900"></div></div>
+  </div>
+</section>
+
+<!-- ================= ข. GUI คืออะไร ================= -->
+<section class="slide section sec-1" data-tag="1. GUI คืออะไร" data-title="1. GUI คืออะไร">
+  <div class="big-no">1</div>
+  <div class="body center">
+    <div class="label reveal">ตอนที่ 1</div>
+    <h2 class="reveal d1">GUI คืออะไร<br>ทำไมช่างอิเล็กฯ ต้องทำเป็น</h2>
+    <p class="lead reveal d2">หน้าจอที่ “กด ๆ จิ้ม ๆ” ได้ คือสิ่งที่เราจะสร้างทั้งเทอม</p>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="CLI กับ GUI">
+  <div class="body">
+    <div class="kicker reveal">สั่งงานคอมได้ 2 แบบ</div>
+    <h2 class="title reveal d1">พิมพ์คำสั่ง (CLI) vs กดบนหน้าจอ (GUI)</h2>
+    <div class="row center" style="gap:40px">
+      <div class="reveal d2" style="flex:1">
+        <pre class="code term" data-lang="term">PS C:\gui-lab&gt; python ohm.py
+ใส่แรงดัน (V): 12
+ใส่ความต้านทาน (Ω): 1000
+กระแส = 12.0 mA</pre>
+        <p class="small" style="text-align:center"><b>CLI</b> = Command Line Interface<br><span class="tiny">พิมพ์ตอบทีละบรรทัด</span></p>
+      </div>
+      <div class="vs reveal d3">VS</div>
+      <div class="reveal d4 shot" style="flex:1">
+        <div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม"><img src="img/ohm-ok.png" alt="หน้าต่าง GUI เครื่องคิดเลขกฎของโอห์ม"></div>
+        <p class="small"><b>GUI</b> = Graphical User Interface<br><span class="tiny">มีช่องกรอก ปุ่ม ข้อความ ใช้เมาส์ได้</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="GUI อยู่รอบตัวเรา">
+  <div class="body">
+    <div class="kicker reveal">GUI อยู่รอบตัว</div>
+    <h2 class="title reveal d1">วันนี้เราแตะ GUI ไปกี่ครั้งแล้ว?</h2>
+    <div class="grid g4" style="gap:22px">
+      <div class="box tint tile reveal d2"><div class="icon">🏧</div><h3>ตู้ ATM</h3><p>ปุ่ม เมนู<br>ช่องใส่จำนวนเงิน</p></div>
+      <div class="box sun tile reveal d3"><div class="icon">📱</div><h3>แอปธนาคาร</h3><p>สแกนจ่าย<br>ดูยอดเงิน</p></div>
+      <div class="box orange tile reveal d4"><div class="icon">🖨️</div><h3>จอเครื่องพิมพ์ 3D</h3><p>เลือกไฟล์<br>ดูอุณหภูมิหัวฉีด</p></div>
+      <div class="box blue tile reveal d5"><div class="icon">📈</div><h3>Serial Plotter</h3><p>กราฟค่าจากเซนเซอร์<br>บน Arduino IDE</p></div>
+    </div>
+    <p class="small reveal d5" style="margin-top:30px;text-align:center">งานช่างอิเล็กฯ: เครื่องวัด เครื่องจักร หุ่นยนต์ ล้วน<span class="hl">ต้องมีหน้าจอให้คนสั่งงาน</span></p>
+  </div>
+</section>
+
+<section class="slide sec-1 act" data-title="🙋 โหวต: อันไหนไม่ใช่ GUI">
+  <div class="body">
+    <div><span class="act-badge">🙋 โหวต</span><span class="act-meta">ตอบบนมือถือ หรือชูนิ้ว 1–4</span></div>
+    <h2 class="title" style="margin-bottom:20px">ข้อไหน <span class="hl">ไม่ใช่</span> GUI?</h2>
+    <div class="vote" data-answer="2">
+      <button type="button" class="opt"><b>1</b> หน้าจอสัมผัสตู้เติมเงินมือถือ</button>
+      <button type="button" class="opt"><b>2</b> แอป LINE บนมือถือ</button>
+      <button type="button" class="opt"><b>3</b> พิมพ์ <code>ipconfig</code> ในหน้าจอดำ แล้วอ่านผล</button>
+      <button type="button" class="opt"><b>4</b> หน้าเว็บ Google Classroom</button>
+      <button type="button" class="reveal">เฉลย</button>
+      <div class="why">ข้อ 3 เป็น <b>CLI</b> (พิมพ์คำสั่งเป็นข้อความ) ส่วนข้ออื่นมีปุ่ม รูป เมนูให้กด = <b>GUI</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-1 act" data-title="🎬 คลิป: GUI คืออะไร">
+  <div class="body">
+    <div><span class="act-badge">🎬 ดูคลิป</span><span class="act-meta">3 นาทีกว่า · ดูแล้วจดคำว่า “ส่วนประกอบของ GUI” ให้ได้ 3 อย่าง</span></div>
+    <div class="row center" style="gap:40px;margin-top:10px">
+      <div style="flex:0 0 1050px"><div data-video="G5EWd-ydErY" data-title="อะไรคือ Graphical User Interface (GUI)?" data-credit="ช่อง Time Machine | Family Holiday" data-len="3:45"></div></div>
+      <div class="small" style="flex:1"><p>ระหว่างดู สังเกต:</p><ul class="pts"><li>GUI ต่างจากพิมพ์คำสั่งยังไง</li><li>มีชิ้นส่วนอะไรบ้าง (ปุ่ม เมนู…)</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-1 act" data-title="☁️ Word cloud: โปรแกรมที่มีหน้าจอ">
+  <div class="body">
+    <div><span class="act-badge">☁️ Word cloud</span><span class="act-meta">พิมพ์บนมือถือ · คนละ 1–3 คำ · 2 นาที</span></div>
+    <h2 class="title" style="font-size:60px">โปรแกรมในงานช่างที่เคยใช้ แล้วมี “หน้าจอ” คืออะไร?</h2>
+    <p class="small" style="margin:0 0 10px">เช่น Arduino IDE, โปรแกรมวาดวงจร, แอปมัลติมิเตอร์… คำที่ตอบตรงกันจะตัวใหญ่ขึ้น</p>
+    <div class="row" style="align-items:flex-start">
+      <div class="live" data-kind="wordcloud" data-q="โปรแกรมในงานช่างที่มีหน้าจอ" style="flex:1.6"></div>
+      <div style="flex:1;text-align:center"><div data-timer="120"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="เป้าหมายปลายเทอม: แดชบอร์ด">
+  <div class="body">
+    <div class="kicker reveal">ปลายเทอมเราจะไปถึงไหน</div>
+    <h2 class="title reveal d1">แดชบอร์ดอ่านค่าเซนเซอร์แบบสด ๆ</h2>
+    <div class="row center" style="gap:40px">
+      <div class="diagram reveal d2" style="flex:0 0 1000px">
+        <svg viewBox="0 0 1000 470" aria-label="ตัวอย่างหน้าจอแดชบอร์ด มีค่าอุณหภูมิ ความชื้น กราฟ และปุ่มสั่งงาน" font-family="Kanit">
+          <rect x="4" y="4" width="992" height="462" rx="18" fill="#fff" stroke="#b9b3c2" stroke-width="3"/>
+          <rect x="4" y="4" width="992" height="50" rx="18" fill="#f3f3f3"/><text x="28" y="38" font-size="24" fill="#333">แดชบอร์ดห้องเครื่อง</text>
+          <rect x="30" y="80" width="220" height="130" rx="14" fill="#fde6d4"/><text x="140" y="125" font-size="24" text-anchor="middle" fill="#5d5866">อุณหภูมิ</text><text x="140" y="185" font-size="52" text-anchor="middle" fill="#e8742c" font-family="Prompt">31.5°C</text>
+          <rect x="30" y="230" width="220" height="130" rx="14" fill="#dfe8fa"/><text x="140" y="275" font-size="24" text-anchor="middle" fill="#5d5866">ความชื้น</text><text x="140" y="335" font-size="52" text-anchor="middle" fill="#3b6fd4" font-family="Prompt">64%</text>
+          <rect x="280" y="80" width="690" height="280" rx="14" fill="#fafafa" stroke="#e3e3e3"/>
+          <polyline points="300,300 360,280 420,290 480,240 540,250 600,200 660,215 720,170 780,185 840,140 900,150 950,120" fill="none" stroke="#e8742c" stroke-width="5"/>
+          <polyline points="300,320 360,315 420,322 480,300 540,305 600,290 660,296 720,280 780,288 840,270 900,276 950,262" fill="none" stroke="#3b6fd4" stroke-width="5"/>
+          <rect x="30" y="385" width="220" height="60" rx="12" fill="#2e9b57"/><text x="140" y="424" font-size="26" text-anchor="middle" fill="#fff">เปิดพัดลม</text>
+          <rect x="280" y="385" width="220" height="60" rx="12" fill="#f3f3f3" stroke="#c8c8c8"/><text x="390" y="424" font-size="24" text-anchor="middle" fill="#333">MQTT: เชื่อมต่อแล้ว ●</text>
+        </svg>
+      </div>
+      <div class="reveal d3 small" style="flex:1"><ul class="pts"><li>รับค่าจาก<b>บอร์ด/เซนเซอร์</b></li><li>โชว์เป็น<b>ตัวเลข + กราฟ</b></li><li>กดปุ่ม<b>สั่งงาน</b>กลับไปที่บอร์ด</li></ul></div>
+    </div>
+    <div class="src">ภาพจำลองวาดขึ้นใหม่ · อิงคำอธิบายรายวิชา <sup class="ref"><a href="#refs">[1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="เส้นทาง 15 สัปดาห์">
+  <div class="body" style="top:118px">
+    <div class="kicker reveal">ทั้งภาคเรียน</div>
+    <h2 class="title reveal d1" style="font-size:56px;margin-bottom:10px">7 หน่วย ทีละขั้น สู่แดชบอร์ด</h2>
+    <table class="t left plan reveal d2" style="width:100%">
+      <tr><th>สัปดาห์</th><th>หน่วยการเรียนรู้</th><th>ได้ทักษะ</th></tr>
+      <tr class="hit"><td class="mono">1–2</td><td><b>1</b> สร้างและจัดวางวิดเจ็ตพื้นฐาน</td><td>หน้าต่าง ปุ่ม ช่องกรอก layout</td></tr>
+      <tr><td class="mono">3–4</td><td><b>2</b> ออกแบบด้วย Qt Designer</td><td>ลากวางหน้าจอ แล้วต่อกับโค้ด</td></tr>
+      <tr><td class="mono">5–6</td><td><b>3</b> จัดการเหตุการณ์ อินพุตเอาต์พุต</td><td>signal/slot ตรวจค่า แจ้งเตือน</td></tr>
+      <tr><td class="mono">7–8</td><td><b>4</b> สื่อสารพอร์ตอนุกรมและเครือข่าย</td><td>UART · TCP · HTTP · JSON</td></tr>
+      <tr><td class="mono">9–10</td><td><b>5</b> MQTT และ CoAP กับบอร์ด</td><td>รับค่าเซนเซอร์ สั่งงานบอร์ด</td></tr>
+      <tr><td class="mono">11–12</td><td><b>6</b> แสดงผลกราฟและแดชบอร์ด</td><td>กราฟเรียลไทม์</td></tr>
+      <tr><td class="mono">13–14</td><td><b>7</b> ประยุกต์และทดสอบแบบเบ็ดเสร็จ</td><td>งานชิ้นใหญ่ของเรา</td></tr>
+      <tr><td class="mono">15</td><td colspan="2"><b>ประเมินผลลัพธ์การเรียนรู้ระดับรายวิชา</b></td></tr>
+    </table>
+    <div class="src">ที่มา: หน่วยการเรียนรู้ และตารางวิเคราะห์พฤติกรรมการเรียนรู้ <sup class="ref"><a href="#refs">[1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="เครื่องมือที่เราใช้">
+  <div class="body">
+    <div class="kicker reveal">กล่องเครื่องมือของวิชา</div>
+    <h2 class="title reveal d1">4 อย่างที่ต้องมีในเครื่อง</h2>
+    <div class="grid g4" style="gap:22px">
+      <div class="box tint tile reveal d2"><div class="icon">🐍</div><h3>Python</h3><p>ภาษาที่ใช้เขียน<br>อ่านง่าย คนใช้เยอะ</p></div>
+      <div class="box sun tile reveal d3"><div class="icon">🧱</div><h3>PySide6</h3><p>ชุดชิ้นส่วนหน้าจอ<br>(Qt สำหรับ Python)</p></div>
+      <div class="box blue tile reveal d4"><div class="icon">📝</div><h3>VS Code</h3><p>โปรแกรมเขียนโค้ด<br>(หรือ Antigravity)</p></div>
+      <div class="box orange tile reveal d5"><div class="icon">🤖</div><h3>ผู้ช่วย AI</h3><p>Copilot ใน VS Code<br>หรือแชต AI บนเว็บ</p></div>
+    </div>
+    <p class="small reveal d5" style="margin-top:28px;text-align:center"><span class="extra">เสริม</span> PySide6 คือไลบรารี Qt <b>ตัวทางการ</b>ของบริษัท Qt ฟรี ใช้ได้ทั้ง Windows, macOS, Linux <sup class="ref"><a href="#refs">[3] [4]</a></sup></p>
+    <div class="src">ที่มา: หลักสูตรฝึกยกระดับฝีมือ กรมพัฒนาฝีมือแรงงาน <sup class="ref"><a href="#refs">[2]</a></sup> · Qt for Python <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<!-- ================= ค. เขียนโค้ดยุค AI ================= -->
+<section class="slide section sec-5" data-tag="2. เขียนโค้ดยุค AI" data-title="2. เขียนโค้ดยุค AI">
+  <div class="big-no">2</div>
+  <div class="body center">
+    <div class="label reveal">ตอนที่ 2</div>
+    <h2 class="reveal d1">เขียนโค้ดยุค AI<br>เราคือหัวหน้างาน</h2>
+    <p class="lead reveal d2">AI พิมพ์เร็ว แต่คนที่รู้ว่า “ต้องการอะไร” และ “ถูกหรือยัง” คือเรา</p>
+  </div>
+</section>
+
+<section class="slide sec-5" data-title="นักพัฒนาใช้ AI กันแค่ไหน">
+  <div class="body">
+    <div class="kicker reveal">โลกการทำงานจริง <span class="extra">เสริม</span></div>
+    <h2 class="title reveal d1">นักพัฒนาทั่วโลกใช้ AI กันแค่ไหน?</h2>
+    <div class="grid g3" style="gap:26px">
+      <div class="box tint tile reveal d2"><div class="icon mono" style="font-size:96px;color:var(--sec)">84%</div><h3>ใช้หรือกำลังจะใช้</h3><p>AI ในการพัฒนาโปรแกรม</p></div>
+      <div class="box sun tile reveal d3"><div class="icon mono" style="font-size:96px;color:#b07a00">51%</div><h3>ใช้ทุกวัน</h3><p>(นักพัฒนามืออาชีพ)</p></div>
+      <div class="box rose tile reveal d4"><div class="icon mono" style="font-size:96px;color:var(--rose)">46%</div><h3>ไม่ไว้ใจความถูกต้อง</h3><p>มากกว่าคนที่ไว้ใจ (33%)</p></div>
+    </div>
+    <p class="small reveal d5" style="margin-top:28px;text-align:center">สรุป: <span class="hl">ทุกคนใช้ AI แต่มือโปรไม่เชื่อ AI ทันที ต้องตรวจก่อนเสมอ</span></p>
+    <div class="src">ที่มา: Stack Overflow Developer Survey 2025 หมวด AI <sup class="ref"><a href="#refs">[5]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-5 act" data-title="🎬 คลิป: อวสานโปรแกรมเมอร์?">
+  <div class="body">
+    <div><span class="act-badge">🎬 ดูคลิป + คุยกัน</span><span class="act-meta">ดู 4–5 นาทีแรก แล้วคุยกับเพื่อนข้าง ๆ 2 นาที</span></div>
+    <div class="row center" style="gap:40px;margin-top:10px">
+      <div style="flex:0 0 1000px"><div data-video="ZZMj7knAHrw" data-title="อวสาน Programmer? โอกาสหรือวิกฤต เมื่อ AI เขียนโค้ดได้ดีกว่ามนุษย์" data-credit="Geek Daily EP266 · ด.ดล Blog" data-len="12:40"></div></div>
+      <div class="small" style="flex:1"><p>คุยกัน:</p><ul class="pts"><li>AI จะมาแทนเราไหม?</li><li>แล้วเราต้อง<b>เก่งเรื่องอะไร</b>เพิ่ม?</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-5" data-title="เราคือหัวหน้างาน AI คือลูกมือ">
+  <div class="body">
+    <div class="kicker reveal">บทบาทใหม่</div>
+    <h2 class="title reveal d1">เราคือ <span class="hl">หัวหน้างาน</span> · AI คือ <span class="hl">ลูกมือ</span></h2>
+    <div class="grid g2" style="gap:30px">
+      <div class="box orange reveal d2"><h3 class="c-orange">🧑‍🔧 หัวหน้างาน (เรา)</h3><ul class="pts small"><li>บอกว่าอยากได้อะไร ให้ชัด</li><li>ตรวจงาน ทดสอบงาน</li><li>ตัดสินใจว่าใช้ได้หรือยัง</li><li><b>รับผิดชอบถ้างานพัง</b></li></ul></div>
+      <div class="box tint reveal d3"><h3>🤖 ลูกมือ (AI)</h3><ul class="pts small"><li>พิมพ์โค้ดเร็วมาก</li><li>อธิบายโค้ดได้ แนะนำวิธีแก้ได้</li><li>แต่<b>เดาผิดได้</b> ถ้าสั่งไม่ชัด</li><li>ไม่รู้ว่าเครื่องเราเป็นยังไง</li></ul></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:24px;text-align:center">เหมือนช่างหัวหน้าทีมสั่งลูกทีมเดินสายไฟ: <b>สั่งชัด + ตรวจงานเป็น</b> งานจึงออกมาดี</p>
+  </div>
+</section>
+
+<section class="slide sec-5" data-title="AI เก่งอะไร พลาดอะไร">
+  <div class="body">
+    <div class="kicker reveal">รู้จักลูกมือของเรา</div>
+    <h2 class="title reveal d1">AI เก่งอะไร · มักพลาดตรงไหน</h2>
+    <div class="grid g2" style="gap:30px">
+      <div class="box green reveal d2"><h3 class="c-green">👍 เก่ง</h3><ul class="pts small"><li>เขียนโค้ดตั้งต้นให้ในไม่กี่วินาที</li><li>อธิบายโค้ดทีละบรรทัด</li><li>แปล error เป็นภาษาคน</li><li>เสนอกรณีทดสอบ</li></ul></div>
+      <div class="box rose reveal d3"><h3 class="c-rose">👎 มักพลาด</h3><ul class="pts small"><li>ใช้ไลบรารีผิดตัว (PyQt5 แทน PySide6)</li><li>ใช้คำสั่งรุ่นเก่า เช่น <code>exec_()</code></li><li>ลืมดักกรณีช่องว่าง หรือหารด้วยศูนย์</li><li>ตอบมั่นใจ แม้ตอบผิด</li></ul></div>
+    </div>
+    <div class="src">ตัวอย่างข้อผิดพลาดจากการทดลองรันจริงด้วย PySide6 6.12 · ข้อมูลเวอร์ชัน <sup class="ref"><a href="#refs">[4]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-5" data-tag="2. เขียนโค้ดยุค AI" data-title="วงจรทำงานกับ AI 7 ขั้น">
+  <div class="body" style="top:120px">
+    <div class="kicker reveal">หัวใจของวิชานี้ ⭐</div>
+    <h2 class="title reveal d1" style="font-size:62px;margin-bottom:16px">วงจรทำงานกับ AI 7 ขั้น</h2>
+    <div class="cycle">
+      <div class="cy me frag"><div class="n">1</div><div class="i">📋</div><h4>สเปก</h4><p>เขียนว่าอยากได้อะไร</p></div>
+      <div class="cy me frag"><div class="n">2</div><div class="i">💬</div><h4>สั่ง AI</h4><p>prompt ให้ชัด</p></div>
+      <div class="cy me frag"><div class="n">3</div><div class="i">🔎</div><h4>อ่านโค้ด</h4><p>ชี้ได้ว่าบรรทัดไหนทำอะไร</p></div>
+      <div class="cy frag"><div class="n">4</div><div class="i">▶️</div><h4>รัน</h4><p>กดรัน ดูผล</p></div>
+      <div class="cy me frag"><div class="n">5</div><div class="i">🧪</div><h4>ทดสอบ</h4><p>ลองทุกกรณี ทั้งถูกและผิด</p></div>
+      <div class="cy ai frag"><div class="n">6</div><div class="i">🩹</div><h4>แก้</h4><p>เอา error ไปถาม AI ให้ตรงจุด</p></div>
+      <div class="cy ai frag"><div class="n">7</div><div class="i">🔁</div><h4>ปรับ</h4><p>ทีละเรื่อง เก็บ v1 v2</p></div>
+    </div>
+    <p class="small frag" style="margin-top:26px;text-align:center">สีส้ม = <b>งานที่ AI ทำแทนเราไม่ได้</b> · ทำวนจนผ่านทุกกรณีทดสอบ</p>
+  </div>
+</section>
+
+<section class="slide sec-5" data-title="prompt ที่ดีมี 5 ส่วน">
+  <div class="body">
+    <div class="kicker reveal">ขั้นที่ 2 สั่ง AI</div>
+    <h2 class="title reveal d1">prompt ที่ดีมี 5 ส่วน</h2>
+    <div class="prompt reveal d2"><div class="pr-text"><b class="tag t-role">บทบาท</b> คุณเป็นครูสอนเขียนโปรแกรม Python
+<b class="tag t-lib">ไลบรารี</b> เขียนด้วย PySide6 เท่านั้น ไฟล์เดียว
+<b class="tag t-spec">สเปก</b> หน้าต่างชื่อ "หน้าต่างแรกของฉัน" ขนาด 400×300 มีข้อความ "สวัสดี GUI" ตัวใหญ่ตรงกลาง
+<b class="tag t-rule">ข้อจำกัด</b> โค้ดสั้น อ่านง่าย ใส่คอมเมนต์ภาษาไทย
+<b class="tag t-ask">ขอเพิ่ม</b> อธิบายสั้น ๆ ว่าแต่ละบรรทัดทำอะไร</div></div>
+    <p class="small reveal d3" style="margin-top:20px">จำง่าย ๆ: <b>ใคร · ใช้อะไร · ทำอะไร · ห้ามอะไร · ขออะไรเพิ่ม</b></p>
+  </div>
+</section>
+
+<section class="slide sec-5" data-title="กติกาใช้ AI อย่างรับผิดชอบ">
+  <div class="body">
+    <div class="kicker reveal">ใช้ AI อย่างมืออาชีพ</div>
+    <h2 class="title reveal d1">กติกา 4 ข้อ ห้ามลืม</h2>
+    <div class="grid g2" style="gap:24px">
+      <div class="box tint reveal d2"><h3>🔒 1. ไม่ใส่ข้อมูลส่วนตัว</h3><p class="small">รหัสผ่าน เลขบัตรประชาชน เบอร์โทร ห้ามใส่ใน prompt</p></div>
+      <div class="box sun reveal d3"><h3>🧪 2. ตรวจทุกครั้ง</h3><p class="small">AI ผิดได้ รันและทดสอบเองเสมอ</p></div>
+      <div class="box orange reveal d4"><h3>🗣️ 3. อธิบายได้</h3><p class="small">โค้ดในงานเรา = เราต้องตอบได้ว่าทำอะไร</p></div>
+      <div class="box green reveal d5"><h3>📝 4. จดบันทึก</h3><p class="small">เก็บ prompt ที่ใช้ไว้ใน prompt log ส่งพร้อมงาน</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-5 act" data-title="🎮 เกม: AI ตอบจริงหรือมั่ว">
+  <div class="body" style="top:118px">
+    <div><span class="act-badge">🎮 AI ตอบจริงหรือมั่ว?</span><span class="act-meta">ตอบ ถูก/ผิด บนมือถือ ข้อละ 30 วินาที</span></div>
+    <h2 class="title" style="font-size:52px;margin-bottom:10px">มีคนถาม AI แล้วได้คำตอบแบบนี้ เชื่อได้ไหม?</h2>
+    <div class="grid g2" style="gap:18px">
+      <div class="box"><p class="small" style="margin:0 0 6px">① “ใน PySide6 ต้อง <code>from PyQt5.QtWidgets import QApplication</code>”</p><div class="live" data-kind="tf" data-q="ข้อ 1: PySide6 ต้อง import จาก PyQt5" data-answer="ผิด"></div></div>
+      <div class="box"><p class="small" style="margin:0 0 6px">② “ถ้าไม่เรียก <code>app.exec()</code> หน้าต่างจะปิดทันที”</p><div class="live" data-kind="tf" data-q="ข้อ 2: ไม่เรียก app.exec() หน้าต่างจะปิดทันที" data-answer="ถูก"></div></div>
+      <div class="box"><p class="small" style="margin:0 0 6px">③ “<code>QLineEdit</code> ใช้แสดงข้อความ แก้ไขไม่ได้”</p><div class="live" data-kind="tf" data-q="ข้อ 3: QLineEdit ใช้แสดงข้อความ แก้ไขไม่ได้" data-answer="ผิด"></div></div>
+      <div class="box"><p class="small" style="margin:0 0 6px">④ “<code>float("")</code> จะได้ค่า 0 อัตโนมัติ”</p><div class="live" data-kind="tf" data-q="ข้อ 4: float('') ได้ค่า 0 อัตโนมัติ" data-answer="ผิด"></div></div>
+    </div>
+    <p class="tiny frag" style="margin-top:14px">เฉลย: ① ผิด (ต้อง <code>from PySide6.QtWidgets</code>) · ② ถูก · ③ ผิด (QLineEdit คือช่องพิมพ์ ส่วน QLabel ใช้แสดงข้อความ) · ④ ผิด (เกิด ValueError)</p>
+  </div>
+</section>
+
+<!-- ================= ง. Lab 0 ติดตั้ง ================= -->
+<section class="slide section sec-3" data-tag="Lab 0 ติดตั้งเครื่องมือ" data-title="Lab 0 ติดตั้งเครื่องมือ" id="lab">
+  <div class="big-no">0</div>
+  <div class="body center">
+    <div class="label reveal">💻 Lab 0 · 40 นาที</div>
+    <h2 class="reveal d1">ติดตั้งเครื่องมือ<br>ให้พร้อมลุย</h2>
+    <p class="lead reveal d2">ทำตามทีละขั้น ติดตรงไหนยกมือ หรือดูหน้า “error ที่เจอบ่อย”</p>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ลำดับการติดตั้ง 5 ขั้น">
+  <div class="body">
+    <div class="kicker reveal">ภาพรวม Lab 0</div>
+    <h2 class="title reveal d1">5 ขั้น จากเครื่องเปล่า → พร้อมเขียน GUI</h2>
+    <ol class="steps reveal d2 small">
+      <li><b>Python</b> ติดตั้งผ่าน Python install manager</li>
+      <li><b>VS Code</b> + ส่วนขยาย Python</li>
+      <li>โฟลเดอร์ <code>C:\gui-lab</code> + <b>venv</b> (กล่องเครื่องมือของโปรเจกต์)</li>
+      <li><code>pip install PySide6-Essentials</code> แล้วรันไฟล์ตรวจเครื่อง</li>
+      <li>เปิด<b>ผู้ช่วย AI</b> (Copilot ใน VS Code หรือแชต AI บนเว็บ)</li>
+    </ol>
+    <p class="tiny reveal d3">📄 ขั้นตอนละเอียดพร้อมปุ่มคัดลอกคำสั่ง อยู่ในหน้า <a href="../setup.html">คู่มือติดตั้ง</a> และ <a href="lab.html">ใบงาน 1.1</a></p>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ขั้น 1: ติดตั้ง Python">
+  <div class="body">
+    <div class="kicker reveal">ขั้น 1 · Python <span class="extra">เสริม</span></div>
+    <h2 class="title reveal d1">ติดตั้ง Python ด้วย Python install manager</h2>
+    <div class="two">
+      <ol class="steps small reveal d2">
+        <li>โหลด <b>Python install manager</b> จาก python.org/downloads (หรือ Microsoft Store)</li>
+        <li>ติดตั้งเสร็จ เปิด Terminal <b>ใหม่</b> พิมพ์ <code>py install 3.15</code></li>
+        <li>ถ้าถามว่าจะเพิ่มลง PATH ไหม → ตอบ <b>y</b></li>
+      </ol>
+      <div class="reveal d3"><pre class="code term" data-lang="term">PS C:\&gt; py install 3.15
+...
+PS C:\&gt; python --version
+Python 3.15.2</pre>
+        <p class="tiny">✅ เห็นเลขเวอร์ชัน = ผ่าน · PySide6 6.12 ใช้ Python 3.10 ขึ้นไป</p></div>
+    </div>
+    <div class="src">ที่มา: Python documentation, Using Python on Windows <sup class="ref"><a href="#refs">[9]</a></sup> · PyPI PySide6 <sup class="ref"><a href="#refs">[4]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ขั้น 2: VS Code หรือ Antigravity">
+  <div class="body">
+    <div class="kicker reveal">ขั้น 2 · โปรแกรมเขียนโค้ด</div>
+    <h2 class="title reveal d1">ใช้ VS Code หรือ Antigravity ดี?</h2>
+    <table class="t left reveal d2" style="width:100%;font-size:30px">
+      <tr><th></th><th>📝 VS Code</th><th>🚀 Antigravity</th></tr>
+      <tr><td>ผู้ผลิต</td><td>Microsoft</td><td>Google</td></tr>
+      <tr><td>RAM ที่แนะนำ</td><td><b>1 GB</b> (เบา)</td><td>หนักกว่า เพราะมี AI agent ในตัว</td></tr>
+      <tr><td>AI ในตัว</td><td>GitHub Copilot (มีแผนฟรี)</td><td>Gemini agent (โควตาฟรีรายสัปดาห์)</td></tr>
+      <tr class="hit"><td>ห้องคอม RAM 4 GB</td><td><b>✅ ใช้ตัวนี้</b></td><td>ใช้ที่บ้านถ้าเครื่องแรง</td></tr>
+    </table>
+    <p class="small reveal d3" style="margin-top:16px">ทั้งสองตัวหน้าตาและวิธีใช้คล้ายกันมาก → <b>ติดตั้งส่วนขยาย Python</b> เหมือนกัน</p>
+    <div class="src">ที่มา: VS Code Requirements <sup class="ref"><a href="#refs">[6]</a></sup> · GitHub Copilot plans <sup class="ref"><a href="#refs">[7]</a></sup> · Antigravity docs <sup class="ref"><a href="#refs">[8]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ขั้น 3: โฟลเดอร์งานและ venv">
+  <div class="body">
+    <div class="kicker reveal">ขั้น 3 · venv คืออะไร</div>
+    <h2 class="title reveal d1">venv = กล่องเครื่องมือส่วนตัวของโปรเจกต์ 🧰</h2>
+    <div class="two">
+      <div class="reveal d2 small"><ul class="pts"><li>ไลบรารีที่ติดตั้งจะอยู่<b>ในกล่องนี้</b> ไม่ปนกับโปรเจกต์อื่น</li><li>เปิดกล่องแล้วจะเห็น <code>(.venv)</code> หน้าบรรทัดคำสั่ง</li><li>ลืมเปิดกล่อง = หา PySide6 ไม่เจอ ❗</li></ul></div>
+      <div class="reveal d3"><pre class="code term" data-lang="term" data-copy>mkdir C:\gui-lab
+cd C:\gui-lab
+python -m venv .venv
+.venv\Scripts\Activate.ps1</pre>
+        <p class="tiny">หรือใน VS Code กด <b>Ctrl+Shift+P</b> → <b>Python: Create Environment</b> → Venv</p></div>
+    </div>
+    <div class="src">ที่มา: Python documentation, venv <sup class="ref"><a href="#refs">[9]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ขั้น 4: ติดตั้ง PySide6 และตรวจเครื่อง">
+  <div class="body">
+    <div class="kicker reveal">ขั้น 4 · PySide6</div>
+    <h2 class="title reveal d1">ติดตั้ง PySide6 (ชุด Essentials) แล้วรันไฟล์ตรวจเครื่อง</h2>
+    <div class="two">
+      <div class="reveal d2"><pre class="code term" data-lang="term" style="white-space:pre-wrap;font-size:27px">(.venv) PS C:\gui-lab&gt; pip install PySide6-Essentials
+Successfully installed PySide6-Essentials-6.12.0 shiboken6-6.12.0
+(.venv) PS C:\gui-lab&gt; python check_setup.py
+Python เวอร์ชัน: 3.15.2
+PySide6 เวอร์ชัน: 6.12.0
+✅ ถ้าเห็นหน้าต่างเด้งขึ้นมา แปลว่าพร้อมเรียนแล้ว</pre>
+        <p class="tiny">📥 <a href="code/check_setup.py">check_setup.py</a> · ดาวน์โหลดราว 83 MB (ตัวเต็ม <code>PySide6</code> ราว 260 MB ยังไม่จำเป็น)</p></div>
+      <div class="reveal d3 shot sm"><div class="qtwin" data-title="ตรวจเครื่อง" style="width:480px"><img src="img/check-setup.png" alt="หน้าต่างตรวจเครื่องแสดงข้อความ เครื่องพร้อมแล้ว"></div>
+        <p class="shot-cap">ภาพจริงจากการรันไฟล์ตรวจเครื่อง</p></div>
+    </div>
+    <div class="src">ที่มา: PyPI PySide6 6.12.0 และขนาดไฟล์ PySide6-Essentials <sup class="ref"><a href="#refs">[4]</a></sup> · ทดสอบติดตั้งจริงบน Python 3.15.2</div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="error ที่เจอบ่อยตอนติดตั้ง">
+  <div class="body" style="top:120px">
+    <div class="kicker reveal">ติดแล้วไม่ต้องตกใจ 😌</div>
+    <h2 class="title reveal d1" style="font-size:58px;margin-bottom:12px">error ที่เจอบ่อยตอนติดตั้ง</h2>
+    <table class="t left compact reveal d2" style="width:100%;font-size:26px">
+      <tr><th>เห็นข้อความแบบนี้</th><th>แปลว่า</th><th>แก้ยังไง</th></tr>
+      <tr><td><code>Python was not found…</code></td><td>ยังไม่มี Python หรือเปิด Terminal เก่า</td><td>ติดตั้งขั้น 1 แล้ว<b>เปิด Terminal ใหม่</b></td></tr>
+      <tr><td><code>Activate.ps1 cannot be loaded because running scripts is disabled</code></td><td>Windows ห้ามรันสคริปต์</td><td><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code> แล้วตอบ Y</td></tr>
+      <tr><td><code>No module named 'PySide6'</code></td><td>ยังไม่ได้เปิด venv หรือเลือก Python ผิดตัว</td><td>มุมขวาล่าง VS Code เลือก <b>.venv</b></td></tr>
+      <tr><td>pip ช้ามาก / ค้าง หรือ <code>OSError … Long Path</code></td><td>เน็ตช้า หรือโฟลเดอร์งานลึกเกินไป</td><td>ใช้โฟลเดอร์สั้น <code>C:\gui-lab</code> · ขอไฟล์ติดตั้งจาก USB ครู</td></tr>
+    </table>
+    <div class="src">ที่มา: Python documentation <sup class="ref"><a href="#refs">[9]</a></sup> · ทดลองติดตั้งจริงบน Windows 11</div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ขั้น 5: เปิดผู้ช่วย AI">
+  <div class="body">
+    <div class="kicker reveal">ขั้น 5 · ผู้ช่วย AI <span class="extra">เสริม</span></div>
+    <h2 class="title reveal d1">เลือกผู้ช่วย AI 1 ทาง</h2>
+    <div class="grid g2" style="gap:28px">
+      <div class="box tint reveal d2"><h3>🅰️ Copilot ใน VS Code</h3><ol class="small" style="padding-left:40px;margin:0"><li>คลิกไอคอน Copilot ที่แถบล่าง → <b>Use AI Features</b></li><li>ล็อกอินด้วยบัญชี <b>GitHub</b></li><li>ได้แผน <b>Copilot Free</b> (มีโควตาต่อเดือน)</li></ol>
+        <p class="tiny" style="margin:8px 0 0">นักศึกษาที่ยืนยันตัวกับ GitHub Education ใช้ Copilot Student ได้ฟรี</p></div>
+      <div class="box sun reveal d3"><h3>🅱️ แชต AI บนเว็บ</h3><ul class="pts small"><li>Gemini · ChatGPT · Claude</li><li>พิมพ์ prompt → คัดลอกโค้ด → วางใน VS Code</li><li>เหมาะกับ<b>เครื่องสเปกต่ำ</b>หรือโควตาหมด</li></ul></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:20px;text-align:center">ใช้ทางไหนก็ได้ <b>วงจร 7 ขั้นเหมือนเดิม</b></p>
+    <div class="src">ที่มา: Set up Copilot in VS Code และ GitHub Copilot plans <sup class="ref"><a href="#refs">[7]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-3 act" data-title="🎬 คลิป: เปิดใช้ Copilot ฟรีใน VS Code">
+  <div class="body">
+    <div><span class="act-badge">🎬 ดูคลิปถ้าติด</span><span class="act-meta">เปิดดูเองบนเครื่อง ไม่ต้องดูพร้อมกัน</span></div>
+    <div class="row center" style="gap:40px;margin-top:10px">
+      <div style="flex:0 0 1000px"><div data-video="kMij9IzpPZk" data-title="GitHub Copilot เปิดให้ใช้งานฟรีแล้วใน VS Code" data-credit="ช่อง MilerDev" data-len="12:34"></div></div>
+      <div class="small" style="flex:1"><p>ในคลิปมี:</p><ul class="pts"><li>ล็อกอิน GitHub</li><li>เปิดหน้าแชต Copilot</li><li>สั่งให้เขียนโค้ด</li></ul><p class="tiny">หน้าจอ VS Code รุ่นใหม่อาจต่างจากในคลิปเล็กน้อย</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-3 act" data-title="📷 จุดตรวจ 1: เครื่องพร้อม">
+  <div class="body">
+    <div><span class="act-badge">📷 จุดตรวจ 1</span><span class="act-meta">รายบุคคล · ส่งรูปบนมือถือ</span></div>
+    <h2 class="title" style="font-size:60px">ส่งรูปหน้าจอ “✅ เครื่องพร้อมแล้ว!”</h2>
+    <div class="row" style="align-items:flex-start;gap:30px">
+      <div style="flex:1.3"><ul class="chk small"><li>เห็นหน้าต่าง “ตรวจเครื่อง”</li><li>Terminal มี <code>(.venv)</code> และ PySide6 6.x</li><li>ผู้ช่วย AI พร้อม (Copilot หรือเว็บ)</li></ul>
+        <div class="live" data-kind="image" data-q="จุดตรวจ 1: รูปหน้าจอตรวจเครื่อง"></div></div>
+      <div style="flex:1;text-align:center"><div data-timer="1800"></div><p class="tiny">เสร็จก่อน? ช่วยเพื่อนข้าง ๆ ได้เลย 🤝</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= จ. GUI ทำงานยังไง ================= -->
+<section class="slide section sec-4" data-tag="3. โปรแกรม GUI ทำงานยังไง" data-title="3. โปรแกรม GUI ทำงานยังไง">
+  <div class="big-no">3</div>
+  <div class="body center">
+    <div class="label reveal">ตอนที่ 3</div>
+    <h2 class="reveal d1">โปรแกรม GUI<br>ทำงานยังไง</h2>
+    <p class="lead reveal d2">ต้องเข้าใจโครงก่อน ถึงจะอ่านโค้ดที่ AI เขียนออก</p>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="โปรแกรมธรรมดา กับ โปรแกรม GUI">
+  <div class="body">
+    <div class="kicker reveal">ต่างกันตรงไหน</div>
+    <h2 class="title reveal d1">โปรแกรมธรรมดา “ทำแล้วจบ” · GUI “รอเรา”</h2>
+    <div class="grid g2" style="gap:30px">
+      <div class="box blue reveal d2"><h3 class="c-blue">📜 โปรแกรมธรรมดา</h3><p class="small">ทำจากบรรทัดบนลงล่าง ครบแล้ว<b>จบ</b><br>เหมือน<b>ตู้กดน้ำ</b>: หยอดเหรียญ → ได้น้ำ → จบ</p></div>
+      <div class="box green reveal d3"><h3 class="c-green">🪟 โปรแกรม GUI</h3><p class="small">เปิดหน้าต่างแล้ว<b>รอ</b>ผู้ใช้กด/พิมพ์ ไปเรื่อย ๆ จนปิดหน้าต่าง<br>เหมือน<b>ร้านสะดวกซื้อ</b>: เปิดร้านรอลูกค้าทั้งวัน</p></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:26px;text-align:center">ตัวที่ “ยืนรอ” อยู่นี้ชื่อว่า <span class="hl">event loop</span> (ลูปรอเหตุการณ์)</p>
+    <div class="src">ที่มา: Qt for Python, Your first QtWidgets Application <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4 act" data-title="🎮 ตัวจำลอง event loop">
+  <div class="body" style="top:118px">
+    <div><span class="act-badge">🎮 ลองกดดู</span><span class="act-meta">ออกมากดหน้าห้อง 2–3 คน</span></div>
+    <h2 class="title" style="font-size:52px;margin-bottom:12px">event loop = พนักงานเฝ้าหน้าร้าน</h2>
+    <div data-sim="loop"></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="4 ชิ้นหลักของโปรแกรม GUI">
+  <div class="body">
+    <div class="kicker reveal">โครงกระดูกของทุกโปรแกรม</div>
+    <h2 class="title reveal d1">4 ชิ้นหลัก ที่ต้องมีเสมอ</h2>
+    <div class="grid g4" style="gap:20px">
+      <div class="box tint tile reveal d2"><div class="icon">🏢</div><h3>QApplication</h3><p>ตัวแอป<br>มีได้ <b>1 ตัว</b></p></div>
+      <div class="box sun tile reveal d3"><div class="icon">🪟</div><h3>หน้าต่าง</h3><p>QWidget หรือ<br>QMainWindow</p></div>
+      <div class="box orange tile reveal d4"><div class="icon">🧱</div><h3>widget</h3><p>ป้าย ช่องพิมพ์ ปุ่ม<br>วางบน layout</p></div>
+      <div class="box green tile reveal d5"><div class="icon">▶️</div><h3>show + exec</h3><p>โชว์หน้าต่าง<br>แล้วเริ่ม event loop</p></div>
+    </div>
+    <p class="small reveal d5" style="margin-top:28px;text-align:center">อ่านโค้ดที่ AI เขียน <b>ให้หา 4 ชิ้นนี้ให้เจอก่อน</b> แล้วค่อยดูรายละเอียด</p>
+    <div class="src">ที่มา: Qt for Python documentation <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="ต้นไม้ widget พ่อ-ลูก">
+  <div class="body">
+    <div class="kicker reveal">widget ซ้อนกันเป็นชั้น</div>
+    <h2 class="title reveal d1">ต้นไม้ widget: พ่อถือลูก</h2>
+    <div class="row center" style="gap:40px">
+      <div class="diagram reveal d2" style="flex:0 0 880px">
+        <svg viewBox="0 0 880 420" font-family="Kanit" aria-label="แผนภาพต้นไม้ หน้าต่างมี layout และ layout มี label ช่องพิมพ์ และปุ่ม">
+          <g stroke="#a8a1b0" stroke-width="4" fill="none"><path d="M440 90 V150"/><path d="M440 210 V250 M150 250 H730 M150 250 V290 M440 250 V290 M730 250 V290"/></g>
+          <rect x="300" y="20" width="280" height="70" rx="16" fill="#fff1cc" stroke="#f7b733" stroke-width="3"/><text x="440" y="65" font-size="30" text-anchor="middle">🪟 หน้าต่าง (window)</text>
+          <rect x="300" y="150" width="280" height="60" rx="16" fill="#d5efe6" stroke="#0f8a6c" stroke-width="3"/><text x="440" y="190" font-size="28" text-anchor="middle">📚 QVBoxLayout</text>
+          <rect x="40" y="290" width="220" height="70" rx="16" fill="#fff" stroke="#b9b3c2" stroke-width="3"/><text x="150" y="335" font-size="28" text-anchor="middle">QLabel</text>
+          <rect x="330" y="290" width="220" height="70" rx="16" fill="#fff" stroke="#b9b3c2" stroke-width="3"/><text x="440" y="335" font-size="28" text-anchor="middle">QLineEdit</text>
+          <rect x="620" y="290" width="220" height="70" rx="16" fill="#fff" stroke="#b9b3c2" stroke-width="3"/><text x="730" y="335" font-size="28" text-anchor="middle">QPushButton</text>
+          <text x="440" y="405" font-size="24" text-anchor="middle" fill="#5d5866">ลูก ๆ อยู่ในหน้าต่าง · ปิดหน้าต่าง = ลูกปิดตามหมด</text>
+        </svg>
+      </div>
+      <div class="reveal d3 small" style="flex:1"><ul class="pts"><li>หน้าต่างเป็น<b>พ่อ</b></li><li>layout จัดลูกให้เรียงสวย</li><li>widget เป็น<b>ลูก</b></li></ul></div>
+    </div>
+    <div class="src">แผนภาพวาดขึ้นใหม่ · Qt for Python, Widgets <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="โครงโค้ด 10 บรรทัด">
+  <div class="body" style="top:118px">
+    <div class="kicker reveal">กด → ดูทีละส่วน</div>
+    <h2 class="title reveal d1" style="font-size:56px;margin-bottom:12px">โครงโค้ด GUI ที่เล็กที่สุด</h2>
+    <div class="row" style="gap:30px;align-items:flex-start">
+      <pre class="code reveal d2" data-ln data-frag="1-2|4|6-8|10|11" style="flex:0 0 1040px">import sys
+from PySide6.QtWidgets import QApplication, QWidget
+
+app = QApplication(sys.argv)
+
+window = QWidget()
+window.setWindowTitle("หน้าต่างแรกของฉัน")
+window.resize(400, 300)
+
+window.show()
+sys.exit(app.exec())</pre>
+      <ol class="small" style="flex:1;padding-left:36px;margin:0">
+        <li class="frag">ดึงเครื่องมือมาใช้ (import)</li>
+        <li class="frag">สร้าง<b>ตัวแอป</b></li>
+        <li class="frag">สร้าง<b>หน้าต่าง</b> ตั้งชื่อ ตั้งขนาด</li>
+        <li class="frag"><b>โชว์</b>หน้าต่าง</li>
+        <li class="frag">เริ่ม <b>event loop</b> รอผู้ใช้</li>
+      </ol>
+    </div>
+    <div class="src">โค้ดทดสอบรันจริงกับ PySide6 6.12 <sup class="ref"><a href="#refs">[4]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4 act" data-title="🙋 ทายผล: ลืม show()">
+  <div class="body">
+    <div><span class="act-badge">🙋 ทายผล</span><span class="act-meta">ตอบบนมือถือก่อน แล้วครูรันให้ดู</span></div>
+    <h2 class="title" style="margin-bottom:20px">ถ้าลบบรรทัด <code>window.show()</code> ออก จะเกิดอะไร?</h2>
+    <div class="vote" data-answer="1">
+      <button type="button" class="opt"><b>ก</b> ขึ้น error สีแดงทันที</button>
+      <button type="button" class="opt"><b>ข</b> ไม่มีหน้าต่างขึ้น แต่โปรแกรมยังค้างทำงานอยู่</button>
+      <button type="button" class="opt"><b>ค</b> หน้าต่างขึ้นปกติ</button>
+      <button type="button" class="opt"><b>ง</b> หน้าต่างเด้งขึ้นแล้วหายไป</button>
+      <button type="button" class="reveal">เฉลย</button>
+      <div class="why">ไม่ error แต่ <b>ไม่มีอะไรให้เห็น</b> และ event loop ยังรออยู่ → Terminal ค้าง ต้องกด 🗑️ ปิด Terminal เอง (ทดลองจริงแล้ว: โปรแกรมยังทำงานอยู่หลัง 6 วินาที)</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-4 act" data-title="🙋 ทายผล: ลืม app.exec()">
+  <div class="body">
+    <div><span class="act-badge">🙋 ทายผล</span><span class="act-meta">ลองกด “🙈 ลืม app.exec()” ในตัวจำลองหน้าที่แล้วก็ได้</span></div>
+    <h2 class="title" style="margin-bottom:20px">ถ้าลบ <code>sys.exit(app.exec())</code> ออก จะเกิดอะไร?</h2>
+    <div class="vote" data-answer="3">
+      <button type="button" class="opt"><b>ก</b> ขึ้น error สีแดงทันที</button>
+      <button type="button" class="opt"><b>ข</b> ไม่มีหน้าต่าง แต่โปรแกรมค้าง</button>
+      <button type="button" class="opt"><b>ค</b> หน้าต่างขึ้นปกติ ใช้งานได้</button>
+      <button type="button" class="opt"><b>ง</b> หน้าต่างแวบขึ้นแล้วโปรแกรมจบทันที</button>
+      <button type="button" class="reveal">เฉลย</button>
+      <div class="why">ไม่มีพนักงานเฝ้าร้าน (event loop) → โค้ดทำถึงบรรทัดสุดท้ายแล้ว<b>จบทันที</b> หน้าต่างจึงหายไป (ทดลองจริง: จบภายในครึ่งวินาที)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ฉ. Lab 1 ================= -->
+<section class="slide section sec-6" data-tag="Lab 1 หน้าต่างแรก" data-title="Lab 1 หน้าต่างแรกกับ AI">
+  <div class="big-no">1</div>
+  <div class="body center">
+    <div class="label reveal">💻 Lab 1 · 35 นาที</div>
+    <h2 class="reveal d1">หน้าต่างแรก<br>ให้ AI ช่วยเขียน</h2>
+    <p class="lead reveal d2">ฝึกขั้น ① สเปก → ② สั่ง AI → ③ อ่านโค้ด → ④ รัน → ⑦ ปรับ</p>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="Lab 1: การ์ดสเปก">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ① สเปก</div>
+    <h2 class="title reveal d1">ก่อนสั่ง AI ต้องรู้ว่าอยากได้อะไร</h2>
+    <div class="row" style="gap:40px;align-items:center">
+      <div class="spec reveal d2" style="flex:1.3"><h4>📋 การ์ดสเปก Lab 1</h4><dl>
+        <dt>หน้าจอ</dt><dd>หน้าต่างชื่อ “หน้าต่างแรกของฉัน” ขนาด 400 × 300</dd>
+        <dt>มีอะไร</dt><dd>ข้อความ “สวัสดี GUI 👋” ตัวใหญ่ อยู่กึ่งกลาง</dd>
+        <dt>รับอะไร</dt><dd>— (ยังไม่รับข้อมูล)</dd>
+        <dt>ผ่านเมื่อ</dt><dd>รันแล้วเห็นหน้าต่างตามนี้ และปิดได้ปกติ</dd></dl></div>
+      <div class="reveal d3 shot sm" style="flex:1"><div class="qtwin" data-title="หน้าต่างแรกของฉัน"><img src="img/lab1-good.png" alt="หน้าต่างแรกของฉัน มีข้อความ สวัสดี GUI ตรงกลาง"></div><p class="shot-cap">หน้าตาที่ต้องการ</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="prompt กว้าง ๆ vs prompt ที่ดี">
+  <div class="body" style="top:118px">
+    <div class="kicker reveal">ขั้น ② สั่ง AI · ทายก่อนว่าผลต่างกันยังไง</div>
+    <h2 class="title reveal d1" style="font-size:56px;margin-bottom:14px">สั่งต่างกัน ได้ของต่างกัน</h2>
+    <div class="two">
+      <div class="reveal d2"><div class="prompt bad sm"><div class="pr-text">เขียนโปรแกรม GUI ให้หน่อย</div></div>
+        <div class="frag shot sm" style="margin-top:16px"><div class="qtwin" data-title="My App"><img src="img/lab1-vague.png" alt="หน้าต่างเปล่าชื่อ My App ไม่มีอะไรข้างใน"></div><p class="shot-cap">ได้หน้าต่างเปล่า (หรือได้ Tkinter / PyQt5 มาแทน!)</p></div></div>
+      <div class="reveal d3"><div class="prompt good sm" data-copy><div class="pr-text">เขียนโปรแกรม Python ด้วย PySide6 ไฟล์เดียว สร้างหน้าต่างชื่อ "หน้าต่างแรกของฉัน" ขนาด 400x300 มีข้อความ "สวัสดี GUI 👋" ตัวใหญ่ อยู่กึ่งกลาง ใส่คอมเมนต์ภาษาไทยอธิบายแต่ละบรรทัด</div></div>
+        <div class="frag shot sm" style="margin-top:16px"><div class="qtwin" data-title="หน้าต่างแรกของฉัน"><img src="img/lab1-good.png" alt="หน้าต่างแรกของฉัน มีข้อความสวัสดี GUI"></div><p class="shot-cap">ได้ตรงสเปก ✅</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="💬 ส่ง prompt ของเรา">
+  <div class="body">
+    <div><span class="act-badge">💬 เขียน prompt ของตัวเอง</span><span class="act-meta">ส่งบนมือถือ · 3 นาที · ครูจะเลือกมาดูกันบนจอ</span></div>
+    <h2 class="title" style="font-size:56px">เขียน prompt สั่ง AI ทำ Lab 1 ให้ครบ 5 ส่วน</h2>
+    <p class="small" style="margin:0 0 10px">บทบาท · ไลบรารี PySide6 · สเปก · ข้อจำกัด · ขออธิบาย (เปลี่ยนชื่อหน้าต่าง/ข้อความเป็นของตัวเองได้)</p>
+    <div class="row" style="align-items:flex-start">
+      <div class="live" data-kind="short" data-q="prompt สำหรับ Lab 1 ของฉัน" style="flex:1.6"></div>
+      <div style="flex:1;text-align:center"><div data-timer="180"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="โค้ดที่ AI ตอบ (Lab 1)">
+  <div class="body" style="top:112px">
+    <div class="kicker reveal">ตัวอย่างที่ AI ตอบ (ของแต่ละคนอาจต่างกันเล็กน้อย)</div>
+    <h2 class="title reveal d1" style="font-size:50px;margin-bottom:10px">ขั้น ③ อ่านโค้ด: หา 4 ชิ้นหลักให้เจอ</h2>
+    <pre class="code sm reveal d2" data-ln data-copy data-hl="6,20-21" data-hl2="8-10,12-18">import sys
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
+from PySide6.QtCore import Qt
+
+# ① สร้างแอป (มีได้ตัวเดียว)
+app = QApplication(sys.argv)
+
+window = QWidget()                        # ② สร้างหน้าต่างเปล่า
+window.setWindowTitle("หน้าต่างแรกของฉัน")
+window.resize(400, 300)                   #    กว้าง 400 สูง 300 พิกเซล
+
+label = QLabel("สวัสดี GUI 👋")           # ③ ป้ายข้อความ (widget)
+label.setAlignment(Qt.AlignCenter)        #    จัดกึ่งกลาง
+label.setStyleSheet("font-size: 32px;")
+
+layout = QVBoxLayout()                    #    ชั้นวางของแนวตั้ง
+layout.addWidget(label)
+window.setLayout(layout)
+
+window.show()                             # ④ แสดงหน้าต่าง
+sys.exit(app.exec())                      # ⑤ เริ่ม event loop รอผู้ใช้กด</pre>
+    <div class="src">โค้ดตัวอย่างทดสอบรันจริงกับ PySide6 6.12 · ดาวน์โหลด <a href="code/lab1_window.py">lab1_window.py</a></div>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="🏷️ ติดป้ายหน้าที่ทุกบรรทัด">
+  <div class="body">
+    <div><span class="act-badge">🏷️ ติดป้ายโค้ด</span><span class="act-meta">จับคู่ · 5 นาที · เขียนในใบงานข้อ 1.3</span></div>
+    <h2 class="title" style="font-size:56px">บรรทัดไหนทำหน้าที่อะไร? เขียนเลขบรรทัด</h2>
+    <table class="t left compact" style="width:100%;font-size:30px">
+      <tr><th>หน้าที่</th><th>บรรทัด</th></tr>
+      <tr><td>🏢 สร้างตัวแอป</td><td class="frag mono">6</td></tr>
+      <tr><td>🪟 สร้างหน้าต่าง ตั้งชื่อ ตั้งขนาด</td><td class="frag mono">8–10</td></tr>
+      <tr><td>🧱 สร้างป้ายข้อความ ปรับตำแหน่งและขนาดตัวอักษร</td><td class="frag mono">12–14</td></tr>
+      <tr><td>📚 ใส่ป้ายลงชั้นวาง (layout) แล้ววางในหน้าต่าง</td><td class="frag mono">16–18</td></tr>
+      <tr><td>▶️ โชว์หน้าต่าง และเริ่ม event loop</td><td class="frag mono">20–21</td></tr>
+    </table>
+    <div style="text-align:right;margin-top:8px"><div data-timer="300"></div></div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ขั้น ④ รันโปรแกรมใน VS Code">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ④ รัน</div>
+    <h2 class="title reveal d1">รันได้ 2 วิธี</h2>
+    <div class="two">
+      <div class="reveal d2"><ol class="steps small"><li>วางโค้ดในไฟล์ <code>lab1_window.py</code> แล้ว <b>Ctrl+S</b></li><li>กดปุ่ม <b>▶</b> มุมขวาบน (Run Python File)</li><li>หรือพิมพ์ใน Terminal:<br><code>python lab1_window.py</code></li></ol>
+        <p class="tiny">⚠️ มุมขวาล่างต้องเป็น Python จาก <b>.venv</b></p></div>
+      <div class="reveal d3 shot sm"><div class="qtwin" data-title="หน้าต่างแรกของฉัน"><img src="img/lab1-good.png" alt="ผลการรัน หน้าต่างแรกของฉัน"></div>
+        <p class="shot-cap">ภาพจริงจากการรัน · ถ้า Windows ตั้งโหมดมืด พื้นจะเป็นสีดำ</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ขั้น ⑦ ปรับ: แก้เอง 1 ครั้ง สั่ง AI 1 ครั้ง">
+  <div class="body" style="top:118px">
+    <div class="kicker reveal">ขั้น ⑦ ปรับ · เปลี่ยนทีละเรื่อง</div>
+    <h2 class="title reveal d1" style="font-size:56px;margin-bottom:12px">แก้เองก็ได้ สั่ง AI ก็ได้</h2>
+    <div class="two">
+      <div class="box orange reveal d2"><h3 class="c-orange">✍️ แก้เอง (ค่าง่าย ๆ)</h3>
+        <pre class="code xs" data-hl="1-2">window.setWindowTitle("โปรแกรมของสมชาย")
+window.resize(600, 400)</pre>
+        <p class="small" style="margin:8px 0 0">เปลี่ยนแค่<b>ข้อความ/ตัวเลข</b>ในวงเล็บ แล้วรันดูผล</p></div>
+      <div class="box tint reveal d3"><h3>🤖 สั่ง AI (เรื่องที่ยังไม่รู้วิธี)</h3>
+        <div class="prompt xs"><div class="pr-text">จากโค้ดนี้ ช่วยเปลี่ยนสีพื้นหลังหน้าต่างเป็นฟ้าอ่อน และข้อความเป็นสีน้ำเงิน แก้ให้น้อยที่สุด แล้วบอกว่าแก้บรรทัดไหน</div></div>
+        <p class="small" style="margin:8px 0 0">ขอให้ AI <b>บอกว่าแก้ตรงไหน</b> เราจะได้เรียนรู้</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="เก็บเวอร์ชัน v1 v2">
+  <div class="body">
+    <div class="kicker reveal">นิสัยมือโปร</div>
+    <h2 class="title reveal d1">ก่อนให้ AI แก้ <span class="hl">เก็บของเดิมไว้ก่อน</span></h2>
+    <div class="row center" style="gap:40px">
+      <pre class="code term reveal d2" data-lang="term" style="flex:0 0 700px">C:\gui-lab\
+  lab1_v1.py   ← รันได้แล้ว ✅
+  lab1_v2.py   ← ลองเปลี่ยนสี
+  lab1_v3.py   ← AI แก้แล้วพัง 💥</pre>
+      <ul class="pts small reveal d3" style="flex:1"><li>AI แก้แล้วพัง → กลับไปใช้รุ่นก่อนได้ทันที</li><li>เห็นว่าแต่ละรุ่นเปลี่ยนอะไร</li><li>หน่วยหลัง ๆ จะใช้ <b>Git</b> แทน (แบบมืออาชีพ)</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="📷 จุดตรวจ 2: หน้าต่างแรก">
+  <div class="body">
+    <div><span class="act-badge">📷 จุดตรวจ 2</span><span class="act-meta">รายบุคคล · ส่งรูปบนมือถือ</span></div>
+    <h2 class="title" style="font-size:60px">ส่งรูปหน้าต่างแรกของเรา (รุ่นที่ปรับแล้ว)</h2>
+    <div class="row" style="align-items:flex-start;gap:30px">
+      <div style="flex:1.3"><ul class="chk small"><li>ชื่อหน้าต่าง/ข้อความเป็นของเราเอง</li><li>เก็บไฟล์ v1 และ v2 แล้ว</li><li>เขียนเลขบรรทัดในใบงานข้อ 1.3 ครบ</li></ul>
+        <div class="live" data-kind="image" data-q="จุดตรวจ 2: รูปหน้าต่างแรก"></div></div>
+      <div style="flex:1;text-align:center"><div data-timer="900"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-tag="พัก" data-title="☕ พัก 10 นาที">
+  <div class="body center" style="text-align:center">
+    <h2 class="title reveal">☕ พัก 10 นาที</h2>
+    <p class="reveal d1">กลับมาแล้วเราจะทำโปรแกรมที่ “โต้ตอบได้” กัน 👋</p>
+    <div class="reveal d2"><div data-timer="600"></div></div>
+  </div>
+</section>
+
+<!-- ================= ช. ศัพท์ widget ================= -->
+<section class="slide section sec-2" data-tag="4. ศัพท์ widget ที่ต้องรู้" data-title="4. ศัพท์ widget ที่ต้องรู้">
+  <div class="big-no">4</div>
+  <div class="body center">
+    <div class="label reveal">ตอนที่ 4</div>
+    <h2 class="reveal d1">ศัพท์ widget<br>ที่ต้องรู้</h2>
+    <p class="lead reveal d2">รู้ชื่อชิ้นส่วน = สั่ง AI ได้แม่น และอ่านโค้ดออก</p>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="widget คือชิ้นเลโก้">
+  <div class="body">
+    <div class="kicker reveal">widget คืออะไร</div>
+    <h2 class="title reveal d1">widget = ชิ้นเลโก้ของหน้าจอ 🧱</h2>
+    <p class="small reveal d2">ทุกอย่างที่เห็นบนหน้าต่าง (ป้าย ช่องพิมพ์ ปุ่ม) คือ widget หนึ่งชิ้น เอามาต่อกันเป็นโปรแกรม</p>
+    <table class="t left reveal d3" style="width:100%;font-size:32px">
+      <tr><th>widget</th><th>หน้าตา</th><th>ใช้ทำอะไร</th><th>คำสั่งที่ใช้บ่อย</th></tr>
+      <tr><td><b>QLabel</b></td><td><span class="w-label">พิมพ์ชื่อของคุณ:</span></td><td>แสดงข้อความ (พิมพ์ไม่ได้)</td><td><code>setText()</code> <code>text()</code></td></tr>
+      <tr><td><b>QLineEdit</b></td><td><span class="w-edit">เช่น สมชาย</span></td><td>ช่องให้ผู้ใช้พิมพ์ 1 บรรทัด</td><td><code>text()</code> <code>setPlaceholderText()</code></td></tr>
+      <tr><td><b>QPushButton</b></td><td><span class="w-btn">ทักทาย</span></td><td>ปุ่มให้กด</td><td><code>clicked.connect()</code></td></tr>
+    </table>
+    <div class="src">ที่มา: Qt for Python, Widgets <sup class="ref"><a href="#refs">[3]</a></sup> · งานย่อย 1.1 <sup class="ref"><a href="#refs">[1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="QLabel และ QLineEdit">
+  <div class="body">
+    <div class="kicker reveal">อ่านค่า · เขียนค่า</div>
+    <h2 class="title reveal d1"><code>text()</code> = อ่าน · <code>setText()</code> = เขียน</h2>
+    <div class="two">
+      <pre class="code reveal d2">name = self.name_input.text()
+# อ่านสิ่งที่ผู้ใช้พิมพ์ → ได้เป็น "ข้อความ"
+
+self.result_label.setText("สวัสดี")
+# เปลี่ยนข้อความบนป้าย</pre>
+      <div class="reveal d3 small"><ul class="pts"><li><code>text()</code> ได้ค่าเป็น<b>ข้อความ (str)</b> เสมอ แม้พิมพ์ตัวเลข</li><li>จะคำนวณต้องแปลงก่อน: <code>float(…)</code></li><li><code>setText()</code> รับแต่ข้อความ ส่งตัวเลขไปตรง ๆ จะ error</li></ul></div>
+    </div>
+    <div class="src">ทดลองจริง: <code>label.setText(3.5)</code> → TypeError · Qt for Python <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="QPushButton และ clicked.connect">
+  <div class="body">
+    <div class="kicker reveal">กดปุ่มแล้วให้ทำอะไร</div>
+    <h2 class="title reveal d1">กดปุ่ม → เรียกฟังก์ชัน 🔔</h2>
+    <div class="row center" style="gap:40px">
+      <pre class="code reveal d2" style="flex:0 0 1000px" data-hl="1">self.greet_button.clicked.connect(self.greet)
+
+def greet(self):
+    name = self.name_input.text()
+    self.result_label.setText(f"สวัสดี {name} 👋")</pre>
+      <div class="reveal d3 small" style="flex:1"><p>เหมือน<b>กริ่งประตู</b> 🔔</p><ul class="pts"><li><code>clicked</code> = กริ่งดัง (signal)</li><li><code>greet</code> = คนที่วิ่งไปเปิดประตู (slot)</li><li><code>connect</code> = ต่อสายกริ่ง</li></ul></div>
+    </div>
+    <p class="tiny reveal d4">⚠️ เขียน <code>self.greet</code> <b>ไม่ใส่วงเล็บ</b> (ส่ง “ชื่อ” ฟังก์ชันไปให้ ไม่ใช่เรียกทันที) · หน่วยที่ 3 จะเรียนเรื่องนี้ลึกขึ้น</p>
+    <div class="src">ที่มา: Qt for Python, Signals and Slots <sup class="ref"><a href="#refs">[12]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="🎮 กระบะวาง widget (layout)">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🎮 ลองจัดของ</span><span class="act-meta">layout = ชั้นวางของ จัดเรียงให้อัตโนมัติ</span></div>
+    <h2 class="title" style="font-size:50px;margin-bottom:12px">เพิ่ม widget · สลับแนวตั้ง/แนวนอน · ลากย่อขยายหน้าต่าง</h2>
+    <div data-sim="layout"></div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="ไม่มี layout จะเป็นยังไง">
+  <div class="body">
+    <div class="kicker reveal">ทำไมต้องมี layout</div>
+    <h2 class="title reveal d1">ไม่มีชั้นวาง ของจะกองทับกันที่มุมซ้ายบน</h2>
+    <div class="grid g2" style="gap:30px">
+      <div class="box rose reveal d2"><h3 class="c-rose">❌ ไม่ใช้ layout</h3><p class="small">widget ทุกตัวไปอยู่ที่ตำแหน่ง (0, 0) ซ้อนกัน ต้องกำหนดพิกัดเองทีละตัว ย่อหน้าต่างแล้วเพี้ยน</p></div>
+      <div class="box green reveal d3"><h3 class="c-green">✅ ใช้ layout</h3><p class="small"><code>QVBoxLayout</code> เรียงบนลงล่าง · <code>QHBoxLayout</code> เรียงซ้ายไปขวา · ย่อขยายหน้าต่างแล้วจัดให้เอง</p></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:24px;text-align:center">สัปดาห์หน้าเจอเพิ่ม: <b>QGridLayout</b> (ตาราง) และ <b>QFormLayout</b> (ฟอร์ม ป้าย+ช่อง)</p>
+    <div class="src">ที่มา: Qt for Python documentation <sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="🎮 แผนภาพ QMainWindow">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🎮 แตะดู</span><span class="act-meta">QMainWindow = หน้าต่างหลักแบบ “ครบชุด”</span></div>
+    <h2 class="title" style="font-size:50px;margin-bottom:14px">QMainWindow มีห้องอะไรบ้าง?</h2>
+    <div data-sim="anatomy"></div>
+    <div class="src">ที่มา: Qt for Python, QMainWindow <sup class="ref"><a href="#refs">[11]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="QWidget กับ QMainWindow">
+  <div class="body">
+    <div class="kicker reveal">หน้าต่างมี 2 แบบที่ใช้บ่อย</div>
+    <h2 class="title reveal d1">QWidget vs QMainWindow</h2>
+    <div class="grid g2" style="gap:30px">
+      <div class="box tint reveal d2"><h3>🪟 QWidget</h3><ul class="pts small"><li>หน้าต่างเปล่า ใส่ layout ได้ตรง ๆ</li><li>เหมาะกับโปรแกรมเล็ก ๆ (Lab 1)</li><li><code>window.setLayout(layout)</code></li></ul></div>
+      <div class="box sun reveal d3"><h3>🏠 QMainWindow</h3><ul class="pts small"><li>มีเมนู แถบเครื่องมือ แถบสถานะ</li><li>ต้องมี <b>central widget</b> 1 ตัวเป็นพื้นที่กลาง</li><li><code>self.setCentralWidget(central)</code></li></ul></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:22px;text-align:center">AI ชอบใช้ QMainWindow + <b>class</b> → อ่านไม่ออกไม่เป็นไร หา <b>4 ชิ้นหลัก</b> ก่อน</p>
+    <div class="src">ที่มา: Qt for Python, QMainWindow <sup class="ref"><a href="#refs">[11]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="🙋 จับคู่ widget บนหน้าจอจริง">
+  <div class="body">
+    <div><span class="act-badge">🙋 จับคู่</span><span class="act-meta">ชี้แล้วตอบพร้อมกันทั้งห้อง · กด → เพื่อเฉลยทีละจุด</span></div>
+    <h2 class="title" style="font-size:56px">ส่วนไหนคือ widget อะไร?</h2>
+    <div class="row center" style="gap:50px">
+      <div class="shot" style="flex:0 0 640px"><div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม" style="width:620px"><img src="img/ohm-ok.png" alt="หน้าต่างเครื่องคิดเลขกฎของโอห์ม"></div></div>
+      <ol class="small" style="flex:1;padding-left:40px">
+        <li>“แรงดัน V (โวลต์):” <span class="frag c-teal">→ QLabel</span></li>
+        <li>ช่องที่มีเลข 12 <span class="frag c-teal">→ QLineEdit</span></li>
+        <li>“คำนวณกระแส” <span class="frag c-teal">→ QPushButton</span></li>
+        <li>“I = 12.00 mA” <span class="frag c-teal">→ QLabel</span></li>
+        <li>“คำนวณเรียบร้อย” ด้านล่าง <span class="frag c-teal">→ status bar ของ QMainWindow</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="รู้ศัพท์แล้ว prompt แม่นขึ้น">
+  <div class="body">
+    <div class="kicker reveal">ศัพท์ช่วยเราได้</div>
+    <h2 class="title reveal d1">รู้ศัพท์ → สั่ง AI ได้แม่นขึ้น</h2>
+    <div class="two">
+      <div class="prompt bad reveal d2"><div class="pr-text">ทำโปรแกรมที่ใส่ชื่อแล้วมันทักทาย</div></div>
+      <div class="prompt good reveal d3"><div class="pr-text">ใช้ PySide6 ทำ QMainWindow มี QLabel "พิมพ์ชื่อของคุณ:" QLineEdit ให้พิมพ์ชื่อ QPushButton "ทักทาย" และ QLabel แสดงผล เรียงด้วย QVBoxLayout เมื่อกดปุ่มให้แสดง "สวัสดี (ชื่อ) 👋"</div></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:20px;text-align:center">prompt ขวา: AI <b>เดาน้อยลง</b> โค้ดที่ได้ตรงสเปก และเรา<b>อ่านออก</b>เพราะรู้จักทุกคำ</p>
+  </div>
+</section>
+
+<!-- ================= ซ. Lab 2 ================= -->
+<section class="slide section sec-6" data-tag="Lab 2 โปรแกรมทักทาย" data-title="Lab 2 โปรแกรมทักทาย">
+  <div class="big-no">2</div>
+  <div class="body center">
+    <div class="label reveal">💻 Lab 2 · 40 นาที</div>
+    <h2 class="reveal d1">โปรแกรมทักทาย 👋<br>ครบทั้ง 7 ขั้น</h2>
+    <p class="lead reveal d2">ครั้งนี้เราจะ “ทดสอบ” และ “ปรับ” จริงจัง</p>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="✏️ วาดหน้าจอก่อนสั่ง AI">
+  <div class="body">
+    <div><span class="act-badge">✏️ วาดภาพร่าง</span><span class="act-meta">วาดบนมือถือ · 3 นาที</span></div>
+    <h2 class="title" style="font-size:56px">ขั้น ① สเปก: วาดหน้าจอโปรแกรมทักทาย</h2>
+    <div class="row" style="align-items:flex-start;gap:30px">
+      <div class="spec" style="flex:1.2"><h4>📋 การ์ดสเปก Lab 2</h4><dl>
+        <dt>หน้าจอ</dt><dd>QMainWindow ชื่อ “โปรแกรมทักทาย”</dd>
+        <dt>รับอะไร</dt><dd>ชื่อผู้ใช้ จากช่องพิมพ์</dd>
+        <dt>ทำอะไร</dt><dd>กดปุ่ม “ทักทาย” → แสดง “สวัสดี (ชื่อ) 👋”</dd>
+        <dt>กรณีพิเศษ</dt><dd>ช่องว่าง → ? (คิดเอง)</dd></dl></div>
+      <div style="flex:1"><div class="live" data-kind="draw" data-q="ภาพร่างหน้าจอโปรแกรมทักทาย"></div><div style="text-align:center;margin-top:10px"><div data-timer="180"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="Lab 2: prompt">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ② สั่ง AI</div>
+    <h2 class="title reveal d1">prompt ตั้งต้นของ Lab 2</h2>
+    <div class="prompt reveal d2" data-copy><div class="pr-text">คุณเป็นครูสอน Python เขียนโปรแกรมด้วย PySide6 ไฟล์เดียว
+สร้าง QMainWindow ชื่อ "โปรแกรมทักทาย" มี QLabel "พิมพ์ชื่อของคุณ:" QLineEdit ให้พิมพ์ชื่อ QPushButton "ทักทาย" และ QLabel แสดงผล เรียงด้วย QVBoxLayout
+เมื่อกดปุ่มให้แสดง "สวัสดี (ชื่อ) 👋"
+ใช้ชื่อตัวแปรภาษาอังกฤษที่สื่อความหมาย และอธิบายสั้น ๆ ว่าแต่ละส่วนทำอะไร</div></div>
+    <p class="small reveal d3" style="margin-top:18px">💡 ตั้งใจ<b>ยังไม่บอก</b>เรื่องช่องว่าง เพื่อดูว่า AI จะคิดเผื่อให้ไหม</p>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="Lab 2: โค้ดรุ่น v1 ที่ AI ตอบ">
+  <div class="body" style="top:110px">
+    <div class="kicker reveal">ขั้น ③ อ่านโค้ด · รุ่น v1</div>
+    <h2 class="title reveal d1" style="font-size:48px;margin-bottom:8px">หา 5 จุด: ตัวแอป · หน้าต่าง · widget · ต่อปุ่ม · event loop</h2>
+    <pre class="code xs cols2 reveal d2" data-ln data-copy>import sys
+from PySide6.QtWidgets import (QApplication, QMainWindow,
+    QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout)
+
+class GreetingWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("โปรแกรมทักทาย")
+        self.ask_label = QLabel("พิมพ์ชื่อของคุณ:")
+        self.name_input = QLineEdit()
+        self.greet_button = QPushButton("ทักทาย")
+        self.result_label = QLabel("")
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.ask_label)
+        layout.addWidget(self.name_input)
+        layout.addWidget(self.greet_button)
+        layout.addWidget(self.result_label)
+        central = QWidget()
+        central.setLayout(layout)
+        self.setCentralWidget(central)
+
+        self.greet_button.clicked.connect(self.greet)
+
+    def greet(self):
+        name = self.name_input.text()
+        self.result_label.setText(f"สวัสดี {name} 👋")
+
+app = QApplication(sys.argv)
+window = GreetingWindow()
+window.show()
+sys.exit(app.exec())</pre>
+    <div class="src">โค้ดทดสอบรันจริง · ดาวน์โหลด <a href="code/lab2_v1.py">lab2_v1.py</a></div>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="🙋 Think-pair-share: 5 จุด">
+  <div class="body">
+    <div><span class="act-badge">🙋 คิดเดี่ยว → คู่ → แชร์</span><span class="act-meta">1 นาที + 2 นาที + สุ่มตอบ</span></div>
+    <h2 class="title" style="font-size:56px">5 จุดอยู่บรรทัดไหน? (โค้ด v1)</h2>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <table class="t left compact" style="flex:1.4;font-size:30px">
+        <tr><th>จุด</th><th>บรรทัด</th></tr>
+        <tr><td>🏢 สร้างตัวแอป</td><td class="frag mono">29</td></tr>
+        <tr><td>🪟 หน้าต่าง (class + สร้างตัว)</td><td class="frag mono">5, 30</td></tr>
+        <tr><td>🧱 สร้าง widget 4 ตัว</td><td class="frag mono">9–12</td></tr>
+        <tr><td>🔔 ต่อปุ่มกับฟังก์ชัน</td><td class="frag mono">23</td></tr>
+        <tr><td>▶️ โชว์ + event loop</td><td class="frag mono">31–32</td></tr>
+      </table>
+      <div style="flex:1;text-align:center"><div data-timer="180"></div><div data-picker="40" style="margin-top:16px"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ขั้น ⑤ ทดสอบ: ตารางกรณีทดสอบ">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ⑤ ทดสอบ · อย่าลองแค่กรณีสวย ๆ</div>
+    <h2 class="title reveal d1">ตารางทดสอบ v1</h2>
+    <table class="t left reveal d2" style="width:100%;font-size:30px">
+      <tr><th>#</th><th>ทำอะไร</th><th>ควรได้</th><th>v1 ได้จริง</th></tr>
+      <tr><td>1</td><td>พิมพ์ “สมชาย” กดปุ่ม</td><td>สวัสดี สมชาย 👋</td><td class="frag">✅ ตรง</td></tr>
+      <tr><td>2</td><td>ไม่พิมพ์อะไร กดปุ่ม</td><td>เตือนให้พิมพ์ชื่อ</td><td class="frag c-rose">❌ “สวัสดี  👋”</td></tr>
+      <tr><td>3</td><td>พิมพ์แต่เว้นวรรค กดปุ่ม</td><td>เตือนให้พิมพ์ชื่อ</td><td class="frag c-rose">❌ “สวัสดี     👋”</td></tr>
+      <tr><td>4</td><td>พิมพ์ชื่อแล้วกด Enter</td><td>ทักทายเหมือนกดปุ่ม</td><td class="frag c-rose">❌ ไม่มีอะไรเกิดขึ้น</td></tr>
+    </table>
+    <p class="small frag" style="margin-top:16px">ผลจากการรันจริง: โปรแกรม<b>ไม่พัง</b> แต่<b>ยังไม่ผ่านสเปก</b> → ต้องปรับ</p>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ผลจริงของ v1 เมื่อช่องว่าง">
+  <div class="body">
+    <div class="kicker reveal">หลักฐานจากการทดสอบ</div>
+    <h2 class="title reveal d1">กรณีที่ 2: ไม่พิมพ์ชื่อแล้วกดปุ่ม</h2>
+    <div class="row center" style="gap:50px">
+      <div class="shot reveal d2"><div class="qtwin" data-title="โปรแกรมทักทาย" style="width:620px"><img src="img/lab2-v1-empty.png" alt="โปรแกรมทักทาย v1 แสดง สวัสดี ทั้งที่ไม่ได้พิมพ์ชื่อ"></div><p class="shot-cap">ภาพจริงจาก v1</p></div>
+      <div class="reveal d3 small" style="flex:1"><ul class="pts"><li>AI ทำ<b>ตามที่สั่งเป๊ะ</b> แต่ไม่ได้คิดเผื่อ</li><li>ไม่ใช่ความผิดของ AI ทั้งหมด เพราะเรา<b>ไม่ได้ใส่ในสเปก</b></li><li>นี่คือเหตุผลที่<b>คนต้องทดสอบ</b></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ขั้น ⑦ ปรับรอบ 1 และรอบ 2">
+  <div class="body" style="top:118px">
+    <div class="kicker reveal">ขั้น ⑦ ปรับ · ทีละเรื่อง</div>
+    <h2 class="title reveal d1" style="font-size:56px;margin-bottom:12px">ปรับ 2 รอบ แต่ละรอบเรื่องเดียว</h2>
+    <div class="two">
+      <div class="reveal d2"><p class="small" style="margin:0 0 8px"><b>รอบ 1</b> เพิ่มแถบสถานะ + กด Enter ได้</p>
+        <div class="prompt sm" data-copy><div class="pr-text">จากโค้ดนี้ ช่วยเพิ่ม status bar แสดง "พร้อมใช้งาน" ตอนเปิดโปรแกรม และให้กด Enter ในช่องชื่อแล้วทักทายเหมือนกดปุ่ม แก้ให้น้อยที่สุด บอกด้วยว่าเพิ่มบรรทัดไหน</div></div></div>
+      <div class="reveal d3"><p class="small" style="margin:0 0 8px"><b>รอบ 2</b> ดักช่องว่าง</p>
+        <div class="prompt sm" data-copy><div class="pr-text">ต่อจากเดิม ถ้าช่องชื่อว่างหรือมีแต่เว้นวรรค ห้ามทักทาย ให้ล้างข้อความผลลัพธ์ และขึ้นเตือนใน status bar ว่า "⚠️ กรุณาพิมพ์ชื่อก่อน"</div></div></div>
+    </div>
+    <p class="tiny reveal d4" style="margin-top:14px">💾 เซฟเป็น <code>lab2_v2.py</code> และ <code>lab2_v3.py</code> แล้ว<b>ทดสอบ 4 กรณีซ้ำทุกรอบ</b></p>
+  </div>
+</section>
+
+<section class="slide sec-6" data-title="ผลหลังปรับ: ผ่านทุกกรณี">
+  <div class="body">
+    <div class="kicker reveal">ทดสอบซ้ำ</div>
+    <h2 class="title reveal d1">รุ่นสุดท้าย ผ่านครบ 4 กรณี ✅</h2>
+    <div class="row center" style="gap:40px">
+      <div class="shot sm reveal d2"><div class="qtwin" data-title="โปรแกรมทักทาย"><img src="img/lab2-ok.png" alt="โปรแกรมทักทายแสดง สวัสดี สมชาย และ status bar ทักทายเรียบร้อย"></div><p class="shot-cap">กรณี 1 และ 4</p></div>
+      <div class="shot sm reveal d3"><div class="qtwin" data-title="โปรแกรมทักทาย"><img src="img/lab2-empty.png" alt="โปรแกรมทักทายเตือน กรุณาพิมพ์ชื่อก่อน ใน status bar"></div><p class="shot-cap">กรณี 2 และ 3</p></div>
+    </div>
+    <div class="src">ภาพจริงจากโค้ดรุ่นสุดท้าย <a href="code/lab2_greeting.py">lab2_greeting.py</a> (ทดสอบอัตโนมัติด้วย QTest ผ่านทั้ง 4 กรณี)</div>
+  </div>
+</section>
+
+<section class="slide sec-6 act" data-title="📷 จุดตรวจ 3: โปรแกรมทักทาย">
+  <div class="body">
+    <div><span class="act-badge">📷 จุดตรวจ 3</span><span class="act-meta">รายบุคคล · ส่งรูปบนมือถือ</span></div>
+    <h2 class="title" style="font-size:60px">ส่งรูปตอนเตือน “⚠️ กรุณาพิมพ์ชื่อก่อน”</h2>
+    <div class="row" style="align-items:flex-start;gap:30px">
+      <div style="flex:1.3"><ul class="chk small"><li>ตารางทดสอบ 4 กรณีในใบงาน กรอกครบ</li><li>มีไฟล์ v1 v2 v3</li><li>เขียน prompt ที่ใช้ลง prompt log</li></ul>
+        <div class="live" data-kind="image" data-q="จุดตรวจ 3: โปรแกรมทักทายตอนเตือนช่องว่าง"></div></div>
+      <div style="flex:1;text-align:center"><div data-timer="1500"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ฌ. คลินิกบั๊ก ================= -->
+<section class="slide section sec-7" data-tag="5. คลินิกบั๊ก" data-title="5. คลินิกบั๊ก">
+  <div class="big-no">5</div>
+  <div class="body center">
+    <div class="label reveal">ตอนที่ 5 · 20 นาที</div>
+    <h2 class="reveal d1">คลินิกบั๊ก 🩺<br>อ่าน error ให้เป็น</h2>
+    <p class="lead reveal d2">ตัวแดง ๆ ไม่ได้ด่าเรา มันกำลังบอกทางแก้</p>
+  </div>
+</section>
+
+<section class="slide sec-7" data-title="อ่าน Traceback จากล่างขึ้นบน">
+  <div class="body">
+    <div class="kicker reveal">Traceback = รายงานอุบัติเหตุ</div>
+    <h2 class="title reveal d1">อ่านจาก <span class="hl">ล่างขึ้นบน</span></h2>
+    <pre class="code term sm reveal d2" data-lang="term" data-hl="2" data-err="5" style="white-space:pre-wrap">Traceback (most recent call last):
+  File "C:\Users\student\gui-lab\bug3_typo.py", line 7, in &lt;module&gt;
+    window.setWindowTittle("บั๊กที่ 3")
+    ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PySide6.QtWidgets.QWidget' object has no attribute 'setWindowTittle'. Did you mean '.setWindowTitle' instead of '.setWindowTittle'?</pre>
+    <div class="grid g3 reveal d3" style="gap:20px;margin-top:20px">
+      <div class="box rose"><h3 class="c-rose">① บรรทัดล่างสุด</h3><p class="small">ชนิด error + สาเหตุ</p></div>
+      <div class="box sun"><h3>② บรรทัด File</h3><p class="small">ไฟล์ไหน บรรทัดที่เท่าไร</p></div>
+      <div class="box tint"><h3>③ บรรทัดโค้ด</h3><p class="small">โค้ดบรรทัดที่พัง</p></div>
+    </div>
+    <div class="src">ข้อความ error จริงจากการรัน · Python Tutorial: Errors and Exceptions <sup class="ref"><a href="#refs">[10]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-7 act" data-title="🩺 บั๊ก 1: ลืมเปิด venv">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🩺 บั๊ก 1</span><span class="act-meta">แตะบรรทัดบนจอ · ใครอยากลองออกมาเลย</span></div>
+    <h2 class="title" style="font-size:48px;margin-bottom:12px">โค้ดเดียวกับ Lab 1 แต่วันนี้รันไม่ได้?!</h2>
+    <div data-sim="tb" data-tb="bug1"></div>
+  </div>
+</section>
+
+<section class="slide sec-7 act" data-title="🩺 บั๊ก 2: AI ใช้ PyQt5">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🩺 บั๊ก 2</span><span class="act-meta">AI ชอบพลาดแบบนี้</span></div>
+    <h2 class="title" style="font-size:48px;margin-bottom:12px">ขอ PySide6 แต่ AI ตอบอีกแบบ</h2>
+    <div data-sim="tb" data-tb="bug2"></div>
+  </div>
+</section>
+
+<section class="slide sec-7 act" data-title="🩺 บั๊ก 3: สะกดผิด">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🩺 บั๊ก 3</span><span class="act-meta">แก้เองได้ ไม่ต้องถาม AI</span></div>
+    <h2 class="title" style="font-size:48px;margin-bottom:12px">แก้ชื่อหน้าต่างเองแล้วพัง</h2>
+    <div data-sim="tb" data-tb="bug3"></div>
+  </div>
+</section>
+
+<section class="slide sec-7 act" data-title="🩺 บั๊ก 4: ลืมดักช่องว่าง">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🩺 บั๊ก 4</span><span class="act-meta">เปิดได้ แต่กดปุ่มแล้วตัวแดงขึ้นใน Terminal</span></div>
+    <h2 class="title" style="font-size:48px;margin-bottom:12px">โปรแกรมคูณสอง กดตอนช่องว่าง</h2>
+    <div data-sim="tb" data-tb="bug4"></div>
+  </div>
+</section>
+
+<section class="slide sec-7 act" data-title="🙋 โหวต: บั๊กไหนแก้เองได้เลย">
+  <div class="body">
+    <div><span class="act-badge">🙋 โหวต</span><span class="act-meta">แล้วสุ่มคนอธิบายเหตุผล</span></div>
+    <h2 class="title" style="margin-bottom:20px">บั๊กไหน <span class="hl">แก้เองได้เลยใน 10 วินาที</span> ไม่ต้องถาม AI?</h2>
+    <div class="vote" data-answer="2">
+      <button type="button" class="opt"><b>ก</b> บั๊ก 1 ลืมเปิด venv</button>
+      <button type="button" class="opt"><b>ข</b> บั๊ก 2 AI ใช้ PyQt5</button>
+      <button type="button" class="opt"><b>ค</b> บั๊ก 3 สะกด setWindowTittle ผิด</button>
+      <button type="button" class="opt"><b>ง</b> บั๊ก 4 ลืมดักช่องว่าง</button>
+      <button type="button" class="reveal">เฉลย</button>
+      <div class="why">บั๊ก 3: Python บอกคำตอบมาเลย <i>Did you mean '.setWindowTitle'</i> แก้ 1 ตัวอักษรจบ · บั๊ก 1 และ 2 ก็แก้เองได้ไม่ยาก ส่วนบั๊ก 4 ต้องเขียน try/except จึงควรให้ AI ช่วยแล้วเราตรวจ</div>
+    </div>
+    <div style="margin-top:14px"><div data-picker="40"></div></div>
+  </div>
+</section>
+
+<section class="slide sec-7" data-title="ถาม AI แก้ error ให้ตรงจุด">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ⑥ แก้ · ถามแบบมีบริบท</div>
+    <h2 class="title reveal d1">ถาม AI แก้ error ให้ได้คำตอบดี</h2>
+    <div class="two">
+      <div class="prompt bad reveal d2"><div class="pr-text">มัน error ช่วยแก้ที</div></div>
+      <div class="prompt fix reveal d3" data-copy><div class="pr-text">โค้ด PySide6 ของฉัน (แนบด้านล่าง) กดปุ่มตอนช่องว่างแล้วขึ้น error นี้:
+ValueError: could not convert string to float: ''
+ฉันอยากให้ขึ้นข้อความเตือนแทนการพัง
+1) อธิบายสาเหตุสั้น ๆ ก่อน 2) แก้ให้น้อยที่สุด 3) บอกว่าแก้บรรทัดไหน
+(วางโค้ดทั้งไฟล์)</div></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:16px">สูตร: <b>โค้ด + error เต็ม ๆ + อยากให้เป็นยังไง + ขอคำอธิบาย</b> → แล้ว<b>ทดสอบซ้ำ</b>ทุกครั้ง</p>
+  </div>
+</section>
+
+<!-- ================= ญ. ภารกิจโอห์ม ================= -->
+<section class="slide section sec-8" data-tag="⚡ ภารกิจ: เครื่องคิดเลขโอห์ม" data-title="ภารกิจ: เครื่องคิดเลขกฎของโอห์ม">
+  <div class="big-no">⚡</div>
+  <div class="body center">
+    <div class="label reveal">🏆 ภารกิจประจำสัปดาห์ · 45 นาที</div>
+    <h2 class="reveal d1">เครื่องคิดเลข<br>กฎของโอห์ม</h2>
+    <p class="lead reveal d2">ครั้งนี้ทำเองทั้ง 7 ขั้น ครูเป็นแค่ที่ปรึกษา</p>
+  </div>
+</section>
+
+<section class="slide sec-8 act" data-title="ทบทวน I = V / R">
+  <div class="body">
+    <div class="kicker reveal">ทบทวนก่อนสั่ง AI</div>
+    <h2 class="title reveal d1">I = V ÷ R · ต้องรู้คำตอบเองก่อน AI</h2>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="small" style="flex:1.2">
+        <p class="calc mono reveal d2" style="font-size:44px;margin:0 0 10px">I (A) = V (V) ÷ R (Ω)</p>
+        <ul class="pts reveal d3"><li>หน่วยที่อ่านง่ายกว่า: <b>mA</b> → คูณ 1000</li><li>12 V, 1 kΩ (= 1000 Ω) → I = <span class="frag"><b>12 mA</b></span></li><li>5 V, 220 Ω → I ≈ <span class="frag"><b>22.73 mA</b></span></li></ul>
+      </div>
+      <div style="flex:1"><p class="small" style="margin:0 0 8px">ตอบบนมือถือ: 12 V กับ 1 kΩ ได้กี่ mA?</p>
+        <div class="live" data-kind="number" data-q="12 V กับ 1 kΩ ได้กระแสกี่ mA" data-answer="12" data-tol="0.01" data-unit="mA"></div></div>
+    </div>
+    <p class="tiny reveal d4">ถ้าเราไม่รู้คำตอบที่ถูก จะ<b>ตรวจโปรแกรมของ AI ไม่ได้</b></p>
+  </div>
+</section>
+
+<section class="slide sec-8" data-title="ภารกิจ: สเปกขั้นต่ำ">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ① สเปก (ต้องมีอย่างน้อยเท่านี้)</div>
+    <h2 class="title reveal d1">โจทย์ภารกิจ</h2>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <ol class="small reveal d2" style="flex:1.3;padding-left:40px;margin:0">
+        <li>QMainWindow ชื่อ “เครื่องคิดเลขกฎของโอห์ม”</li>
+        <li>ช่องกรอก <b>V (โวลต์)</b> และ <b>R (โอห์ม)</b> พร้อมป้ายบอก</li>
+        <li>ปุ่ม “คำนวณกระแส” → แสดง <b>I เป็น mA ทศนิยม 2 ตำแหน่ง</b></li>
+        <li>ช่องว่าง / ตัวอักษร → <b>เตือน</b> ไม่พัง</li>
+        <li>R = 0 หรือติดลบ → <b>เตือน</b> ไม่พัง</li>
+        <li>มี status bar บอกสถานะ</li>
+      </ol>
+      <div class="shot sm reveal d3" style="flex:1"><div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม"><img src="img/ohm-start.png" alt="ตัวอย่างหน้าตาเครื่องคิดเลขกฎของโอห์มตอนเปิด"></div><p class="shot-cap">ตัวอย่างหน้าตา (ของเราไม่ต้องเหมือนเป๊ะ)</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-8 act" data-title="🎮 ทดลองโปรแกรม v1 vs v2" id="ohm">
+  <div class="body" style="top:112px">
+    <div><span class="act-badge">🎮 ลองทดสอบ</span><span class="act-meta">ใส่ช่องว่าง ตัวอักษร R = 0 ในรุ่น v1 แล้วดูว่าเกิดอะไร</span></div>
+    <h2 class="title" style="font-size:48px;margin-bottom:12px">โค้ด AI รุ่นแรก vs รุ่นที่ทดสอบแล้ว</h2>
+    <div data-sim="ohm"></div>
+  </div>
+</section>
+
+<section class="slide sec-8" data-title="ตารางทดสอบบังคับ">
+  <div class="body">
+    <div class="kicker reveal">ขั้น ⑤ ทดสอบ · ต้องทำครบทุกแถว</div>
+    <h2 class="title reveal d1">ตารางทดสอบภารกิจ</h2>
+    <table class="t left reveal d2" style="width:100%;font-size:30px">
+      <tr><th>#</th><th>V</th><th>R</th><th>ควรได้</th></tr>
+      <tr><td>1</td><td class="mono">12</td><td class="mono">1000</td><td>I = 12.00 mA</td></tr>
+      <tr><td>2</td><td class="mono">5</td><td class="mono">220</td><td>I = 22.73 mA</td></tr>
+      <tr><td>3</td><td class="mono">3.3</td><td class="mono">330</td><td>I = 10.00 mA</td></tr>
+      <tr><td>4</td><td class="mono">12</td><td class="mono">0</td><td>เตือน “R ต้องมากกว่า 0” ไม่พัง</td></tr>
+      <tr><td>5</td><td>(ว่าง)</td><td class="mono">1000</td><td>เตือนให้ใส่ตัวเลข ไม่พัง</td></tr>
+      <tr><td>6</td><td class="mono">abc</td><td class="mono">100</td><td>เตือนให้ใส่ตัวเลข ไม่พัง</td></tr>
+    </table>
+    <div class="src">ค่าที่ควรได้ คำนวณและทดสอบกับโปรแกรมตัวอย่างแล้ว (ผ่านครบ 6 กรณี)</div>
+  </div>
+</section>
+
+<section class="slide sec-8" data-title="ส่งงาน และเกณฑ์ใบงาน 1.1 (20 คะแนน)">
+  <div class="body">
+    <div class="kicker reveal">ส่งใน Google Classroom</div>
+    <h2 class="title reveal d1" style="font-size:60px">ส่ง 3 อย่าง · ใบงาน 1.1 = 20 คะแนน (ผ่าน 16)</h2>
+    <div class="row" style="gap:36px;align-items:flex-start">
+      <div class="box sun reveal d2" style="flex:0 0 520px"><h3>📦 ต้องส่ง</h3><ol class="small" style="padding-left:40px;margin:0"><li>ไฟล์ <code>ohm_calc.py</code></li><li>รูปหน้าจอ กรณีที่ 1 และ 4</li><li>ใบงาน 1.1 (สเปก · prompt log · ตารางทดสอบ)</li></ol></div>
+      <table class="t left compact reveal d3" style="flex:1;font-size:26px">
+        <tr><th>รายการประเมิน</th><th>คะแนน</th></tr>
+        <tr><td>ผ่านจุดตรวจ 1–3</td><td class="mono">3</td></tr>
+        <tr><td>การ์ดสเปกภารกิจครบ ชัดเจน</td><td class="mono">3</td></tr>
+        <tr><td>prompt log มีบริบท ใช้ 5 ส่วน</td><td class="mono">3</td></tr>
+        <tr><td>โปรแกรมภารกิจทำงานตามสเปก</td><td class="mono">5</td></tr>
+        <tr><td>ตารางทดสอบ + ตารางบั๊ก ครบ ถูกต้อง</td><td class="mono">3</td></tr>
+        <tr><td>อธิบายโค้ดได้เมื่อครูสุ่มถาม</td><td class="mono">3</td></tr>
+      </table>
+    </div>
+    <div class="src">เกณฑ์ตรงกับข้อ 8 ใน <a href="lab.html">ใบงาน 1.1</a></div>
+  </div>
+</section>
+
+<section class="slide sec-8 act" data-title="⚡ ลงมือทำภารกิจ">
+  <div class="body">
+    <div><span class="act-badge">⚡ ลงมือทำภารกิจ</span><span class="act-meta">รายบุคคล · ครูเดินดูและสุ่มถามอธิบายโค้ด</span></div>
+    <h2 class="title" style="font-size:58px">ทำเองครบ 7 ขั้น แล้วส่งจุดตรวจ 4</h2>
+    <div class="row" style="align-items:flex-start;gap:30px">
+      <div style="flex:1.3"><ul class="chk small"><li>เขียนสเปกในใบงาน</li><li>บันทึก prompt ทุกครั้งใน prompt log</li><li>ทดสอบครบ 6 กรณี</li><li>ส่งรูปกรณีที่ 4 (R = 0) ด้านล่าง</li></ul>
+        <div class="live" data-kind="image" data-q="จุดตรวจ 4: ภารกิจโอห์ม กรณี R = 0"></div></div>
+      <div style="flex:1;text-align:center"><div data-timer="2700"></div><p class="tiny">เสร็จก่อน? เพิ่มช่องคำนวณ <b>กำลังไฟฟ้า P = V × I</b> เป็นโบนัส</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ฎ. ปิดคาบ ================= -->
+<section class="slide sec-0" data-tag="สรุปบทเรียน" data-title="สรุปบทเรียน (1)">
+  <div class="body">
+    <div class="kicker reveal">สรุป (1)</div>
+    <h2 class="title reveal d1">โปรแกรม GUI มีโครงเดียวกันเสมอ</h2>
+    <div class="grid g2" style="gap:26px">
+      <div class="box tint reveal d2"><h3>🦴 4 ชิ้นหลัก</h3><p class="small">QApplication · หน้าต่าง (QWidget / QMainWindow) · widget บน layout · <code>show()</code> + <code>app.exec()</code></p></div>
+      <div class="box sun reveal d3"><h3>🧱 widget วันนี้</h3><p class="small">QLabel แสดงข้อความ · QLineEdit ช่องพิมพ์ · QPushButton ปุ่ม + <code>clicked.connect()</code> · QVBoxLayout เรียงบนลงล่าง</p></div>
+    </div>
+    <p class="small reveal d4" style="margin-top:22px;text-align:center"><code>text()</code> ได้<b>ข้อความ</b>เสมอ → จะคำนวณต้อง <code>float()</code> และดัก error</p>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="สรุปบทเรียน (2)">
+  <div class="body">
+    <div class="kicker reveal">สรุป (2)</div>
+    <h2 class="title reveal d1">ทำงานกับ AI แบบมืออาชีพ</h2>
+    <div class="cycle reveal d2">
+      <div class="cy me"><div class="n">1</div><div class="i">📋</div><h4>สเปก</h4></div>
+      <div class="cy me"><div class="n">2</div><div class="i">💬</div><h4>สั่ง AI</h4></div>
+      <div class="cy me"><div class="n">3</div><div class="i">🔎</div><h4>อ่านโค้ด</h4></div>
+      <div class="cy"><div class="n">4</div><div class="i">▶️</div><h4>รัน</h4></div>
+      <div class="cy me"><div class="n">5</div><div class="i">🧪</div><h4>ทดสอบ</h4></div>
+      <div class="cy ai"><div class="n">6</div><div class="i">🩹</div><h4>แก้</h4></div>
+      <div class="cy ai"><div class="n">7</div><div class="i">🔁</div><h4>ปรับ</h4></div>
+    </div>
+    <p class="small reveal d3" style="margin-top:26px;text-align:center">AI พิมพ์แทนได้ แต่ <span class="hl">สเปก · การทดสอบ · ความรับผิดชอบ</span> เป็นของเรา</p>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="☁️ Exit ticket">
+  <div class="body">
+    <div><span class="act-badge">🎫 Exit ticket</span><span class="act-meta">พิมพ์บนมือถือ · 3 นาที</span></div>
+    <h2 class="title" style="font-size:56px;margin-bottom:10px">ก่อนกลับบ้าน ตอบ 2 ข้อ</h2>
+    <div class="two">
+      <div><p class="small" style="margin:0 0 8px">① คำสำคัญที่สุดของวันนี้ (1 คำ)</p><div class="live" data-kind="wordcloud" data-q="คำสำคัญที่สุดของวันนี้"></div></div>
+      <div><p class="small" style="margin:0 0 8px">② วันนี้ AI พลาดอะไรให้เห็นบ้าง แล้วเราแก้ยังไง</p><div class="live" data-kind="short" data-q="วันนี้ AI พลาดอะไร แล้วแก้ยังไง"></div></div>
+    </div>
+    <div style="text-align:right"><div data-timer="180"></div></div>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="🎲 สุ่มตอบคำถาม">
+  <div class="body">
+    <div><span class="act-badge">🎲 สุ่มเลขที่ตอบ</span><span class="act-meta">ตอบปากเปล่า</span></div>
+    <h2 class="title" style="font-size:56px">คำถามทบทวน 5 ข้อ</h2>
+    <div class="row">
+      <ol class="small" style="flex:1.4;padding-left:40px;margin:0">
+        <li>GUI ต่างจาก CLI อย่างไร ยกตัวอย่าง</li>
+        <li>event loop คืออะไร ลืม <code>app.exec()</code> จะเกิดอะไร</li>
+        <li>QLabel กับ QLineEdit ต่างกันอย่างไร</li>
+        <li>prompt ที่ดีมี 5 ส่วนอะไรบ้าง</li>
+        <li>อ่าน Traceback ต้องดูบรรทัดไหนก่อน เพราะอะไร</li>
+      </ol>
+      <div style="flex:1;text-align:center"><div data-picker="40"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="กิจกรรมต่อไป">
+  <div class="body center" style="text-align:center">
+    <div class="kicker reveal">กิจกรรมต่อไป</div>
+    <h2 class="title reveal d1">ฝึก ทบทวน แล้ววัดผล</h2>
+    <div class="grid g3 reveal d2" style="gap:30px">
+      <a class="box tint" href="exercises.html" style="text-decoration:none;color:inherit"><div class="icon">✏️</div><h3>แบบฝึกหัด</h3><p class="small">ตรวจคำตอบทันที</p></a>
+      <a class="box orange" href="quiz.html" style="text-decoration:none;color:inherit"><div class="icon">📝</div><h3 class="c-orange">แบบทดสอบ 20 ข้อ</h3><p class="small">หลังเรียน (เทียบกับก่อนเรียน)</p></a>
+      <a class="box green" href="lab.html" style="text-decoration:none;color:inherit"><div class="icon">💻</div><h3 class="c-green">ใบงานปฏิบัติ 1.1</h3><p class="small">ทำต่อ / พิมพ์ส่ง</p></a>
+    </div>
+    <p class="small reveal d3" style="margin-top:30px">📖 สัปดาห์หน้า: <b>QCheckBox · QComboBox · Layout ครบชุด</b> ทำฟอร์มลงทะเบียนอุปกรณ์</p>
+  </div>
+</section>
+
+<section class="slide sec-0" id="refs" data-tag="เอกสารอ้างอิง" data-title="เอกสารอ้างอิง (1)">
+  <div class="body" style="font-size:23px;line-height:1.4">
+    <h2 class="title" style="font-size:54px;margin-bottom:14px">เอกสารอ้างอิง</h2>
+    <ol style="margin:0;padding-left:56px">
+      <li style="margin-bottom:9px">หลักสูตรรายวิชา 30105-2004 เทคนิคการอินเตอร์เฟซ (หลักสูตรประกาศนียบัตรวิชาชีพชั้นสูง พ.ศ. 2567) ตารางวิเคราะห์หน่วยการเรียนรู้ ตารางวิเคราะห์พฤติกรรมการเรียนรู้ และหน่วยการเรียนรู้. (เอกสารต้นฉบับของบทเรียนนี้)</li>
+      <li style="margin-bottom:9px">กรมพัฒนาฝีมือแรงงาน สถาบันพัฒนาฝีมือแรงงาน 5 นครราชสีมา. <i>หลักสูตรการฝึกยกระดับฝีมือ สาขาการพัฒนาโปรแกรมแบบ GUI ด้วยภาษา Python</i> (รหัสหลักสูตร 3020085420104).</li>
+      <li style="margin-bottom:9px">The Qt Company. <i>Qt for Python (PySide6) Documentation</i>. https://doc.qt.io/qtforpython-6/</li>
+      <li style="margin-bottom:9px">Python Package Index. <i>PySide6 6.12.0</i> (Requires: Python &gt;=3.10, &lt;3.16). https://pypi.org/project/PySide6/</li>
+      <li style="margin-bottom:9px">Stack Overflow. (2025). <i>2025 Developer Survey: AI</i>. https://survey.stackoverflow.co/2025/ai</li>
+      <li style="margin-bottom:9px">Microsoft. <i>Requirements for Visual Studio Code</i>. https://code.visualstudio.com/docs/supporting/requirements</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="เอกสารอ้างอิง (2) คลิป และเครดิต">
+  <div class="body" style="font-size:23px;line-height:1.4">
+    <h2 class="title" style="font-size:54px;margin-bottom:14px">เอกสารอ้างอิง (ต่อ) คลิป และเครดิต</h2>
+    <ol start="7" style="margin:0;padding-left:56px">
+      <li style="margin-bottom:8px">Microsoft. <i>Set up Copilot in VS Code</i>. https://code.visualstudio.com/docs/copilot/setup · GitHub. <i>Plans for GitHub Copilot</i>. https://docs.github.com/en/copilot/get-started/plans</li>
+      <li style="margin-bottom:8px">Google. <i>Google Antigravity: Getting started</i>. https://antigravity.google/docs/getting-started</li>
+      <li style="margin-bottom:8px">Python Software Foundation. <i>Using Python on Windows</i> และ <i>venv</i>. https://docs.python.org/3/using/windows.html · https://docs.python.org/3/library/venv.html</li>
+      <li style="margin-bottom:8px">Python Software Foundation. <i>Errors and Exceptions</i>. https://docs.python.org/3/tutorial/errors.html</li>
+      <li style="margin-bottom:8px">The Qt Company. <i>QMainWindow</i>. https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QMainWindow.html</li>
+      <li style="margin-bottom:8px">The Qt Company. <i>Signals and Slots</i>. https://doc.qt.io/qtforpython-6/tutorials/basictutorial/signals_and_slots.html</li>
+    </ol>
+    <div class="box" style="margin-top:10px;padding:10px 22px;font-size:20px;line-height:1.4">
+      <b>คลิป YouTube</b> · อะไรคือ GUI? (Time Machine | Family Holiday) · อวสาน Programmer? Geek Daily EP266 (ด.ดล Blog) · GitHub Copilot เปิดให้ใช้งานฟรีแล้วใน VS Code (MilerDev) · ศึกษาเพิ่ม: Ep1 ทำความรู้จักกับ PySide6 (RxCoder) <a href="https://www.youtube.com/watch?v=ApmSsJTmbNM" target="_blank" rel="noopener">youtu.be/ApmSsJTmbNM</a><br>
+      <b>ภาพ</b> · ภาพหน้าจอโปรแกรมทุกภาพได้จากการรันโค้ดจริงด้วย PySide6 6.12 บน Windows 11 · แผนภาพ ตัวจำลอง และภาพแดชบอร์ดวาดขึ้นใหม่
+    </div>
+    <p class="tiny" style="margin-top:8px">เข้าถึงแหล่งข้อมูลออนไลน์เมื่อ 30 ตุลาคม 2569</p>
+  </div>
+</section>
+
+</main>
+</div>
+<script src="../assets/js/code.js"></script>
+<script src="../assets/js/sims.js"></script>
+<script src="../assets/js/deck.js"></script>
+<script src="../assets/js/classroom-loader.js" data-course="itf" data-parts="identity,ink,live"></script>
+</body>
+</html>

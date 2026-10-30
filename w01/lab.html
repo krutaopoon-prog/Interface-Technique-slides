@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบงานปฏิบัติที่ 1.1 GUI ตัวแรกกับผู้ช่วย AI</title>
+<meta name="description" content="ใบงานปฏิบัติที่ 1.1 วิชาเทคนิคการอินเตอร์เฟซ ติดตั้ง Python PySide6 สร้างหน้าต่างแรก โปรแกรมทักทาย คลินิกบั๊ก และภารกิจเครื่องคิดเลขกฎของโอห์ม โดยใช้ AI ช่วยเขียนโค้ด ทำทีละขั้นบนจอและพิมพ์ A4 ได้">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&family=Sarabun:wght@400;700&family=Prompt:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/theme.css">
+<link rel="stylesheet" href="../assets/css/code.css">
+<link rel="stylesheet" href="../assets/css/sims.css">
+<style>
+    /* ---------- คู่มือทีละขั้นบนจอ ---------- */
+    .guide h2 { margin: 0 0 4px; }
+    .guide .lab { border-left: 6px solid var(--teal); }
+    .guide .lab.l1 { border-color: #c2561a; } .guide .lab.l2 { border-color: #7a4fc4; } .guide .lab.bug { border-color: var(--rose); } .guide .lab.ms { border-color: var(--green); }
+    .step { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; padding: 10px 0; border-top: 1px dashed var(--line); }
+    .step:first-of-type { border-top: 0; }
+    .step input[type=checkbox] { width: 22px; height: 22px; margin-top: 3px; accent-color: var(--green); }
+    .step.done > div { opacity: .55; }
+    .step b.do { color: var(--teal); }
+    .see { background: var(--green-soft); border-radius: 10px; padding: 6px 12px; margin: 6px 0; }
+    .see::before { content: '👀 ควรเห็น: '; font-weight: 700; color: var(--green); }
+    .err { background: var(--rose-soft); border-radius: 10px; padding: 6px 12px; margin: 6px 0; font-size: 15px; }
+    .err::before { content: '🩹 ถ้าเจอ error: '; font-weight: 700; color: var(--rose); }
+    .shotrow { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; margin: 6px 0; }
+    .shotrow .qtwin { width: 300px; border-radius: 8px; }
+    .shotrow .qtwin::before { height: 28px; font-size: 13px; padding: 0 90px 0 10px; background-size: 84px 28px; }
+    .progress { position: sticky; top: 0; z-index: 5; background: var(--paper); padding: 8px 0; }
+    .progress .bar { height: 10px; background: var(--cream-deep); border-radius: 99px; overflow: hidden; }
+    .progress .bar i { display: block; height: 100%; width: 0; background: var(--green); transition: width .3s; }
+    .dl a { display: inline-block; margin: 2px 6px 2px 0; }
+    .ck { display: inline-block; font: 500 14px var(--font-display); color: var(--green); background: var(--green-soft); border-radius: 8px; padding: 1px 10px; }
+
+    /* ---------- ใบงานสำหรับพิมพ์ ---------- */
+    .ws h2 { font-size: 20px; margin: 18px 0 6px; color: var(--teal); }
+    .ws h3 { font-size: 17px; margin: 12px 0 4px; }
+    .ws p, .ws li { margin: 2px 0; }
+    .ws ol, .ws ul { margin: 2px 0 6px; padding-left: 26px; }
+    .ws table.grid { width: 100%; border-collapse: collapse; margin: 6px 0 10px; background: #fff; }
+    .ws table.grid th, .ws table.grid td { border: 1px solid #555; padding: 4px 8px; vertical-align: top; }
+    .ws table.grid th { background: var(--cream); font-family: var(--font-display); font-weight: 500; text-align: center; }
+    .ws table.grid td.n { text-align: center; width: 2.4em; }
+    .ws table.grid.blank td { height: 8.5mm; }
+    .ws table.grid.tall td { height: 12mm; }
+    .ws table.score td:nth-child(3), .ws table.score td:nth-child(4) { text-align: center; width: 6em; }
+    .ws .lines div { border-bottom: 1px dotted #000; height: 9mm; }
+    .ws .head { border: 1.5px solid #000; padding: 8px 12px; margin-bottom: 10px; background: #fff; }
+    .ws .head .line { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .ws .warn { border-left: 4px solid var(--rose); background: var(--rose-soft); padding: 6px 12px; border-radius: 0 10px 10px 0; }
+    .ws .box2 { border: 1px solid #555; padding: 6px 10px; margin: 6px 0; }
+    .ws .fl { border-bottom: 1px dotted #000; display: inline-block; min-width: 9em; }
+    .ws .fl.w { min-width: 70%; }
+    @media print {
+        body.doc { font-size: 12pt; line-height: 1.4; }
+        .guide { display: none !important; }
+        .ws { box-shadow: none; border: 0; padding: 0; }
+        .ws h2 { color: #000; font-size: 14.5pt; margin: 4mm 0 1.5mm; }
+        .ws h3 { font-size: 13.5pt; }
+        .ws table.grid th { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .ws table.grid th, .ws table.grid td { border-color: #000; font-size: 12pt; }
+        .ws .warn { background: none; border: 1px solid #000; border-radius: 0; }
+        .ws .avoid { break-inside: avoid; }
+        .ws .p2 { break-before: page; }
+    }
+</style>
+</head>
+<body class="doc">
+<div class="doc-wrap">
+    <nav class="topbar no-print">
+        <a href="../index.html">← หน้าแรก</a> · <a href="slides.html">สไลด์</a> · <a href="../setup.html">คู่มือติดตั้ง</a> · <a href="../prompts.html">คลัง prompt</a> · <a href="exercises.html">แบบฝึกหัด</a> · <a href="quiz.html">แบบทดสอบ</a>
+    </nav>
+
+    <section class="card no-print">
+        <span class="chip orange">สัปดาห์ที่ 1 · ปฏิบัติ 3 ชั่วโมงครึ่ง</span>
+        <h1 style="margin-top:8px">💻 ใบงานปฏิบัติที่ 1.1 GUI ตัวแรกกับผู้ช่วย AI</h1>
+        <p class="muted" style="margin:0 0 6px">เปิดหน้านี้ข้าง ๆ VS Code แล้วทำทีละขั้น ติ๊ก ☑ เมื่อเสร็จ (เครื่องจะจำไว้) · ส่วนท้ายหน้าคือ<b>ใบงานกระดาษ</b> พิมพ์ด้วยปุ่มด้านล่าง</p>
+        <p class="dl" style="margin:0">📥 ไฟล์ประกอบ: <a href="code/check_setup.py" download>check_setup.py</a> <a href="code/lab1_window.py" download>lab1_window.py</a> <a href="code/lab2_v1.py" download>lab2_v1.py</a> <a href="code/lab2_greeting.py" download>lab2_greeting.py</a> <a href="code/bug2_pyqt5.py" download>bug2_pyqt5.py</a> <a href="code/bug3_typo.py" download>bug3_typo.py</a> <a href="code/bug4_number.py" download>bug4_number.py</a></p>
+        <div class="btn-row"><button class="btn" type="button" onclick="window.print()">🖨 พิมพ์ใบงาน (A4)</button><a class="btn ghost" href="#ws">⬇ ไปที่ใบงานกระดาษ</a><button class="btn ghost" type="button" id="resetSteps">↺ ล้างเครื่องหมายติ๊ก</button></div>
+    </section>
+
+    <div class="guide">
+    <div class="progress no-print"><div class="bar"><i id="bar"></i></div><div class="muted" id="ptxt" style="font-size:14px;margin-top:2px"></div></div>
+
+    <!-- ===== Lab 0 ===== -->
+    <section class="card lab">
+        <h2>🧰 Lab 0 ติดตั้งเครื่องมือ <span class="muted" style="font-size:15px">(40 นาที)</span></h2>
+        <p class="muted" style="margin:0">ละเอียดทุกขั้นพร้อมภาพอยู่ใน <a href="../setup.html">คู่มือติดตั้ง</a> · ถ้าครูติดตั้งให้แล้ว ข้ามไปขั้น 0.4</p>
+        <div class="step"><input type="checkbox" data-k="0.1"><div><b class="do">0.1</b> ติดตั้ง <b>Python install manager</b> จาก python.org/downloads แล้วเปิด Terminal ใหม่ พิมพ์
+            <pre class="code term" data-lang="term" data-copy>py install 3.15</pre><div class="see">พิมพ์ <code>python --version</code> แล้วได้ <code>Python 3.15.x</code></div></div></div>
+        <div class="step"><input type="checkbox" data-k="0.2"><div><b class="do">0.2</b> ติดตั้ง <b>VS Code</b> แล้วกด Extensions (Ctrl+Shift+X) ค้นหา <b>Python</b> ของ Microsoft กด Install</div></div>
+        <div class="step"><input type="checkbox" data-k="0.3"><div><b class="do">0.3</b> สร้างโฟลเดอร์งานและ venv (ใน VS Code: File → Open Folder… → <code>C:\gui-lab</code> แล้วเปิด Terminal ด้วย Ctrl+`)
+            <pre class="code term" data-lang="term" data-copy>python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install PySide6-Essentials</pre>
+            <div class="see"><code>(.venv)</code> หน้าบรรทัดคำสั่ง และ <code>Successfully installed PySide6-Essentials-6.x</code></div>
+            <div class="err"><code>Activate.ps1 cannot be loaded</code> → พิมพ์ <code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code> ตอบ Y แล้วลองใหม่ · <code>OSError … Long Path</code> → ย้ายงานไปโฟลเดอร์สั้น <code>C:\gui-lab</code></div></div></div>
+        <div class="step"><input type="checkbox" data-k="0.4"><div><b class="do">0.4</b> ดาวน์โหลด <a href="code/check_setup.py" download>check_setup.py</a> ไว้ใน <code>C:\gui-lab</code> เปิดใน VS Code แล้วกด ▶
+            <div class="shotrow"><div class="qtwin" data-title="ตรวจเครื่อง" style="width:220px"><img src="img/check-setup.png" alt="หน้าต่างตรวจเครื่อง เครื่องพร้อมแล้ว"></div></div>
+            <div class="err"><code>No module named 'PySide6'</code> → มุมขวาล่าง VS Code คลิกเลข Python เลือกตัวที่มี <b>.venv</b></div></div></div>
+        <div class="step"><input type="checkbox" data-k="0.5"><div><b class="do">0.5</b> เปิดผู้ช่วย AI: คลิกไอคอน Copilot แถบล่าง → <b>Use AI Features</b> → ล็อกอิน GitHub (ได้ Copilot Free) <b>หรือ</b> เปิดแชต AI บนเว็บ (Gemini / ChatGPT / Claude)
+            <div class="see">ลองพิมพ์ถาม AI ว่า “PySide6 คืออะไร ตอบสั้น ๆ” แล้วได้คำตอบ</div>
+            <p style="margin:4px 0 0"><span class="ck">📷 จุดตรวจ 1</span> ส่งรูปหน้าต่าง “ตรวจเครื่อง” บนสไลด์ หรือเรียกครูเซ็น · กรอกใบงานตอนที่ 1</p></div></div>
+    </section>
+
+    <!-- ===== Lab 1 ===== -->
+    <section class="card lab l1">
+        <h2>🪟 Lab 1 หน้าต่างแรก <span class="muted" style="font-size:15px">(35 นาที)</span></h2>
+        <div class="step"><input type="checkbox" data-k="1.1"><div><b class="do">1.1 สเปก</b> หน้าต่างชื่อ “หน้าต่างแรกของฉัน” ขนาด 400×300 มีข้อความ “สวัสดี GUI 👋” ตัวใหญ่กึ่งกลาง (เปลี่ยนข้อความเป็นของตัวเองได้)</div></div>
+        <div class="step"><input type="checkbox" data-k="1.2"><div><b class="do">1.2 สั่ง AI</b> คัดลอก prompt นี้ไปแก้ให้เป็นของเรา แล้วจดลงใบงานข้อ 2.1
+            <div class="prompt good" data-copy><div class="pr-text">คุณเป็นครูสอนเขียนโปรแกรม Python เขียนด้วย PySide6 เท่านั้น ไฟล์เดียว
+สร้างหน้าต่างชื่อ "หน้าต่างแรกของฉัน" ขนาด 400x300 มีข้อความ "สวัสดี GUI 👋" ตัวใหญ่ อยู่กึ่งกลาง
+โค้ดสั้น อ่านง่าย ใส่คอมเมนต์ภาษาไทย และอธิบายสั้น ๆ ว่าแต่ละบรรทัดทำอะไร</div></div></div></div>
+        <div class="step"><input type="checkbox" data-k="1.3"><div><b class="do">1.3 อ่านโค้ด</b> วางโค้ดที่ได้ในไฟล์ <code>lab1_v1.py</code> หา 4 ชิ้นหลัก (ตัวแอป · หน้าต่าง · widget · show + exec) แล้วเขียนเลขบรรทัดลงใบงานข้อ 2.2
+            <p class="muted" style="margin:4px 0 0">AI ตอบไม่เหมือนตัวอย่างก็ได้ ดูตัวอย่างที่ <a href="code/lab1_window.py">lab1_window.py</a></p></div></div>
+        <div class="step"><input type="checkbox" data-k="1.4"><div><b class="do">1.4 รัน</b> กด ▶ มุมขวาบน
+            <div class="shotrow"><div class="qtwin" data-title="หน้าต่างแรกของฉัน"><img src="img/lab1-good.png" alt="หน้าต่างแรกของฉัน"></div></div>
+            <div class="err">ได้ <code>No module named 'PyQt5'</code> หรือ <code>tkinter</code> → AI ใช้ไลบรารีผิด สั่งใหม่ว่า “ใช้ PySide6 เท่านั้น”</div></div></div>
+        <div class="step"><input type="checkbox" data-k="1.5"><div><b class="do">1.5 ปรับ</b> คัดลอกเป็น <code>lab1_v2.py</code> แล้ว (ก) <b>แก้เอง</b>: เปลี่ยนชื่อหน้าต่างและขนาด (ข) <b>สั่ง AI</b>: เปลี่ยนสีพื้นหลัง/ตัวอักษร โดยขอให้บอกว่าแก้บรรทัดไหน
+            <p style="margin:4px 0 0"><span class="ck">📷 จุดตรวจ 2</span> ส่งรูปหน้าต่าง v2</p></div></div>
+    </section>
+
+    <!-- ===== Lab 2 ===== -->
+    <section class="card lab l2">
+        <h2>👋 Lab 2 โปรแกรมทักทาย <span class="muted" style="font-size:15px">(40 นาที)</span></h2>
+        <div class="step"><input type="checkbox" data-k="2.1"><div><b class="do">2.1 สเปก</b> กรอกการ์ดสเปกในใบงานข้อ 3.1 (คิดเองด้วยว่าช่องว่างควรทำอะไร)</div></div>
+        <div class="step"><input type="checkbox" data-k="2.2"><div><b class="do">2.2 สั่ง AI</b>
+            <div class="prompt good" data-copy><div class="pr-text">คุณเป็นครูสอน Python เขียนโปรแกรมด้วย PySide6 ไฟล์เดียว
+สร้าง QMainWindow ชื่อ "โปรแกรมทักทาย" มี QLabel "พิมพ์ชื่อของคุณ:" QLineEdit ให้พิมพ์ชื่อ QPushButton "ทักทาย" และ QLabel แสดงผล เรียงด้วย QVBoxLayout
+เมื่อกดปุ่มให้แสดง "สวัสดี (ชื่อ) 👋"
+ใช้ชื่อตัวแปรภาษาอังกฤษที่สื่อความหมาย และอธิบายสั้น ๆ ว่าแต่ละส่วนทำอะไร</div></div>
+            เซฟเป็น <code>lab2_v1.py</code> (ตัวอย่าง: <a href="code/lab2_v1.py">lab2_v1.py</a>)</div></div>
+        <div class="step"><input type="checkbox" data-k="2.3"><div><b class="do">2.3 ทดสอบ</b> ลองครบ 4 กรณีในใบงานข้อ 3.2: ชื่อปกติ · ช่องว่าง · เว้นวรรคล้วน · พิมพ์ชื่อแล้วกด Enter
+            <div class="shotrow"><div class="qtwin" data-title="โปรแกรมทักทาย"><img src="img/lab2-v1-empty.png" alt="v1 ทักทายทั้งที่ช่องว่าง"></div><span class="muted" style="font-size:14px">v1 ของ AI: ช่องว่างแล้วยังทักทาย ❌</span></div></div></div>
+        <div class="step"><input type="checkbox" data-k="2.4"><div><b class="do">2.4 ปรับรอบ 1</b> (เซฟ v2)
+            <div class="prompt" data-copy><div class="pr-text">จากโค้ดนี้ ช่วยเพิ่ม status bar แสดง "พร้อมใช้งาน" ตอนเปิดโปรแกรม และให้กด Enter ในช่องชื่อแล้วทักทายเหมือนกดปุ่ม แก้ให้น้อยที่สุด บอกด้วยว่าเพิ่มบรรทัดไหน</div></div></div></div>
+        <div class="step"><input type="checkbox" data-k="2.5"><div><b class="do">2.5 ปรับรอบ 2</b> (เซฟ v3) แล้ว<b>ทดสอบ 4 กรณีซ้ำ</b>
+            <div class="prompt" data-copy><div class="pr-text">ต่อจากเดิม ถ้าช่องชื่อว่างหรือมีแต่เว้นวรรค ห้ามทักทาย ให้ล้างข้อความผลลัพธ์ และขึ้นเตือนใน status bar ว่า "⚠️ กรุณาพิมพ์ชื่อก่อน"</div></div>
+            <div class="shotrow"><div class="qtwin" data-title="โปรแกรมทักทาย"><img src="img/lab2-ok.png" alt="ทักทายสำเร็จ"></div><div class="qtwin" data-title="โปรแกรมทักทาย"><img src="img/lab2-empty.png" alt="เตือนกรุณาพิมพ์ชื่อก่อน"></div></div>
+            <p style="margin:4px 0 0"><span class="ck">📷 จุดตรวจ 3</span> ส่งรูปตอนเตือน “กรุณาพิมพ์ชื่อก่อน”</p></div></div>
+    </section>
+
+    <!-- ===== คลินิกบั๊ก ===== -->
+    <section class="card lab bug">
+        <h2>🩺 คลินิกบั๊ก <span class="muted" style="font-size:15px">(20 นาที)</span></h2>
+        <div class="step"><input type="checkbox" data-k="3.1"><div><b class="do">3.1</b> ดาวน์โหลด <a href="code/bug2_pyqt5.py" download>bug2_pyqt5.py</a> <a href="code/bug3_typo.py" download>bug3_typo.py</a> <a href="code/bug4_number.py" download>bug4_number.py</a> ลงใน <code>C:\gui-lab</code></div></div>
+        <div class="step"><input type="checkbox" data-k="3.2"><div><b class="do">3.2</b> บั๊ก 1: เปิด Terminal ใหม่ที่<b>ไม่มี</b> <code>(.venv)</code> (พิมพ์ <code>deactivate</code>) แล้วรัน <code>python lab1_v1.py</code> ดูว่าเกิดอะไร แล้วเปิด venv คืน</div></div>
+        <div class="step"><input type="checkbox" data-k="3.3"><div><b class="do">3.3</b> รันบั๊ก 2–4 (บั๊ก 4 ต้องกดปุ่มตอนช่องว่าง) อ่าน Traceback <b>จากล่างขึ้นบน</b> แล้วกรอกตารางใบงานข้อ 4
+            <div class="err">บั๊ก 4 ให้ถาม AI แบบมีบริบท:</div>
+            <div class="prompt fix" data-copy><div class="pr-text">โค้ด PySide6 ของฉัน (แนบด้านล่าง) กดปุ่มตอนช่องว่างแล้วขึ้น error นี้:
+ValueError: could not convert string to float: ''
+ฉันอยากให้ขึ้นข้อความเตือนแทนการพัง
+1) อธิบายสาเหตุสั้น ๆ ก่อน 2) แก้ให้น้อยที่สุด 3) บอกว่าแก้บรรทัดไหน
+(วางโค้ดทั้งไฟล์ต่อจากนี้)</div></div></div></div>
+    </section>
+
+    <!-- ===== ภารกิจ ===== -->
+    <section class="card lab ms">
+        <h2>⚡ ภารกิจ: เครื่องคิดเลขกฎของโอห์ม <span class="muted" style="font-size:15px">(45 นาที · ทำเองทั้ง 7 ขั้น)</span></h2>
+        <div class="step"><input type="checkbox" data-k="4.1"><div><b class="do">4.1 สเปก</b> ต้องมีอย่างน้อย: QMainWindow · ช่องกรอก V (โวลต์) และ R (โอห์ม) พร้อมป้าย · ปุ่ม “คำนวณกระแส” · แสดง I เป็น <b>mA ทศนิยม 2 ตำแหน่ง</b> · ช่องว่าง/ตัวอักษร/R ≤ 0 ต้อง<b>เตือน ไม่พัง</b> · มี status bar → เขียนลงใบงานข้อ 5.1</div></div>
+        <div class="step"><input type="checkbox" data-k="4.2"><div><b class="do">4.2 สั่ง AI</b> เขียน prompt <b>เอง</b> (ใช้ 5 ส่วน: บทบาท · ไลบรารี · สเปก · ข้อจำกัด · ขอคำอธิบาย) จดทุก prompt ลง prompt log ข้อ 5.2</div></div>
+        <div class="step"><input type="checkbox" data-k="4.3"><div><b class="do">4.3 อ่าน + รัน</b> หา 4 ชิ้นหลัก และบรรทัดที่คำนวณ I ให้เจอ (ครูจะสุ่มถาม)
+            <div class="shotrow"><div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม"><img src="img/ohm-ok.png" alt="ตัวอย่าง I = 12.00 mA"></div><div class="qtwin" data-title="เครื่องคิดเลขกฎของโอห์ม"><img src="img/ohm-r0.png" alt="ตัวอย่างเตือน R ต้องมากกว่า 0"></div></div>
+            <p class="muted" style="margin:0">ตัวอย่างหน้าตา ของเราไม่ต้องเหมือนเป๊ะ</p></div></div>
+        <div class="step"><input type="checkbox" data-k="4.4"><div><b class="do">4.4 ทดสอบ</b> ครบ 6 กรณีในใบงานข้อ 5.3 ผิดตรงไหนกลับไปขั้น ⑥ ⑦</div></div>
+        <div class="step"><input type="checkbox" data-k="4.5"><div><b class="do">4.5 ส่งงาน</b> ใน Google Classroom: <code>ohm_calc.py</code> + รูปกรณี 1 และ 4 + ใบงานนี้
+            <p style="margin:4px 0 0"><span class="ck">📷 จุดตรวจ 4</span> ส่งรูปกรณี R = 0 บนสไลด์ · โบนัส: เพิ่มช่องคำนวณกำลังไฟฟ้า P = V × I</p></div></div>
+    </section>
+    </div>
+
+    <!-- ===================== ใบงานกระดาษ ===================== -->
+    <main class="ws card" id="ws">
+        <div class="head">
+            <b>ใบงานที่ 1.1 GUI ตัวแรกกับผู้ช่วย AI</b><br>
+            วิชาเทคนิคการอินเตอร์เฟซ (30105-2004) · หน่วยที่ 1 งานสร้างและจัดวางวิดเจ็ตพื้นฐาน · สัปดาห์ที่ 1
+            <div class="line" style="margin-top:4px"><span>ชื่อ-สกุล ......................................................</span><span>ชั้น ...............</span><span>เลขที่ ........</span><span>คะแนน ............ / 20</span></div>
+        </div>
+
+        <h2>1. ผลลัพธ์การเรียนรู้จากการปฏิบัติงาน</h2>
+        <p>ติดตั้งเครื่องมือพัฒนา GUI ด้วย Python และ PySide6 ใช้ผู้ช่วย AI เขียนโปรแกรมสร้างหน้าต่างและวิดเจ็ตพื้นฐาน อ่านโค้ด ทดสอบ แก้ข้อผิดพลาดจาก Traceback และปรับปรุงโปรแกรมให้ตรงสเปกได้</p>
+        <h2>2. จุดประสงค์เชิงพฤติกรรม</h2>
+        <ol><li>ติดตั้ง Python, PySide6 และเครื่องมือพัฒนาได้ถูกต้อง</li>
+            <li>เขียนสเปกและ prompt สั่ง AI สร้างโปรแกรม GUI ที่มี QLabel, QLineEdit, QPushButton ได้</li>
+            <li>ระบุส่วนประกอบหลักของโค้ด GUI และทดสอบโปรแกรมตามตารางกรณีทดสอบได้</li>
+            <li>อ่าน Traceback และแก้ไขข้อผิดพลาดได้ ด้วยความรอบคอบ ซื่อสัตย์ และใช้ AI อย่างรับผิดชอบ</li></ol>
+        <h2>3. เครื่องมือ วัสดุ และอุปกรณ์</h2>
+        <ul><li>คอมพิวเตอร์ Windows 10/11 · Python 3.10 ขึ้นไป · PySide6-Essentials · VS Code (หรือ Antigravity) + ส่วนขยาย Python</li>
+            <li>ผู้ช่วย AI: GitHub Copilot ใน VS Code หรือแชต AI บนเว็บ · ไฟล์ประกอบจากหน้าเว็บใบงาน</li></ul>
+        <h2>4. ข้อควรระวัง / กติกา</h2>
+        <div class="warn avoid"><ol style="margin:0">
+            <li>เก็บงานในโฟลเดอร์ <b>C:\gui-lab</b> ตั้งชื่อไฟล์ภาษาอังกฤษ ไม่เว้นวรรค</li>
+            <li>ห้ามใส่ข้อมูลส่วนตัว (รหัสผ่าน เลขบัตรประชาชน เบอร์โทร) ลงใน prompt</li>
+            <li>โค้ดที่ส่งต้อง<b>อธิบายได้</b> ครูจะสุ่มถาม · ต้องทดสอบเองทุกครั้ง อย่าเชื่อ AI ทันที</li>
+        </ol></div>
+
+        <h2>5. บันทึกผลการปฏิบัติงาน</h2>
+        <h3>ตอนที่ 1 ติดตั้งเครื่องมือ (Lab 0)</h3>
+        <p>Python เวอร์ชัน <span class="fl"></span> &nbsp; PySide6 เวอร์ชัน <span class="fl"></span> &nbsp; ผู้ช่วย AI ที่ใช้ ☐ Copilot ☐ เว็บ: <span class="fl"></span></p>
+        <p>ปัญหาที่เจอระหว่างติดตั้ง และวิธีแก้ <span class="fl w"></span></p>
+
+        <h3 class="p2">ตอนที่ 2 หน้าต่างแรก (Lab 1)</h3>
+        <div class="avoid"><p>2.1 prompt ที่ใช้ (เขียนย่อได้)</p>
+        <div class="lines"><div></div><div></div></div>
+        <p class="avoid">2.2 เขียนเลขบรรทัดในโค้ดของเรา (หรือ lab1_window.py) ที่ทำหน้าที่ต่อไปนี้</p>
+        <table class="grid avoid"><tr><th>หน้าที่</th><th style="width:10em">บรรทัดที่</th></tr>
+            <tr><td>สร้างตัวแอป (QApplication)</td><td></td></tr>
+            <tr><td>สร้างหน้าต่าง ตั้งชื่อ ตั้งขนาด</td><td></td></tr>
+            <tr><td>สร้าง widget ข้อความ</td><td></td></tr>
+            <tr><td>ใส่ widget ลง layout แล้ววางในหน้าต่าง</td><td></td></tr>
+            <tr><td>โชว์หน้าต่าง และเริ่ม event loop</td><td></td></tr></table></div>
+        <div class="avoid"><p>2.3 สิ่งที่แก้เอง <span class="fl w"></span><br>สิ่งที่สั่ง AI แก้ และ AI แก้บรรทัดไหน <span class="fl w"></span></p>
+
+        <h3>ตอนที่ 3 โปรแกรมทักทาย (Lab 2)</h3>
+        <p>3.1 การ์ดสเปก</p>
+        <table class="grid blank avoid"><tr><th style="width:9em">หัวข้อ</th><th>รายละเอียด</th></tr>
+            <tr><td>หน้าจอมีอะไร</td><td></td></tr><tr><td>รับอะไร</td><td></td></tr><tr><td>ทำอะไร / แสดงอะไร</td><td></td></tr><tr><td>กรณีพิเศษ</td><td></td></tr></table></div>
+        <div class="avoid"><p>3.2 ตารางทดสอบ (เขียน ✔ หรือ ✘ และสิ่งที่เห็นจริง)</p>
+        <table class="grid avoid"><tr><th>#</th><th>ทำอะไร</th><th>ควรได้</th><th>v1 ได้จริง</th><th>รุ่นสุดท้ายได้จริง</th></tr>
+            <tr><td class="n">1</td><td>พิมพ์ชื่อ กดปุ่ม</td><td>สวัสดี (ชื่อ) 👋</td><td></td><td></td></tr>
+            <tr><td class="n">2</td><td>ไม่พิมพ์อะไร กดปุ่ม</td><td>เตือนให้พิมพ์ชื่อ</td><td></td><td></td></tr>
+            <tr><td class="n">3</td><td>พิมพ์แต่เว้นวรรค กดปุ่ม</td><td>เตือนให้พิมพ์ชื่อ</td><td></td><td></td></tr>
+            <tr><td class="n">4</td><td>พิมพ์ชื่อแล้วกด Enter</td><td>ทักทายเหมือนกดปุ่ม</td><td></td><td></td></tr></table></div>
+
+        <h3>ตอนที่ 4 คลินิกบั๊ก</h3>
+        <table class="grid tall avoid"><tr><th>บั๊ก</th><th>ชนิด error (บรรทัดล่างสุด)</th><th style="width:5em">บรรทัดที่</th><th>สาเหตุ</th><th>วิธีแก้</th></tr>
+            <tr><td class="n">1</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="n">2</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="n">3</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="n">4</td><td></td><td></td><td></td><td></td></tr></table>
+
+        <h3>ตอนที่ 5 ภารกิจ: เครื่องคิดเลขกฎของโอห์ม</h3>
+        <div class="avoid"><p>5.1 การ์ดสเปก</p>
+        <table class="grid blank avoid"><tr><th style="width:9em">หัวข้อ</th><th>รายละเอียด</th></tr>
+            <tr><td>หน้าจอมีอะไร</td><td></td></tr><tr><td>รับอะไร</td><td></td></tr><tr><td>คำนวณ / แสดงอะไร</td><td></td></tr><tr><td>กรณีพิเศษ</td><td></td></tr></table></div>
+        <div class="avoid"><p>5.2 prompt log (จดทุกครั้งที่สั่ง AI)</p>
+        <table class="grid tall avoid"><tr><th>ครั้งที่</th><th>prompt (ย่อ)</th><th>AI ทำอะไรให้</th><th>ผลหลังรัน/ทดสอบ</th></tr>
+            <tr><td class="n">1</td><td></td><td></td><td></td></tr><tr><td class="n">2</td><td></td><td></td><td></td></tr><tr><td class="n">3</td><td></td><td></td><td></td></tr></table></div>
+        <div class="avoid"><p>5.3 ตารางทดสอบ</p>
+        <table class="grid avoid"><tr><th>#</th><th>V</th><th>R</th><th>ควรได้</th><th>ได้จริง</th><th style="width:3.5em">ผ่าน</th></tr>
+            <tr><td class="n">1</td><td>12</td><td>1000</td><td>I = 12.00 mA</td><td></td><td></td></tr>
+            <tr><td class="n">2</td><td>5</td><td>220</td><td>I = 22.73 mA</td><td></td><td></td></tr>
+            <tr><td class="n">3</td><td>3.3</td><td>330</td><td>I = 10.00 mA</td><td></td><td></td></tr>
+            <tr><td class="n">4</td><td>12</td><td>0</td><td>เตือน R ต้องมากกว่า 0 ไม่พัง</td><td></td><td></td></tr>
+            <tr><td class="n">5</td><td>(ว่าง)</td><td>1000</td><td>เตือนให้ใส่ตัวเลข ไม่พัง</td><td></td><td></td></tr>
+            <tr><td class="n">6</td><td>abc</td><td>100</td><td>เตือนให้ใส่ตัวเลข ไม่พัง</td><td></td><td></td></tr></table></div>
+
+        <h2>6. คำถามท้ายใบงาน</h2>
+        <ol class="avoid"><li>ถ้าลืม <code>app.exec()</code> โปรแกรมจะเป็นอย่างไร เพราะอะไร<div class="lines"><div></div></div></li>
+            <li>ทำไม <code>text()</code> ของ QLineEdit จึงต้องแปลงด้วย <code>float()</code> ก่อนคำนวณ<div class="lines"><div></div></div></li>
+            <li>วันนี้ AI พลาดอะไรบ้าง และเรารู้ได้อย่างไรว่าพลาด<div class="lines"><div></div></div></li></ol>
+
+        <h2 class="avoid">7. จุดตรวจ (ครูลงชื่อ)</h2>
+        <table class="grid avoid"><tr><th>จุดตรวจ</th><th>สิ่งที่ต้องเห็น</th><th style="width:7em">เวลา</th><th style="width:9em">ลงชื่อครู</th></tr>
+            <tr><td class="n">1</td><td>หน้าต่าง “ตรวจเครื่อง” + ผู้ช่วย AI พร้อม</td><td></td><td></td></tr>
+            <tr><td class="n">2</td><td>หน้าต่างแรก v2 ที่ปรับแล้ว</td><td></td><td></td></tr>
+            <tr><td class="n">3</td><td>โปรแกรมทักทาย เตือนช่องว่างได้</td><td></td><td></td></tr>
+            <tr><td class="n">4</td><td>ภารกิจโอห์ม ผ่าน 6 กรณี + อธิบายโค้ดได้</td><td></td><td></td></tr></table>
+
+        <h2 class="avoid">8. เกณฑ์การประเมิน (20 คะแนน ผ่าน 16 คะแนน)</h2>
+        <table class="grid score avoid"><tr><th class="n">ที่</th><th>รายการประเมิน</th><th>คะแนนเต็ม</th><th>ได้</th></tr>
+            <tr><td class="n">1</td><td>ผ่านจุดตรวจ 1–3 (ติดตั้ง · หน้าต่างแรก · โปรแกรมทักทาย)</td><td>3</td><td></td></tr>
+            <tr><td class="n">2</td><td>การ์ดสเปกภารกิจครบ ชัดเจน (ข้อ 5.1)</td><td>3</td><td></td></tr>
+            <tr><td class="n">3</td><td>prompt log มีบริบท ใช้ prompt 5 ส่วน (ข้อ 5.2)</td><td>3</td><td></td></tr>
+            <tr><td class="n">4</td><td>โปรแกรมภารกิจทำงานตามสเปก</td><td>5</td><td></td></tr>
+            <tr><td class="n">5</td><td>ตารางทดสอบครบ ผลจริงถูกต้อง (ข้อ 3.2, 5.3) และตารางบั๊ก (ข้อ 4)</td><td>3</td><td></td></tr>
+            <tr><td class="n">6</td><td>อธิบายโค้ดได้เมื่อครูสุ่มถาม</td><td>3</td><td></td></tr>
+            <tr><td></td><td style="text-align:right"><b>รวม</b></td><td>20</td><td></td></tr></table>
+    </main>
+</div>
+<script src="../assets/js/code.js"></script>
+<script>
+(function () {
+    const KEY = 'itf-w01-lab';
+    let st = {};
+    try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { st = {}; }
+    const boxes = Array.from(document.querySelectorAll('.step input[type=checkbox]'));
+    function draw() {
+        let n = 0;
+        boxes.forEach(b => { b.checked = !!st[b.dataset.k]; b.closest('.step').classList.toggle('done', b.checked); if (b.checked) n++; });
+        document.getElementById('bar').style.width = (n / boxes.length * 100) + '%';
+        document.getElementById('ptxt').textContent = `ทำแล้ว ${n} / ${boxes.length} ขั้น`;
+    }
+    boxes.forEach(b => b.addEventListener('change', () => {
+        st[b.dataset.k] = b.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* ใช้ได้แม้บันทึกไม่ได้ */ }
+        draw();
+    }));
+    document.getElementById('resetSteps').addEventListener('click', () => { st = {}; try { localStorage.removeItem(KEY); } catch (e) {} draw(); });
+    draw();
+})();
+</script>
+</body>
+</html>

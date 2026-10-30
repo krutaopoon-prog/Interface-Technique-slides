@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือติดตั้งเครื่องมือ · วิชาเทคนิคการอินเตอร์เฟซ</title>
+<meta name="description" content="คู่มือติดตั้ง Python, VS Code, PySide6 และผู้ช่วย AI สำหรับวิชาเทคนิคการอินเตอร์เฟซ พร้อมวิธีแก้ปัญหาที่เจอบ่อยและการติดตั้งแบบไม่มีอินเทอร์เน็ต">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&family=Sarabun:wght@400;700&family=Prompt:wght@500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/theme.css">
+<link rel="stylesheet" href="assets/css/code.css">
+<style>
+    h2 { margin-top: 0; }
+    .card h3 { margin: 14px 0 4px; font-size: 18px; }
+    .see { background: var(--green-soft); border-radius: 10px; padding: 6px 12px; margin: 6px 0; }
+    .see::before { content: '👀 ควรเห็น: '; font-weight: 700; color: var(--green); }
+    table.fix { width: 100%; border-collapse: collapse; font-size: 15px; }
+    table.fix th, table.fix td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+    table.fix th { background: var(--cream); font-family: var(--font-display); font-weight: 500; }
+    .note { background: var(--sun-soft); border-left: 5px solid var(--sun); border-radius: 0 10px 10px 0; padding: 8px 14px; margin: 8px 0; }
+    .toc a { display: inline-block; margin: 2px 10px 2px 0; }
+    ol.big > li { margin-bottom: 6px; }
+</style>
+</head>
+<body class="doc">
+<div class="doc-wrap">
+    <nav class="topbar no-print"><a href="index.html">← หน้าแรก</a> · <a href="prompts.html">คลัง prompt</a> · <a href="w01/lab.html">ใบงาน 1.1</a></nav>
+
+    <header class="card">
+        <span class="chip">ใช้ได้ทุกสัปดาห์</span>
+        <h1 style="margin-top:8px">🧰 คู่มือติดตั้งเครื่องมือ</h1>
+        <p class="muted" style="margin:0 0 6px">Python + VS Code + PySide6 + ผู้ช่วย AI บน Windows 10/11 · ใช้เวลาประมาณ 30–40 นาที (ขึ้นกับความเร็วเน็ต)</p>
+        <p class="toc" style="margin:0"><a href="#py">1. Python</a><a href="#code">2. VS Code</a><a href="#venv">3. โฟลเดอร์ + venv</a><a href="#pyside">4. PySide6</a><a href="#ai">5. ผู้ช่วย AI</a><a href="#fix">ปัญหาที่เจอบ่อย</a><a href="#teacher">สำหรับครู</a></p>
+    </header>
+
+    <section class="card" id="py">
+        <h2>1. ติดตั้ง Python</h2>
+        <ol class="big">
+            <li>เข้า <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org/downloads</a> โหลด <b>Python install manager</b> (หรือค้นหา “Python install manager” ใน Microsoft Store)</li>
+            <li>ติดตั้งแล้ว <b>เปิด Terminal ใหม่</b> (PowerShell) พิมพ์
+                <pre class="code term" data-lang="term" data-copy>py install 3.15</pre></li>
+            <li>ถ้าถามว่าจะเพิ่มโฟลเดอร์ลง PATH ไหม ให้ตอบ <b>y</b></li>
+            <li>ตรวจ: <pre class="code term" data-lang="term" data-copy>python --version</pre><div class="see"><code>Python 3.15.x</code> (PySide6 6.12 ใช้ได้กับ Python 3.10 ขึ้นไป)</div></li>
+        </ol>
+        <p class="muted" style="font-size:14px">ที่มา: Python Software Foundation, <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">Using Python on Windows</a> · <a href="https://pypi.org/project/PySide6/" target="_blank" rel="noopener">PySide6 บน PyPI</a></p>
+    </section>
+
+    <section class="card" id="code">
+        <h2>2. ติดตั้ง VS Code (หรือ Antigravity)</h2>
+        <ol class="big">
+            <li>โหลดจาก <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a> ติดตั้งตามค่าเริ่มต้น (ติ๊ก “Add to PATH” ได้)</li>
+            <li>เปิด VS Code → กด <b>Ctrl+Shift+X</b> → ค้นหา <b>Python</b> (ผู้ผลิต Microsoft) → Install</li>
+        </ol>
+        <div class="note">💡 <b>เครื่อง RAM 4 GB ใช้ VS Code</b> (ต้องการ RAM ประมาณ 1 GB) · <b>Google Antigravity</b> มี AI agent ในตัว ใช้งานหนักกว่า เหมาะกับเครื่องที่บ้านที่สเปกดี หน้าตาและวิธีติดตั้งส่วนขยาย Python คล้าย VS Code
+            (<a href="https://code.visualstudio.com/docs/supporting/requirements" target="_blank" rel="noopener">VS Code requirements</a> · <a href="https://antigravity.google/docs/getting-started" target="_blank" rel="noopener">Antigravity docs</a>)</div>
+    </section>
+
+    <section class="card" id="venv">
+        <h2>3. สร้างโฟลเดอร์งาน + venv</h2>
+        <p><b>venv</b> = กล่องเครื่องมือส่วนตัวของโปรเจกต์ ไลบรารีที่ติดตั้งจะอยู่ในกล่องนี้ ไม่ปนกับงานอื่น</p>
+        <ol class="big">
+            <li>VS Code → <b>File → Open Folder…</b> → สร้างและเลือกโฟลเดอร์ <code>C:\gui-lab</code> (ใช้ชื่อสั้น ๆ ไม่มีภาษาไทย ไม่เว้นวรรค)</li>
+            <li>เปิด Terminal ใน VS Code: <b>Ctrl+`</b> (ปุ่มใต้ Esc) แล้วพิมพ์
+                <pre class="code term" data-lang="term" data-copy>python -m venv .venv
+.venv\Scripts\Activate.ps1</pre>
+                <div class="see"><code>(.venv) PS C:\gui-lab&gt;</code></div></li>
+            <li>VS Code มักถามว่าจะใช้ environment นี้ไหม → ตอบ <b>Yes</b> (หรือคลิกเลข Python มุมขวาล่าง เลือกตัวที่มี <code>.venv</code>)</li>
+        </ol>
+        <p class="muted" style="font-size:14px">อีกวิธี: กด <b>Ctrl+Shift+P</b> → <b>Python: Create Environment</b> → Venv · ที่มา: <a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">venv documentation</a></p>
+    </section>
+
+    <section class="card" id="pyside">
+        <h2>4. ติดตั้ง PySide6</h2>
+        <pre class="code term" data-lang="term" data-copy>pip install PySide6-Essentials</pre>
+        <div class="see"><code>Successfully installed PySide6-Essentials-6.12.0 shiboken6-6.12.0</code></div>
+        <div class="note">📦 <b>ทำไมใช้ PySide6-Essentials?</b> ดาวน์โหลดราว 83 MB มีทุกอย่างที่ใช้ในหน่วยแรก ๆ (หน้าต่าง ปุ่ม ช่องพิมพ์ เครือข่าย และ Qt Designer)
+            ส่วน <code>pip install PySide6</code> ตัวเต็มต้องโหลดราว 260 MB (รวม WebEngine) ซึ่งยังไม่จำเป็น · หน่วยที่ใช้พอร์ตอนุกรมและกราฟ จะติดตั้งเพิ่ม <code>pip install PySide6-Addons</code> (ราว 40 MB)</div>
+        <h3>ตรวจเครื่อง</h3>
+        <p>ดาวน์โหลด <a href="w01/code/check_setup.py" download>check_setup.py</a> ไว้ใน <code>C:\gui-lab</code> แล้วรัน
+            <pre class="code term" data-lang="term" data-copy>python check_setup.py</pre></p>
+        <div class="see">ข้อความ <code>PySide6 เวอร์ชัน: 6.x</code> และหน้าต่าง “✅ เครื่องพร้อมแล้ว!” เด้งขึ้นมา</div>
+        <p class="muted" style="font-size:14px">ขนาดไฟล์อ้างอิงจาก PyPI (PySide6 6.12.0) และทดสอบติดตั้งจริงบน Windows 11 กับ Python 3.15.2 เมื่อ 30 ต.ค. 2569</p>
+    </section>
+
+    <section class="card" id="ai">
+        <h2>5. เปิดผู้ช่วย AI (เลือก 1 ทาง)</h2>
+        <h3>🅰️ GitHub Copilot ใน VS Code</h3>
+        <ol class="big">
+            <li>คลิกไอคอน Copilot ที่แถบล่าง (Status Bar) → <b>Use AI Features</b></li>
+            <li>ล็อกอินด้วยบัญชี <b>GitHub</b> (ยังไม่มีให้สมัครที่ github.com) → ถ้ายังไม่มีแผน ระบบจะให้ใช้ <b>Copilot Free</b> ซึ่งมีโควตารายเดือน</li>
+            <li>นักศึกษาที่ยืนยันตัวกับ GitHub Education ใช้ <b>Copilot Student</b> ได้ฟรี</li>
+        </ol>
+        <h3>🅱️ แชต AI บนเว็บ (เครื่องสเปกต่ำ / โควตาหมด)</h3>
+        <p>เปิด Gemini, ChatGPT หรือ Claude ในเบราว์เซอร์ → พิมพ์ prompt → คัดลอกโค้ดมาวางในไฟล์ .py ใน VS Code · วงจรทำงาน 7 ขั้นเหมือนเดิมทุกอย่าง</p>
+        <p class="muted" style="font-size:14px">ที่มา: <a href="https://code.visualstudio.com/docs/copilot/setup" target="_blank" rel="noopener">Set up Copilot in VS Code</a> · <a href="https://docs.github.com/en/copilot/get-started/plans" target="_blank" rel="noopener">Plans for GitHub Copilot</a> · โปรดตรวจเงื่อนไขอายุและบัญชีของแต่ละบริการก่อนใช้</p>
+    </section>
+
+    <section class="card" id="fix">
+        <h2>🩹 ปัญหาที่เจอบ่อย</h2>
+        <table class="fix">
+            <tr><th>เห็นข้อความ</th><th>แปลว่า</th><th>แก้ยังไง</th></tr>
+            <tr><td><code>Python was not found…</code> หรือ <code>'python' is not recognized</code></td><td>ยังไม่มี Python หรือเปิด Terminal ไว้ก่อนติดตั้ง</td><td>ทำข้อ 1 แล้ว<b>ปิดเปิด VS Code ใหม่</b></td></tr>
+            <tr><td><code>Activate.ps1 cannot be loaded because running scripts is disabled on this system</code></td><td>Windows ห้ามรันสคริปต์ PowerShell</td><td><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code> ตอบ <b>Y</b> แล้วเปิด venv ใหม่</td></tr>
+            <tr><td><code>ModuleNotFoundError: No module named 'PySide6'</code></td><td>ไม่ได้เปิด venv หรือ VS Code ใช้ Python ผิดตัว</td><td>คลิกเลข Python มุมขวาล่าง เลือกตัวที่มี <code>.venv</code> · หรือพิมพ์ <code>.venv\Scripts\Activate.ps1</code></td></tr>
+            <tr><td><code>ERROR: Could not install packages due to an OSError</code> … <code>Long Path</code></td><td>โฟลเดอร์งานอยู่ลึกเกินไป ชื่อไฟล์ใน PySide6 ยาวมาก (Windows จำกัดราว 260 ตัวอักษร)</td><td>ใช้โฟลเดอร์สั้น <code>C:\gui-lab</code> แล้วสร้าง venv ใหม่</td></tr>
+            <tr><td>pip ช้ามาก / ค้าง / <code>Read timed out</code></td><td>เน็ตช้า หรือทั้งห้องโหลดพร้อมกัน</td><td>ใช้ไฟล์ติดตั้งจาก USB ครู (ดูหัวข้อสำหรับครู)</td></tr>
+            <tr><td>รันแล้วไม่มีหน้าต่าง แต่ Terminal ค้าง</td><td>ลืม <code>window.show()</code></td><td>กด 🗑️ ปิด Terminal แล้วเพิ่ม <code>window.show()</code></td></tr>
+            <tr><td>หน้าต่างแวบขึ้นแล้วหาย</td><td>ลืม <code>sys.exit(app.exec())</code></td><td>เพิ่มบรรทัดนี้ไว้ท้ายไฟล์</td></tr>
+        </table>
+    </section>
+
+    <section class="card" id="teacher">
+        <h2>👩‍🏫 สำหรับครู: เตรียมห้องคอมก่อนคาบ</h2>
+        <ol class="big">
+            <li><b>ติดตั้ง Python และ VS Code ไว้ก่อน</b>ทุกเครื่อง (ประหยัดเวลาคาบได้ 20 นาที)</li>
+            <li><b>เตรียมไฟล์ติดตั้ง PySide6 ใส่ USB / แชร์โฟลเดอร์</b> (ทำบนเครื่องที่มีเน็ต และ Python รุ่นเดียวกับห้องคอม):
+                <pre class="code term" data-lang="term" data-copy>pip download PySide6-Essentials -d D:\wheels</pre>
+                นักเรียนติดตั้งจาก USB โดยไม่ใช้เน็ต:
+                <pre class="code term" data-lang="term" data-copy>pip install --no-index --find-links D:\wheels PySide6-Essentials</pre></li>
+            <li>ติดตั้ง Python แบบไม่มีเน็ตก็ได้: <code>py install --download=D:\pyoffline 3.15</code> บนเครื่องที่มีเน็ต แล้ว <code>py install --source=D:\pyoffline\index.json 3.15</code> บนเครื่องในห้อง</li>
+            <li>ลองทำ <a href="w01/lab.html">ใบงาน 1.1</a> เองก่อน 1 รอบ และอ่านคู่มือครูในหน้าเฉลย 🔒</li>
+        </ol>
+        <p class="muted" style="font-size:14px">คำสั่ง <code>pip download</code> / <code>--no-index --find-links</code> เป็นวิธีมาตรฐานของ pip · คำสั่ง <code>py install --download/--source</code> จาก <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">Using Python on Windows</a></p>
+    </section>
+</div>
+<script src="assets/js/code.js"></script>
+</body>
+</html>

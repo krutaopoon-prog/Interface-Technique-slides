@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลังแม่แบบ prompt · วิชาเทคนิคการอินเตอร์เฟซ</title>
+<meta name="description" content="แม่แบบ prompt สำหรับสั่ง AI เขียนโปรแกรม GUI ด้วย PySide6 อธิบายโค้ด แก้ error ปรับทีละเรื่อง และสร้างกรณีทดสอบ คัดลอกไปใช้ได้ทันที">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&family=Sarabun:wght@400;700&family=Prompt:wght@500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/theme.css">
+<link rel="stylesheet" href="assets/css/code.css">
+<style>
+    h2 { margin-top: 0; }
+    .when { color: var(--ink-soft); margin: 0 0 4px; }
+    .fill { background: var(--sun-soft); border-radius: 4px; padding: 0 3px; }
+    .five { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+    .five div { border-radius: 12px; padding: 8px 10px; font-size: 15px; }
+    .five b { display: block; font: 500 16px var(--font-display); }
+    ul.tips li { margin-bottom: 4px; }
+</style>
+</head>
+<body class="doc">
+<div class="doc-wrap">
+    <nav class="topbar no-print"><a href="index.html">← หน้าแรก</a> · <a href="setup.html">คู่มือติดตั้ง</a> · <a href="w01/lab.html">ใบงาน 1.1</a></nav>
+
+    <header class="card">
+        <span class="chip">ใช้ได้ทั้งเทอม</span>
+        <h1 style="margin-top:8px">💬 คลังแม่แบบ prompt</h1>
+        <p class="muted" style="margin:0">กด 📋 คัดลอก แล้วแก้ตรง <span class="fill">[วงเล็บเหลี่ยม]</span> ให้เป็นงานของเรา · ใช้ได้กับ Copilot, Gemini, ChatGPT, Claude</p>
+    </header>
+
+    <section class="card">
+        <h2>prompt ที่ดีมี 5 ส่วน</h2>
+        <div class="five">
+            <div style="background:#e3d7ff"><b>① บทบาท</b>ให้ AI เป็นใคร</div>
+            <div style="background:var(--teal-soft)"><b>② ไลบรารี</b>PySide6 เท่านั้น ไฟล์เดียว</div>
+            <div style="background:var(--sun-soft)"><b>③ สเปก</b>หน้าจอ รับอะไร ทำอะไร กรณีพิเศษ</div>
+            <div style="background:var(--rose-soft)"><b>④ ข้อจำกัด</b>สั้น อ่านง่าย ชื่อตัวแปรสื่อความหมาย</div>
+            <div style="background:var(--green-soft)"><b>⑤ ขอเพิ่ม</b>อธิบาย / บอกว่าแก้บรรทัดไหน</div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>1. สร้างโปรแกรมใหม่</h2>
+        <p class="when">ใช้เมื่อ: เริ่มงานใหม่ มีการ์ดสเปกแล้ว</p>
+        <div class="prompt" data-copy><div class="pr-text">คุณเป็นครูสอนเขียนโปรแกรม Python สำหรับนักเรียนช่างอิเล็กทรอนิกส์
+เขียนโปรแกรมด้วย PySide6 เท่านั้น (ห้ามใช้ PyQt5 หรือ Tkinter) ไฟล์เดียว รันได้ทันที
+สเปก:
+- หน้าต่าง: [QMainWindow ชื่อ "..." ขนาด ...]
+- มี widget: [QLabel ..., QLineEdit ..., QPushButton ...] เรียงด้วย [QVBoxLayout]
+- เมื่อ [กดปุ่ม ...] ให้ [...]
+- กรณีพิเศษ: [ช่องว่าง / ตัวอักษร / ค่าศูนย์] ให้ [เตือนใน status bar ไม่ให้โปรแกรมพัง]
+ใช้ชื่อตัวแปรภาษาอังกฤษที่สื่อความหมาย ใส่คอมเมนต์ภาษาไทยสั้น ๆ
+แล้วอธิบายว่าแต่ละส่วนของโค้ดทำอะไร</div></div>
+    </section>
+
+    <section class="card">
+        <h2>2. ขอให้อธิบายโค้ด</h2>
+        <p class="when">ใช้เมื่อ: อ่านโค้ดแล้วไม่เข้าใจ (ต้องอธิบายให้ครูฟังได้!)</p>
+        <div class="prompt" data-copy><div class="pr-text">อธิบายโค้ด PySide6 ด้านล่างให้นักเรียน ปวส. ฟังทีละส่วน
+1) บอกว่าบรรทัดไหนคือ: สร้างแอป · สร้างหน้าต่าง · สร้าง widget · จัด layout · ต่อปุ่มกับฟังก์ชัน · show และ exec
+2) บรรทัด [เลขบรรทัด] ทำอะไร ทำไมต้องมี
+ใช้ภาษาง่าย ๆ ยกตัวอย่างเปรียบเทียบได้
+[วางโค้ดทั้งไฟล์]</div></div>
+    </section>
+
+    <section class="card">
+        <h2>3. แก้ error</h2>
+        <p class="when">ใช้เมื่อ: รันแล้วมีตัวแดง (Traceback) — คัดลอกมา<b>ทั้งหมด</b></p>
+        <div class="prompt fix" data-copy><div class="pr-text">โค้ด PySide6 ของฉันมี error ตอน [เปิดโปรแกรม / กดปุ่ม ... ตอนที่ ...]
+ข้อความ error ทั้งหมด:
+[วาง Traceback ทั้งหมด]
+ฉันอยากให้โปรแกรม [ทำอะไร]
+1) อธิบายสาเหตุสั้น ๆ ก่อน 2) แก้ให้น้อยที่สุด 3) บอกว่าแก้บรรทัดไหน
+[วางโค้ดทั้งไฟล์]</div></div>
+    </section>
+
+    <section class="card">
+        <h2>4. ปรับทีละเรื่อง</h2>
+        <p class="when">ใช้เมื่อ: โปรแกรมใช้ได้แล้ว อยากเพิ่ม/เปลี่ยน — <b>ครั้งละเรื่องเดียว</b> และเซฟรุ่นเก่าไว้ก่อน</p>
+        <div class="prompt" data-copy><div class="pr-text">จากโค้ด PySide6 ด้านล่าง ช่วย [เพิ่ม/เปลี่ยน ... เรื่องเดียว]
+ห้ามเปลี่ยนส่วนอื่นที่ทำงานอยู่แล้ว แก้ให้น้อยที่สุด
+แล้วบอกว่าเพิ่มหรือแก้บรรทัดไหน
+[วางโค้ดทั้งไฟล์]</div></div>
+    </section>
+
+    <section class="card">
+        <h2>5. ช่วยคิดกรณีทดสอบ</h2>
+        <p class="when">ใช้เมื่อ: อยากรู้ว่าควรลองกรอกอะไรบ้าง (แต่<b>ต้องทดสอบเอง</b>และคำนวณค่าที่ถูกเองด้วย)</p>
+        <div class="prompt" data-copy><div class="pr-text">โปรแกรม PySide6 ของฉันมีสเปกดังนี้: [วางการ์ดสเปก]
+ช่วยเสนอกรณีทดสอบ 6–8 กรณีเป็นตาราง: สิ่งที่กรอก/กด · ผลที่ควรได้
+ให้มีทั้งค่าปกติ ค่าขอบ ค่าว่าง ตัวอักษร และค่าที่ทำให้หารด้วยศูนย์</div></div>
+    </section>
+
+    <section class="card">
+        <h2>✅ เช็กลิสต์ก่อนเชื่อ AI</h2>
+        <ul class="tips">
+            <li>import จาก <code>PySide6</code> จริงไหม (ไม่ใช่ PyQt5 / tkinter)</li>
+            <li>ใช้ <code>app.exec()</code> (แบบใหม่) ไม่ใช่ <code>exec_()</code></li>
+            <li>แปลงข้อความเป็นตัวเลขด้วย <code>float()</code> และมี <code>try … except ValueError</code></li>
+            <li>รันแล้วผ่าน<b>ทุกกรณีในตารางทดสอบ</b> ไม่ใช่แค่กรณีสวย ๆ</li>
+            <li>เราอธิบายได้ทุกบรรทัดที่สำคัญ · ไม่มีข้อมูลส่วนตัวใน prompt</li>
+        </ul>
+    </section>
+</div>
+<script src="assets/js/code.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+/* ===========================================
+   CODE — กล่องโค้ด Python/ภาษาซี กล่อง Terminal กล่อง prompt และปุ่มคัดลอก (ใช้ได้ทั้งสไลด์และหน้าเอกสาร)
+   ฟอนต์โค้ด Courier Prime: เลข 0 ไม่มีขีดทับ ไม่มีจุดกลาง
+   =========================================== */
+:root {
+    --font-code: 'Courier Prime', 'Sarabun', monospace;
+    --code-k: #3b6fd4;      /* คำสั่ง if for while return */
+    --code-t: #00878f;      /* ชนิดข้อมูล int byte void */
+    --code-n: #c2561a;      /* ตัวเลข HIGH LOW */
+    --code-s: #2e8a50;      /* สตริง */
+    --code-c: #8a8494;      /* คอมเมนต์ */
+    --code-p: #b8364d;      /* #define #include */
+}
+
+pre.code {
+    font-family: var(--font-code);
+    font-size: 30px;
+    line-height: 1.38;
+    color: var(--ink);
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 20px;
+    padding: 16px 26px;
+    margin: 0;
+    white-space: pre;
+    overflow: hidden;
+    tab-size: 4;
+    text-align: left;
+    font-variant-numeric: normal;
+}
+pre.code.sm { font-size: 25px; line-height: 1.32; padding: 12px 20px; }
+pre.code.xs { font-size: 21px; line-height: 1.28; padding: 10px 16px; }
+pre.code.lg { font-size: 36px; }
+pre.code.bad { border-color: var(--rose); background: #fff8f9; }
+pre.code.good { border-color: var(--green); background: #f7fdf9; }
+pre.code.cols2 { column-count: 2; column-gap: 40px; column-rule: 2px dashed var(--line); }
+pre.code .l { break-inside: avoid; display: block; padding: 0 8px; margin: 0 -8px; border-radius: 8px; }
+pre.code.ln .l::before {
+    content: attr(data-n);
+    display: inline-block;
+    width: 2.2em;
+    margin-right: .8em;
+    text-align: right;
+    color: var(--code-c);
+    border-right: 2px solid var(--line);
+    padding-right: .5em;
+}
+pre.code .l.hl { background: var(--sun-soft); }
+pre.code .l.hl2 { background: var(--teal-soft); }
+pre.code .l.err { background: var(--rose-soft); }
+pre.code .k { color: var(--code-k); font-weight: 700; }
+pre.code .t { color: var(--code-t); font-weight: 700; }
+pre.code .n { color: var(--code-n); }
+pre.code .s { color: var(--code-s); }
+pre.code .c { color: var(--code-c); font-style: italic; font-family: var(--font-code); }
+pre.code .p { color: var(--code-p); font-weight: 700; }
+pre.code .f { color: #6b3fa0; }
+code.c, .slide code {
+    font-family: var(--font-code);
+    font-weight: 700;
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 0 .25em;
+    font-variant-numeric: normal;
+}
+
+/* --- Serial Monitor (แทนภาพผลรันจากโปรแกรมจำลอง) --- */
+.serial {
+    background: #1f2430;
+    color: #7ee29a;
+    font: 700 34px/1.4 var(--font-code);
+    border-radius: 18px;
+    padding: 0 0 14px;
+    overflow: hidden;
+    min-width: 360px;
+}
+.serial .bar { background: #343b4a; color: #c9cfdb; font: 500 22px var(--font-display); padding: 6px 18px; margin-bottom: 10px; }
+.serial .out { padding: 0 22px; white-space: pre; }
+
+/* --- ตารางไล่โค้ด (trace table) --- */
+table.t.trace td { font-family: var(--font-code); font-weight: 700; }
+table.t.trace td.th { font-family: var(--font-body); font-weight: 400; }
+
+/* --- แผนภาพหน่วยความจำ (union / struct) --- */
+.mem { display: flex; gap: 0; font-family: var(--font-code); }
+.mem .cell { width: 150px; text-align: center; border: 3px solid var(--ink); margin-left: -3px; background: #fff; padding: 8px 0; font-size: 34px; font-weight: 700; }
+.mem .cell small { display: block; font: 400 20px var(--font-body); color: var(--ink-soft); }
+
+/* --- ผังงาน SVG ---
+   <svg class="fc" viewBox="…"> + <rect class="s term" rx=…> / <rect class="s"> / <polygon class="s dec"> / <circle class="s con">
+   ลูกศร <path class="a" d="…"/> (หัวลูกศรสร้างอัตโนมัติด้วย code.js) ป้าย <text class="lbl"> */
+svg.fc { overflow: visible; display: block; width: 100%; height: auto; }
+svg.fc .s { fill: #fff; stroke: var(--sec, var(--teal)); stroke-width: 4; stroke-linejoin: round; }
+svg.fc .s.term { fill: var(--sec-soft, var(--teal-soft)); }
+svg.fc .s.dec { fill: var(--sun-soft); stroke: #c58a00; }
+svg.fc .s.io { fill: var(--blue-soft); stroke: var(--blue); }
+svg.fc .s.sub { fill: #fff; }
+svg.fc .s.err { stroke: var(--rose); fill: var(--rose-soft); }
+svg.fc .s.new { stroke: var(--green); fill: var(--green-soft); stroke-dasharray: 10 6; }
+svg.fc .ln { stroke: var(--sec, var(--teal)); stroke-width: 4; fill: none; }
+svg.fc text { font: 500 26px 'Kanit', sans-serif; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+svg.fc text.code { font: 700 25px var(--font-code); }
+svg.fc text.lbl { font: 500 22px 'Kanit', sans-serif; fill: var(--ink-soft); }
+svg.fc text.yes { fill: var(--green); }
+svg.fc text.no { fill: var(--rose); }
+svg.fc .a { stroke: var(--ink); stroke-width: 3.5; fill: none; marker-end: url(#fc-ah); }
+svg.fc .a.nohead { marker-end: none; }
+
+/* --- หน้าเอกสาร (แบบฝึกหัด / แบบทดสอบ / เฉลย) --- */
+body.doc pre.code { font-size: 15px; line-height: 1.4; padding: 8px 12px; border-radius: 10px; margin: 6px 0; overflow-x: auto; }
+body.doc pre.code.ln .l::before { width: 1.8em; }
+body.doc code.c { font-size: .95em; }
+body.doc svg.fc { max-width: 100%; height: auto; }
+body.doc svg.fc text { font-size: 26px; }
+@media print {
+    pre.code { border-color: #999; background: #fff !important; }
+    pre.code .l.hl, pre.code .l.hl2, pre.code .l.err { background: #eee !important; }
+    code.c { background: none !important; }
+}
+
+/* --- Python: คลาส Qt ใช้สี t, ตัวตกแต่ง @ ใช้สี p --- */
+
+/* --- หน้าจอ Terminal (data-lang="term") --- */
+pre.code.term { background: #1f2430; color: #d7dce6; border-color: #343b4a; }
+pre.code.term .tr-err { color: #ff8fa0; font-weight: 700; }
+pre.code.term .l.hl { background: rgba(247, 183, 51, .28); }
+pre.code.term .l.err { background: rgba(214, 69, 93, .35); }
+
+/* --- ปุ่มคัดลอก --- */
+.has-cp { position: relative; }
+.cp-btn {
+    position: absolute; top: 10px; right: 12px;
+    font: 500 20px var(--font-display, 'Kanit', sans-serif);
+    background: #fff; color: var(--ink); border: 2px solid var(--line); border-radius: 12px;
+    padding: 4px 14px; cursor: pointer; opacity: .9;
+}
+.cp-btn:hover { border-color: var(--teal); color: var(--teal); opacity: 1; }
+pre.code.term .cp-btn { background: #343b4a; color: #fff; border-color: #4a5366; }
+
+/* --- กล่อง prompt (ข้อความที่พิมพ์สั่ง AI) --- */
+.prompt {
+    position: relative;
+    background: #f3efff; border: 2px solid #c9b8f2; border-radius: 22px 22px 22px 6px;
+    padding: 16px 26px 16px 26px; font-size: 32px; line-height: 1.45; text-align: left;
+}
+.prompt::before {
+    content: '🧑‍💻 เราพิมพ์สั่ง AI'; display: block;
+    font: 500 22px var(--font-display, 'Kanit', sans-serif); color: #6b3fa0; margin-bottom: 4px;
+}
+.prompt.bad { background: #fff6f0; border-color: #f2c2a0; }
+.prompt.bad::before { content: '🧑‍💻 prompt กว้าง ๆ'; color: var(--orange); }
+.prompt.good::before { content: '🧑‍💻 prompt ที่ดี'; }
+.prompt.fix::before { content: '🧑‍💻 ขอให้ AI ช่วยแก้'; }
+.prompt .pr-text { white-space: pre-line; }
+.prompt b.tag { font: 600 .82em var(--font-display, 'Kanit', sans-serif); padding: 0 .3em; border-radius: 6px; }
+.prompt .t-role { background: #e3d7ff; } .prompt .t-lib { background: var(--teal-soft); }
+.prompt .t-spec { background: var(--sun-soft); } .prompt .t-rule { background: var(--rose-soft); } .prompt .t-ask { background: var(--green-soft); }
+.prompt.sm { font-size: 26px; padding: 12px 20px; }
+.prompt.xs { font-size: 22px; padding: 10px 18px; }
+.ai-reply {
+    background: #fff; border: 2px solid var(--line); border-radius: 22px 22px 6px 22px;
+    padding: 14px 24px; font-size: 30px; line-height: 1.45;
+}
+.ai-reply::before { content: '🤖 AI ตอบ'; display: block; font: 500 22px var(--font-display, 'Kanit', sans-serif); color: var(--teal); margin-bottom: 4px; }
+
+@media print {
+    .cp-btn { display: none !important; }
+    pre.code.term { background: #fff; color: #222; border-color: #999; }
+    pre.code.term .tr-err { color: #b00020; }
+}
+.prompt.has-cp::before { height: 40px; line-height: 40px; }
+.prompt .cp-btn { top: 8px; }
+.prompt.bad .pr-text { color: var(--ink); font-weight: 400; }
+
+/* --- ขนาดสำหรับหน้าเอกสาร (body.doc) --- */
+.doc pre.code { font-size: 15px; line-height: 1.45; padding: 10px 14px; border-radius: 12px; overflow-x: auto; margin: 8px 0; }
+.doc pre.code.term { white-space: pre-wrap; word-break: break-word; }
+.doc .prompt { font-size: 16px; line-height: 1.6; padding: 10px 16px; border-radius: 14px 14px 14px 4px; margin: 8px 0; }
+.doc .prompt::before { font-size: 13px; }
+.doc .prompt.has-cp::before { height: 26px; line-height: 26px; }
+.doc .cp-btn { font-size: 13px; padding: 2px 10px; top: 6px; right: 8px; border-radius: 8px; }
+.doc code { font-size: .92em; }

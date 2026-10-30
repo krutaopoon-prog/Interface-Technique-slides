@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิชาเทคนิคการอินเตอร์เฟซ</title>
+<meta name="description" content="สื่อการสอนวิชาเทคนิคการอินเตอร์เฟซ (30105-2004) ปวส. เขียนโปรแกรม GUI ด้วย Python + PySide6 โดยใช้ AI เป็นผู้ช่วย สไลด์ กิจกรรม ใบงานปฏิบัติ แบบฝึกหัด และแบบทดสอบ รายสัปดาห์">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&family=Sarabun:wght@400;700&family=Prompt:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/theme.css">
+<style>
+    .hero { padding: 28px 0 10px; }
+    .hero .bits { font: 500 18px var(--font-display); color: var(--orange); letter-spacing: 1px; }
+    .chapters { display: grid; gap: 16px; }
+    .unit-h { font: 500 18px var(--font-display); color: var(--teal); margin: 10px 0 -4px; }
+    .ch { display: grid; grid-template-columns: 76px 1fr; gap: 16px; align-items: start; }
+    .ch .num { font: 500 44px/1 var(--font-display); color: var(--orange); background: var(--orange-soft); border-radius: 18px; text-align: center; padding: 14px 0; }
+    .ch .num small { display: block; font-size: 13px; margin-top: 4px; color: var(--ink-soft); }
+    .ch.soon { opacity: .55; }
+    .ch.soon .num { background: var(--cream-deep); color: var(--ink-soft); }
+    .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 0; }
+    .how div { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 8px 10px; font-size: 15px; text-align: center; }
+    .how b { display: block; font: 500 17px var(--font-display); }
+    .tools { display: flex; flex-wrap: wrap; gap: 10px; }
+    table.road { width: 100%; border-collapse: collapse; font-size: 15px; }
+    table.road td, table.road th { border-bottom: 1px solid var(--line); padding: 5px 8px; text-align: left; vertical-align: top; }
+    table.road td:first-child { white-space: nowrap; font-family: var(--font-mono); color: var(--ink-soft); }
+    @media (max-width: 560px) { .ch { grid-template-columns: 56px 1fr; } .ch .num { font-size: 30px; } }
+</style>
+</head>
+<body class="doc">
+<div class="doc-wrap">
+    <header class="hero">
+        <div class="bits">&gt;_ 30105-2004 · ทฤษฎี 2 ปฏิบัติ 3 · 3 หน่วยกิต · Python + PySide6 + 🤖 AI</div>
+        <h1>วิชาเทคนิคการอินเตอร์เฟซ</h1>
+        <p class="muted">ปวส. สาขาวิชาเทคโนโลยีอิเล็กทรอนิกส์ — สร้างโปรแกรมหน้าจอ (GUI) คุยกับบอร์ดและเซนเซอร์ แล้วโชว์เป็นแดชบอร์ด
+            โดยใช้ AI เป็นผู้ช่วยเขียนโค้ด</p>
+    </header>
+
+    <section class="card" style="margin-bottom:16px">
+        <h2 style="margin-top:0">วิชานี้เรียนแบบ “เราคุมงาน AI ช่วยเขียน”</h2>
+        <p class="muted" style="margin:0 0 6px">ไม่ต้องพิมพ์โค้ดเองทุกตัวอักษร แต่ต้องสั่งงานเป็น อ่านโค้ดออก ทดสอบเป็น และแก้ให้ถูก</p>
+        <div class="how">
+            <div><b>① สเปก</b>เขียนว่าอยากได้อะไร</div>
+            <div><b>② สั่ง AI</b>prompt ให้ชัด</div>
+            <div><b>③ อ่านโค้ด</b>ชี้ได้ว่าบรรทัดไหนทำอะไร</div>
+            <div><b>④ รัน</b>กด ▶</div>
+            <div><b>⑤ ทดสอบ</b>ลองทุกกรณี</div>
+            <div><b>⑥ แก้</b>อ่าน error แล้วถาม AI ให้ตรงจุด</div>
+            <div><b>⑦ ปรับ</b>ทีละเรื่อง เก็บ v1 v2</div>
+        </div>
+        <div class="tools" style="margin-top:12px">
+            <a class="btn" href="setup.html">🧰 คู่มือติดตั้งเครื่องมือ</a>
+            <a class="btn ghost" href="prompts.html">💬 คลังแม่แบบ prompt</a>
+        </div>
+    </section>
+
+    <main class="chapters">
+        <p class="unit-h">หน่วยที่ 1 งานสร้างและจัดวางวิดเจ็ตพื้นฐานสำหรับส่วนติดต่อผู้ใช้งาน</p>
+        <article class="card ch">
+            <div class="num">1<small>สัปดาห์</small></div>
+            <div>
+                <h2>GUI ตัวแรกกับผู้ช่วย AI</h2>
+                <p class="muted" style="margin:0 0 6px">GUI คืออะไร · ติดตั้ง Python + PySide6 + VS Code · วงจรทำงานกับ AI 7 ขั้น · หน้าต่างแรก · QLabel QLineEdit QPushButton · QMainWindow · อ่าน Traceback · ภารกิจเครื่องคิดเลขกฎของโอห์ม</p>
+                <div class="btn-row">
+                    <a class="btn" href="w01/slides.html">▶ สไลด์บทเรียน</a>
+                    <a class="btn ghost" href="w01/lab.html">💻 ใบงานปฏิบัติ 1.1</a>
+                    <a class="btn ghost" href="w01/exercises.html">✏️ แบบฝึกหัด</a>
+                    <a class="btn orange" href="w01/quiz.html">📝 แบบทดสอบ</a>
+                </div>
+            </div>
+        </article>
+        <article class="card ch soon" aria-disabled="true">
+            <div class="num">2<small>สัปดาห์</small></div>
+            <div><h2>CheckBox ComboBox และการจัด Layout</h2><p class="muted" style="margin:0">เร็ว ๆ นี้</p></div>
+        </article>
+    </main>
+
+    <section class="card" style="margin-top:16px">
+        <h2 style="margin-top:0">เส้นทาง 15 สัปดาห์</h2>
+        <table class="road">
+            <tr><td>1–2</td><td><b>หน่วย 1</b> สร้างและจัดวางวิดเจ็ตพื้นฐาน</td></tr>
+            <tr><td>3–4</td><td><b>หน่วย 2</b> ออกแบบหน้าจอด้วย Qt Designer (ลากวาง)</td></tr>
+            <tr><td>5–6</td><td><b>หน่วย 3</b> จัดการเหตุการณ์และอินพุตเอาต์พุต (Signals &amp; Slots)</td></tr>
+            <tr><td>7–8</td><td><b>หน่วย 4</b> สื่อสารพอร์ตอนุกรม (UART) และเครือข่าย (TCP, HTTP, JSON)</td></tr>
+            <tr><td>9–10</td><td><b>หน่วย 5</b> รับส่งข้อมูลด้วย MQTT และ CoAP กับบอร์ดสมองกลฝังตัว</td></tr>
+            <tr><td>11–12</td><td><b>หน่วย 6</b> แสดงผลเป็นกราฟและแดชบอร์ด</td></tr>
+            <tr><td>13–14</td><td><b>หน่วย 7</b> ประยุกต์และทดสอบโปรแกรมอินเตอร์เฟซแบบเบ็ดเสร็จ</td></tr>
+            <tr><td>15</td><td><b>ประเมินผลลัพธ์การเรียนรู้ระดับรายวิชา</b></td></tr>
+        </table>
+    </section>
+
+    <p class="muted" style="font-size:14px;margin-top:24px">วิธีใช้สไลด์: ← → หรือ Space เลื่อนหน้า/แสดงทีละขั้น · T สารบัญ · F เต็มจอ · สไลด์ที่มีป้าย 🙋 คือกิจกรรม ·
+        เนื้อหาอิงหลักสูตรรายวิชา 30105-2004 (ปวส. 2567) และหลักสูตรฝึกยกระดับฝีมือ “การพัฒนาโปรแกรมแบบ GUI ด้วยภาษา Python” กรมพัฒนาฝีมือแรงงาน ·
+        สำหรับครู 🔒 <a href="w01/answers.html">สัปดาห์ 1 (เฉลย + คู่มือครู)</a></p>
+</div>
+<script src="assets/js/classroom-loader.js" data-course="itf" data-parts="identity,live-home"></script>
+</body>
+</html>
