@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบงาน โปรเจกต์ React + MUI</title>
+<meta name="description" content="ใบงาน วิชาเทคนิคการอินเตอร์เฟซ เอกสารข้อกำหนดโครงการ 3 โครงการ พัฒนาด้วย React และ Material-UI (MUI) พร้อมเกณฑ์การส่งมอบงาน">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&family=Sarabun:wght@400;700&family=Prompt:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/theme.css">
+<style>
+    .proj { border-left: 6px solid var(--teal); }
+    .proj.p2 { border-color: var(--orange); }
+    .proj.p3 { border-color: #7a4fc4; }
+    .proj h2 { margin: 0; }
+    .proj .en { color: var(--ink-soft); font-style: italic; margin: 0 0 8px; }
+    .proj h3 { color: var(--teal); margin: 14px 0 4px; font-size: 18px; }
+    .proj ul { margin: 2px 0 6px; padding-left: 24px; }
+    .proj li { margin: 3px 0; }
+    .proj ul ul { list-style: circle; }
+    code { font-family: var(--font-mono); background: var(--cream); border-radius: 5px; padding: 0 5px; font-size: .92em; }
+    .frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 4px; font-size: .95em; }
+    .frac > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 4px; }
+    .eq { display: inline-block; background: var(--cream); border-radius: 10px; padding: 6px 14px; margin: 4px 0; }
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; }
+    .flow span { background: var(--teal-soft); color: var(--teal); border-radius: 10px; padding: 6px 12px; font-family: var(--font-display); }
+    .flow i { font-style: normal; color: var(--ink-soft); }
+    .dl ol > li { margin: 10px 0; }
+    .dl ol ul { padding-left: 22px; }
+    .sheet-head { border: 1.5px solid #000; padding: 8px 12px; margin-bottom: 6mm; font-size: 12.5pt; }
+    .sheet-head .line { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+    @media print {
+        body.doc { font-size: 12pt; line-height: 1.4; }
+        .proj, .dl { box-shadow: none; border: 1px solid #000; border-left-width: 4px; break-inside: avoid; }
+        .proj h3 { color: #000; font-size: 13pt; }
+        .flow span { background: none; border: 1px solid #000; color: #000; }
+        .eq, code { background: none; }
+        .p2, .dl { break-before: page; }
+    }
+</style>
+</head>
+<body class="doc">
+<div class="doc-wrap">
+    <nav class="topbar no-print">
+        <a href="../index.html">← หน้าแรก</a> · <a href="exercises.html">แบบฝึกหัด</a> · <a href="quiz.html">แบบทดสอบ</a> · <a href="https://mui.com/material-ui/all-components/" target="_blank" rel="noopener">MUI All components ↗</a>
+    </nav>
+
+    <div class="sheet-head print-only">
+        <b>ใบงาน โปรเจกต์ React + MUI</b> · วิชาเทคนิคการอินเตอร์เฟซ
+        <div class="line"><span>ชื่อ-สกุล ......................................................</span><span>ชั้น ...............</span><span>เลขที่ ........</span></div>
+        <div class="line"><span>โครงการที่เลือก ☐ 1 ☐ 2 ☐ 3</span><span>GitHub Repository ..............................................................</span></div>
+    </div>
+
+    <header class="card no-print">
+        <span class="chip orange">ใบงานสัปดาห์นี้</span>
+        <h1 style="margin-top:8px">💻 เอกสารข้อกำหนดโครงการ (Project Specification Sheet)</h1>
+        <div class="btn-row"><button class="btn" type="button" onclick="window.print()">🖨 พิมพ์ใบงาน (A4)</button></div>
+    </header>
+
+    <!-- ===== โครงการที่ 1 ===== -->
+    <section class="card proj p1">
+        <h2>โครงการที่ 1: ระบบลงทะเบียนและประเมินความเสี่ยงสุขภาพเบื้องต้น</h2>
+        <p class="en">Patient Health Risk Assessment and Registration System</p>
+
+        <h3>1. บริบทและวัตถุประสงค์ (Business Context &amp; Objective)</h3>
+        <p>องค์กรบริการสุขภาพมีความประสงค์พัฒนาเว็บแอปพลิเคชันเพื่อคัดกรองผู้ป่วยเบื้องต้นก่อนเข้ารับการรักษา ระบบต้องสามารถรับข้อมูลส่วนบุคคล คำนวณค่าดรรชนีมวลกาย (BMI) ประเมินความเสี่ยงตามเงื่อนไขที่กำหนด และออกใบสรุปผลการคัดกรองเพื่อลดเวลาการทำงานของเจ้าหน้าที่หน้าร้าน</p>
+
+        <h3>2. ขอบเขตและข้อกำหนดเชิงฟังก์ชัน (Functional Requirements)</h3>
+        <ul>
+            <li><b>การตรวจสอบความถูกต้องของข้อมูล (Input Validation):</b> ระบบต้องตรวจสอบข้อมูลป้อนเข้า (ชื่อ-นามสกุล, อายุ, น้ำหนัก, ส่วนสูง) หากพบช่องว่างหรือค่าที่ไม่ถูกต้อง ต้องแสดงข้อความเตือนและปฏิเสธการประเมินผล</li>
+            <li><b>การประเมินและจัดกลุ่มความเสี่ยง (Risk Assessment Logic):</b>
+                <ul>
+                    <li>คำนวณค่า <span class="eq">BMI = <span class="frac"><span>น้ำหนัก (kg)</span><span>( ส่วนสูง (cm) ÷ 100 )²</span></span></span></li>
+                    <li>ประเมินระดับความเสี่ยงจาก BMI ร่วมกับพฤติกรรมความเสี่ยง (เช่น การสูบบุหรี่ หรือโรคประจำตัว)</li>
+                    <li>จัดจำแนกเป็น 3 ระดับ: <b>ความเสี่ยงต่ำ (Low Risk)</b>, <b>ความเสี่ยงปานกลาง (Moderate Risk)</b>, <b>ความเสี่ยงสูง (High Risk)</b></li>
+                </ul>
+            </li>
+            <li><b>การแสดงผลลัพธ์ (Result Display &amp; Summary):</b> แสดงหน้าต่างสรุปผลข้อมูลผู้ป่วย ระดับความเสี่ยง และข้อแนะนำการปฏิบัติตน</li>
+        </ul>
+
+        <h3>3. ข้อกำหนดส่วนติดต่อผู้ใช้งาน (MUI Components Requirement)</h3>
+        <ul>
+            <li><b>Structure &amp; Layout:</b> <code>Container</code>, <code>Paper</code>, <code>Grid</code>, <code>Stack</code></li>
+            <li><b>Inputs:</b> <code>TextField</code> (รับค่าตัวอักษรและตัวเลข), <code>RadioGroup</code> / <code>Radio</code> (เลือกพฤติกรรมความเสี่ยง), <code>Select</code> / <code>MenuItem</code> (เลือกกลุ่มโรคประจำตัว), <code>Button</code> (ปุ่มประเมินผลและปุ่มล้างข้อมูล)</li>
+            <li><b>Feedback &amp; Displays:</b> <code>Alert</code> (แจ้งเตือนความผิดพลาด), <code>Dialog</code> / <code>DialogTitle</code> / <code>DialogContent</code> / <code>DialogActions</code> (หน้าต่างสรุปผลการประเมิน), <code>Chip</code> (แสดงสถานะระดับความเสี่ยงด้วยสีสัญลักษณ์)</li>
+        </ul>
+    </section>
+
+    <!-- ===== โครงการที่ 2 ===== -->
+    <section class="card proj p2">
+        <h2>โครงการที่ 2: ระบบบริหารจัดการคำสั่งซื้อและคลังสินค้าหน้าร้าน</h2>
+        <p class="en">Point of Sale and Inventory Management System</p>
+
+        <h3>1. บริบทและวัตถุประสงค์ (Business Context &amp; Objective)</h3>
+        <p>สถานประกอบการค้าปลีกต้องการระบบบริหารจัดการรายการสินค้า คำนวณราคาสินค้าหน้าร้าน พร้อมตัดสต็อกสินค้าในระบบแบบเรียลไทม์ เพื่อเพิ่มประสิทธิภาพการขายและลดความผิดพลาดในการคิดเงิน</p>
+
+        <h3>2. ขอบเขตและข้อกำหนดเชิงฟังก์ชัน (Functional Requirements)</h3>
+        <ul>
+            <li><b>การจัดการรายการสินค้าและสต็อก (Inventory Control):</b> ระบบต้องแสดงรายการสินค้าพร้อมจำนวนคงเหลือ หากสินค้าชิ้นใดมีจำนวนคงเหลือน้อยกว่า 5 ชิ้น ระบบต้องแสดงสถานะเตือนสินค้าใกล้หมด</li>
+            <li><b>การคำนวณคำสั่งซื้อและส่วนลด (Transaction Calculation):</b>
+                <ul>
+                    <li>คำนวณราคารวมตามรายการสินค้าที่เลือกและจำนวนที่ระบุ</li>
+                    <li>คำนวณภาษีมูลค่าเพิ่ม (VAT 7%) และการประยุกต์ใช้โค้ดส่วนลด (Discount Code)</li>
+                    <li>คำนวณเงินทอนและแสดงใบเสร็จรับเงินย่อ</li>
+                </ul>
+            </li>
+            <li><b>การควบคุมสถานะการขาย (Status Control):</b> สามารถเปิด-ปิดการจำหน่ายสินค้าแต่ละรายการได้ทันที</li>
+        </ul>
+
+        <h3>3. ข้อกำหนดส่วนติดต่อผู้ใช้งาน (MUI Components Requirement)</h3>
+        <ul>
+            <li><b>Navigation &amp; Header:</b> <code>AppBar</code>, <code>Toolbar</code>, <code>Badge</code> (แสดงจำนวนรายการในตะกร้า)</li>
+            <li><b>Data Presentation:</b> <code>Card</code>, <code>CardMedia</code>, <code>CardContent</code>, <code>CardActions</code> (แสดงรายการสินค้า), <code>Table</code>, <code>TableHead</code>, <code>TableRow</code>, <code>TableCell</code> (ตารางรายการในตะกร้าและใบเสร็จ)</li>
+            <li><b>Inputs &amp; Controls:</b> <code>Switch</code> (เปิด/ปิดสถานะการขาย), <code>TextField</code> (ช่องใส่โค้ดส่วนลดและจำนวนเงินที่รับ), <code>IconButton</code> (เพิ่ม/ลด/ลบ รายการสินค้า)</li>
+            <li><b>Feedback:</b> <code>Snackbar</code> (แจ้งเตือนเมื่อเพิ่มสินค้าลงตะกร้าสำเร็จ), <code>LinearProgress</code> (แสดงสัดส่วนสต็อกสินค้าคงเหลือ)</li>
+        </ul>
+    </section>
+
+    <!-- ===== โครงการที่ 3 ===== -->
+    <section class="card proj p3">
+        <h2>โครงการที่ 3: ระบบติดตามและบริหารจัดการงานโครงการองค์กร</h2>
+        <p class="en">Enterprise Project Task &amp; Workflow Tracking System</p>
+
+        <h3>1. บริบทและวัตถุประสงค์ (Business Context &amp; Objective)</h3>
+        <p>ฝ่ายบริหารโครงการต้องการระบบสำหรับติดตามความก้าวหน้าของงาน (Task Tracking) จัดลำดับความสำคัญ มอบหมายผู้รับผิดชอบ และสรุปภาพรวมสถานะการดำเนินงาน เพื่อใช้ในการประชุมติดตามงานประจำสัปดาห์</p>
+
+        <h3>2. ขอบเขตและข้อกำหนดเชิงฟังก์ชัน (Functional Requirements)</h3>
+        <ul>
+            <li><b>การบันทึกและมอบหมายงาน (Task Creation &amp; Assignment):</b> บันทึกชื่องาน รายละเอียด ผู้รับผิดชอบ วันกำหนดส่ง (Due Date) และระดับความสำคัญ (Priority)</li>
+            <li><b>การจัดการสถานะและคัดกรองข้อมูล (Workflow State Transition &amp; Filtering):</b>
+                <ul>
+                    <li>เปลี่ยนสถานะงานได้ 3 ระดับ: <b>To Do</b>, <b>In Progress</b>, <b>Completed</b></li>
+                    <li>คัดกรอง (Filter) งานตามผู้รับผิดชอบ หรือตามระดับความสำคัญ</li>
+                </ul>
+            </li>
+            <li><b>การคำนวณดรรชนีความก้าวหน้า (Progress Analytics):</b> คำนวณเปอร์เซ็นต์ความสำเร็จของโครงการรวมอัตโนมัติ<br>
+                <span class="eq">Progress % = <span class="frac"><span>จำนวนงานที่ Completed</span><span>จำนวนงานทั้งหมด</span></span> × 100</span></li>
+        </ul>
+
+        <h3>3. ข้อกำหนดส่วนติดต่อผู้ใช้งาน (MUI Components Requirement)</h3>
+        <ul>
+            <li><b>Layout &amp; Organization:</b> <code>Box</code>, <code>Stack</code>, <code>Tabs</code>, <code>Tab</code> (สลับมุมมองระหว่าง รายการงานทั้งหมด / งานที่ทำเสร็จแล้ว)</li>
+            <li><b>Data Display:</b> <code>DataGrid</code> หรือ <code>Table</code> (ตารางแสดงรายการงานพร้อมระบบ Sorting/Pagination), <code>Avatar</code> (แสดงรูป/อักษรย่อผู้รับผิดชอบ), <code>Chip</code> (แสดง Priority: High/Medium/Low)</li>
+            <li><b>Inputs &amp; Actions:</b> <code>Fab</code> (ปุ่ม Floating Action Button สำหรับเพิ่มงานใหม่), <code>Select</code> / <code>MenuItem</code> (เลือกผู้รับผิดชอบและสถานะ)</li>
+            <li><b>Feedback &amp; Indicators:</b> <code>LinearProgress</code> / <code>CircularProgress</code> (แสดงเปอร์เซ็นต์ความก้าวหน้าโครงการ), <code>Tooltip</code> (แสดงคำอธิบายเพิ่มเติมเมื่อเอาเมาส์ชี้)</li>
+        </ul>
+    </section>
+
+    <!-- ===== เกณฑ์การส่งมอบงาน ===== -->
+    <section class="card dl">
+        <h2>เกณฑ์การจัดทำและส่งมอบงาน (Student Project Deliverables)</h2>
+        <p>ผู้เรียนต้องดำเนินงานตามกระบวนการและส่งมอบหลักฐานการทำงานผ่านระบบ Version Control ดังนี้</p>
+        <div class="flow"><span>แผนภาพ Flowchart (PDF/PNG)</span><i>➔</i><span>ไฟล์บันทึก Prompt (prompt_log.md)</span><i>➔</i><span>ซอร์สโค้ด React + MUI</span><i>➔</i><span>GitHub Repository</span></div>
+        <ol>
+            <li><b>ผังงานแสดงตรรกะการทำงาน (System Flowchart Document)</b>
+                <ul><li>แผนภาพกระบวนการทำงานของระบบ (Flowchart) ครอบคลุมการรับข้อมูล การตรวจสอบเงื่อนไข การคำนวณทางคณิตศาสตร์/ตรรกะ และการแสดงผลลัพธ์ แนบไฟล์ไว้ในโฟลเดอร์ <code>docs/</code> ของ Repository</li></ul></li>
+            <li><b>เอกสารบันทึกคำสั่งและกระบวนการทำงานร่วมกับ AI (<code>prompt_log.md</code>)</b>
+                <ul><li>บันทึกโครงสร้างชุดคำสั่ง (Prompts) ที่ใช้สั่งการ AI Agent (Antigravity) ในการเจนเนอเรตโค้ด</li>
+                    <li>บันทึกรายการข้อผิดพลาด (Bugs/Errors) ที่พบระหว่างการทดสอบ และชุดคำสั่งที่ใช้ในการแก้ไขปัญหา (Debugging Steps)</li></ul></li>
+            <li><b>รหัสต้นฉบับและการจัดเก็บ (Source Code &amp; GitHub Repository Management)</b>
+                <ul><li>พัฒนาแอปพลิเคชันโดยใช้ <b>React</b> ร่วมกับ <b>Material-UI (MUI)</b></li>
+                    <li>ทำการ Commit และ Push โค้ดขึ้นบน <b>GitHub Repository</b> โดยต้องมีประวัติการ Commit (Commit History) ที่แสดงถึงโครงสร้างการทำงานชัดเจนอย่างน้อย 5 Commits (เช่น <code>feat: initial design system</code>, <code>feat: add flowchart logic</code>, <code>fix: update MUI components</code>)</li>
+                    <li>จัดทำเอกสาร <code>README.md</code> อธิบายวัตถุประสงค์ของโครงการ รายชื่อ MUI Components ที่เลือกใช้ และวิธีการรันโปรแกรม</li></ul></li>
+        </ol>
+    </section>
+</div>
+</body>
+</html>
